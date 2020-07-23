@@ -29,6 +29,8 @@ My wife is in nursing school, and she loves flashcards. She writes very thorough
 - Possibly create a quizlet like structure where it checks off the ones you got correct and just gives you back the ones you messed up on
 - Animations for flipping cards or moving between pages
 - Fuzzy matching for fill in the blank versions
+- Reminders to study certain sets based on memory research of good intervals
+- Support for math symbols and formula support
 
 ##### Possible Add-ons
 - Different modes, like fill in the blank or matching - games ranked highly on the survey
