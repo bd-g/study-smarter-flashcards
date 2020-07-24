@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudySmarterFlashcards.Sets
 {
-  class CardSetModel
+  public class CardSetModel
   {
     #region Fields
     private List<IndividualCardModel> prFlashcardCollection = new List<IndividualCardModel>();
@@ -71,6 +71,18 @@ namespace StudySmarterFlashcards.Sets
       if (!String.IsNullOrWhiteSpace(newDefinition)) {
         cardToEdit.Definition = newDefinition;
       }
+    }
+
+    public void EditCardSwitchIsLearned(Guid guidofCardToEdit)
+    {
+      IndividualCardModel cardToEdit = prFlashcardCollection.Single(x => x.CardID.Equals(guidofCardToEdit));
+      cardToEdit.IsLearned = !cardToEdit.IsLearned;
+    }
+
+    public void EditCardSwitchIsArchived(Guid guidofCardToEdit)
+    {
+      IndividualCardModel cardToEdit = prFlashcardCollection.Single(x => x.CardID.Equals(guidofCardToEdit));
+      cardToEdit.IsArchived = !cardToEdit.IsArchived;
     }
 
     public override bool Equals(object obj)

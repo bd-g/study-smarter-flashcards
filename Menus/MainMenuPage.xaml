@@ -1,0 +1,93 @@
+﻿<Page
+  x:Class="StudySmarterFlashcards.MainMenuPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:menus="using:StudySmarterFlashcards.Menus"
+  xmlns:utils="using:StudySmarterFlashcards.Utils"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Page.DataContext>
+    <menus:MainMenuViewModel/>
+  </Page.DataContext>
+
+  <Page.Resources>
+    <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+  </Page.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="6*"/>
+      <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="18*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+               Text="Study Smarter Flashcards" FontSize="60"/>
+
+    <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Vertical">
+      <StackPanel.Resources>
+        <Style TargetType="Image">
+          <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+      </StackPanel.Resources>
+      <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add New Set"/>
+      <Image Source="/Assets/SettingsIcon.png" ToolTipService.ToolTip="Settings"/>
+    </StackPanel>
+   
+
+    <Border Grid.Row="1" Grid.Column="1" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
+    <GridView ItemsSource="{Binding CardSets}" Grid.Row="1" Grid.Column="1">
+      <GridView.ItemTemplate>
+        <DataTemplate>
+            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15">
+              <StackPanel Margin="50,50,50,50">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="30"/>
+                <TextBlock Text="{Binding Description}" FontSize="20"/>
+                <StackPanel Orientation="Horizontal">
+                  <Button>
+                    <Button.Content>
+                      <Image Source="/Assets/EditIcon.png" ToolTipService.ToolTip="Edit Set"/>
+                    </Button.Content>
+                  </Button>
+                  <Button>
+                    <Button.Content>
+                      <Image Source="/Assets/ArchiveIcon.png" ToolTipService.ToolTip="Archive Set"/>
+                    </Button.Content>
+                  </Button>
+                  <Button>
+                    <Button.Content>
+                      <Image Source="/Assets/DeleteIcon.png" ToolTipService.ToolTip="Delete Set"/>
+                    </Button.Content>
+                  </Button>
+                </StackPanel>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+      </GridView.ItemTemplate>
+    </GridView>
+    </Border>
+
+    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+      <StackPanel.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="FontSize" Value="25"/>
+        </Style>
+      </StackPanel.Resources>
+      <TextBlock Text="Loading flashcard sets..." Visibility="{Binding NumSetsLoaded.IsNotCompleted, 
+      Converter={StaticResource boolToVisibilityConverter}}"/>
+      <TextBlock Text="{Binding Path=NumSetsLoaded.Result}"
+      Visibility="{Binding NumSetsLoaded.IsSuccessfullyCompleted,
+      Converter={StaticResource boolToVisibilityConverter}}"/>
+      <TextBlock Text="{Binding NumSetsLoaded.ErrorMessage}" Foreground="Red"
+      Visibility="{Binding NumSetsLoaded.IsFaulted,
+      Converter={StaticResource boolToVisibilityConverter}}"/>
+    </StackPanel>
+  </Grid>  
+</Page>

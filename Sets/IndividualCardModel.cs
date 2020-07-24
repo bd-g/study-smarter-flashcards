@@ -4,7 +4,7 @@ using StudySmarterFlashcards.Utils;
 
 namespace StudySmarterFlashcards.Sets
 {
-  class IndividualCardModel
+  public class IndividualCardModel
   {
     #region Constructors
     public IndividualCardModel(string term = "", string definition = "")
