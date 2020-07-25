@@ -28,7 +28,6 @@ namespace StudySmarterFlashcards.Sets
       return obj is IndividualCardModel model &&
              Term == model.Term &&
              Definition == model.Definition &&
-             CardID.Equals(model.CardID) &&
              IsLearned == model.IsLearned &&
              IsArchived == model.IsArchived;
     }

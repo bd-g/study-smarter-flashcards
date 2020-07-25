@@ -125,14 +125,25 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sets\CardSetModel.cs" />
+    <Compile Include="Sets\EditSetPage.xaml.cs">
+      <DependentUpon>EditSetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sets\EditSetViewModel.cs" />
     <Compile Include="Sets\IndividualCardModel.cs" />
+    <Compile Include="Sets\SetPage.xaml.cs">
+      <DependentUpon>SetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sets\SetViewModel.cs" />
+    <Compile Include="Utils\AddSetMessage.cs" />
     <Compile Include="Utils\AsyncCommand.cs" />
+    <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Utils\EditSetMessage.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
-    <Compile Include="Utils\NotifyPropertyChanged.cs" />
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
     <Compile Include="Utils\TaskUtils.cs" />
+    <Compile Include="Utils\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -145,6 +156,7 @@
     <Content Include="Assets\BookLogo.svg" />
     <Content Include="Assets\DeleteIcon.png" />
     <Content Include="Assets\EditIcon.png" />
+    <Content Include="Assets\HomeIcon.png" />
     <Content Include="Assets\SettingsIcon.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
@@ -192,10 +204,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Sets\EditSetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sets\SetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmLightLibs">
+      <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

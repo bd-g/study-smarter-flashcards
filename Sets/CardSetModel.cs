@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StudySmarterFlashcards.Sets
 {
-  public class CardSetModel
+  public class CardSetModel 
   {
     #region Fields
-    private List<IndividualCardModel> prFlashcardCollection = new List<IndividualCardModel>();
+    protected static readonly NLog.Logger prNLogLogger = NLog.LogManager.GetCurrentClassLogger();
     #endregion
+
 
     #region Constructors
     public CardSetModel(string name = "New Flashcard Set", string description = "")
     {
       Name = name;
       Description = description;
+      FlashcardCollection = new ObservableCollection<IndividualCardModel>();
     }
     #endregion
 
@@ -24,27 +29,18 @@ namespace StudySmarterFlashcards.Sets
     public string Name { get; set; }
     public string Description { get; set; }
     public Guid SetID { get; } = Guid.NewGuid();
-    public List<IndividualCardModel> FlashcardCollection { 
-      get 
-      {
-        return prFlashcardCollection;
-      }
-      set
-      {
-        prFlashcardCollection = value;
-      }
-    }
+    public ObservableCollection<IndividualCardModel> FlashcardCollection { get; private set; } 
     public double LearningProgress
     {
       get
       {
-        int numLearned = prFlashcardCollection.Count(x => x.IsLearned);
-        return (double)numLearned/prFlashcardCollection.Count * 100;
+        int numLearned = FlashcardCollection.Count(x => x.IsLearned);
+        return (double)numLearned/FlashcardCollection.Count * 100;
       }
     }
-    public int NumTimesReviewed { get; set; } = 0;
+    public int NumTimesReviewed { get; private set; } = 0;
     public DateTime WhenCreated { get; } = DateTime.Now;
-    public DateTime WhenLastReviewedUTC { get; set; } = DateTime.MinValue;
+    public DateTime WhenLastReviewedUTC { get; private set; } = DateTime.MinValue;
     public bool IsArchived { get; set; } = false;
 
     #endregion
@@ -52,18 +48,18 @@ namespace StudySmarterFlashcards.Sets
     #region Public Methods
     public void AddCardToSet(string cardTerm = "", string cardDefinition = "")
     {
-      prFlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
+      FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
     }
 
     public void RemoveCardFromSet(Guid guidOfCardToRemove)
     {
-      IndividualCardModel cardToDelete = prFlashcardCollection.Single(x => x.CardID.Equals(guidOfCardToRemove));
-      prFlashcardCollection.Remove(cardToDelete);
+      IndividualCardModel cardToRemove = FindCardInCollection(guidOfCardToRemove);
+      FlashcardCollection.Remove(cardToRemove);
     }
 
     public void EditCardInSet(Guid guidofCardToEdit, string newTerm = "", string newDefinition = "")
     {
-      IndividualCardModel cardToEdit = prFlashcardCollection.Single(x => x.CardID.Equals(guidofCardToEdit));
+      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
 
       if (!String.IsNullOrWhiteSpace(newTerm)) {
         cardToEdit.Term = newTerm;
@@ -75,14 +71,24 @@ namespace StudySmarterFlashcards.Sets
 
     public void EditCardSwitchIsLearned(Guid guidofCardToEdit)
     {
-      IndividualCardModel cardToEdit = prFlashcardCollection.Single(x => x.CardID.Equals(guidofCardToEdit));
+      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
       cardToEdit.IsLearned = !cardToEdit.IsLearned;
     }
 
     public void EditCardSwitchIsArchived(Guid guidofCardToEdit)
     {
-      IndividualCardModel cardToEdit = prFlashcardCollection.Single(x => x.CardID.Equals(guidofCardToEdit));
+      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
       cardToEdit.IsArchived = !cardToEdit.IsArchived;
+    }
+
+    public void IncrementNumTimesReviewed()
+    {
+      NumTimesReviewed++;
+    }
+
+    public void UpdatedLastReviewedTime()
+    {
+      WhenLastReviewedUTC = DateTime.UtcNow;
     }
 
     public override bool Equals(object obj)
@@ -90,8 +96,7 @@ namespace StudySmarterFlashcards.Sets
       return obj is CardSetModel model &&
              Name == model.Name &&
              Description == model.Description &&
-             SetID.Equals(model.SetID) &&
-             EqualityComparer<List<IndividualCardModel>>.Default.Equals(FlashcardCollection, model.FlashcardCollection) &&
+             EqualityComparer<ObservableCollection<IndividualCardModel>>.Default.Equals(FlashcardCollection, model.FlashcardCollection) &&
              LearningProgress == model.LearningProgress &&
              NumTimesReviewed == model.NumTimesReviewed &&
              WhenCreated == model.WhenCreated &&
@@ -105,13 +110,32 @@ namespace StudySmarterFlashcards.Sets
       hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
       hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
       hashCode = hashCode * -1521134295 + SetID.GetHashCode();
-      hashCode = hashCode * -1521134295 + EqualityComparer<List<IndividualCardModel>>.Default.GetHashCode(FlashcardCollection);
+      hashCode = hashCode * -1521134295 + EqualityComparer<ObservableCollection<IndividualCardModel>>.Default.GetHashCode(FlashcardCollection);
       hashCode = hashCode * -1521134295 + LearningProgress.GetHashCode();
       hashCode = hashCode * -1521134295 + NumTimesReviewed.GetHashCode();
       hashCode = hashCode * -1521134295 + WhenCreated.GetHashCode();
       hashCode = hashCode * -1521134295 + WhenLastReviewedUTC.GetHashCode();
       hashCode = hashCode * -1521134295 + IsArchived.GetHashCode();
       return hashCode;
+    }
+    #endregion
+
+    #region Private Methods
+    private IndividualCardModel FindCardInCollection(Guid guidOfCardToFind)
+    {
+      IndividualCardModel cardToFind = null;
+      foreach (IndividualCardModel card in FlashcardCollection) {
+        if (card.CardID.Equals(guidOfCardToFind)) {
+          cardToFind = card;
+          break;
+        }
+      }
+
+      if (cardToFind == null) {
+        throw new ArgumentException(string.Format("Could not find card {0} in set", guidOfCardToFind));
+      }
+
+      return cardToFind;
     }
     #endregion
   }

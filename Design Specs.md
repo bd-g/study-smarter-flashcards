@@ -116,6 +116,15 @@ I will use the MVVM design pattern.
   - ```FeedbackPage```
     - Either a custom form that sends an email to me, or somehow integrate with Microsoft Store Reviews
 
+- Messaging
+  - Use ```Galasoft.MvvmLight.Messaging.Messenger```
+  - Different notification messages that implement MessageBase
+    - ```EditSetStatusMessage```
+      - Guid of set to archive
+      - enum indicating whether to activate, archive, or delete a set
+    - ```EditSetMessage```
+      - Guid of set to edit - if null, add a new set
+      - List of card guids and their new data values
 ### Security, Privacy, and Risks
 
 I don't plan on ensuring any sort of intense security over the sets or individual cards, authentication will not be required. That could be an add-on for a future release, more for me to learn than for any very practical use.

@@ -6,15 +6,13 @@
   xmlns:utils="using:StudySmarterFlashcards.Utils"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  DataContext="{Binding MainMenuInstance, Source={StaticResource Locator}}"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-  <Page.DataContext>
-    <menus:MainMenuViewModel/>
-  </Page.DataContext>
-
   <Page.Resources>
     <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
   </Page.Resources>
+  
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
@@ -33,12 +31,16 @@
 
     <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Vertical">
       <StackPanel.Resources>
-        <Style TargetType="Image">
+        <Style TargetType="Button">
           <Setter Property="Margin" Value="0,0,0,20"/>
         </Style>
       </StackPanel.Resources>
-      <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add New Set"/>
-      <Image Source="/Assets/SettingsIcon.png" ToolTipService.ToolTip="Settings"/>
+      <Button Command="{Binding AddSetCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
+        <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add New Set" Stretch="UniformToFill"/>
+      </Button>
+      <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
+        <Image Source="/Assets/SettingsIcon.png" ToolTipService.ToolTip="Settings" Stretch="UniformToFill"/>
+      </Button>
     </StackPanel>
    
 
