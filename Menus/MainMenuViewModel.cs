@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Xaml.Controls;
 
 namespace StudySmarterFlashcards.Menus
 {
@@ -21,7 +22,7 @@ namespace StudySmarterFlashcards.Menus
       EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
       ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetAction);
       DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
-      GoToSetCommand = new RelayCommand<CardSetModel>(GoToSetAction);
+      GoToSetCommand = new RelayCommand<ItemClickEventArgs>(GoToSetAction);
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
     }
     #endregion
@@ -33,7 +34,7 @@ namespace StudySmarterFlashcards.Menus
     public RelayCommand<CardSetModel> EditSetCommand { get; private set; }
     public RelayCommand<CardSetModel> ArchiveSetCommand { get; private set; }
     public RelayCommand<CardSetModel> DeleteSetCommand { get; private set; }
-    public RelayCommand<CardSetModel> GoToSetCommand { get; private set; }
+    public RelayCommand<ItemClickEventArgs> GoToSetCommand { get; private set; }
 
     #endregion
 
@@ -50,10 +51,11 @@ namespace StudySmarterFlashcards.Menus
       Messenger.Default.Send<CardSetModel>(null);
     }
 
-    private void GoToSetAction(CardSetModel cardSetModelToOpen)
+    private void GoToSetAction(ItemClickEventArgs args)
     {
+      CardSetModel cardSetClicked = args.ClickedItem as CardSetModel;
       prNavigationService.NavigateTo("SetPage");
-      Messenger.Default.Send<CardSetModel>(cardSetModelToOpen);
+      Messenger.Default.Send<CardSetModel>(cardSetClicked);
     }
 
     private void EditSetAction(CardSetModel cardSetModelToEdit)

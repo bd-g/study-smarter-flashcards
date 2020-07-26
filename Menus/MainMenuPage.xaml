@@ -50,7 +50,7 @@
       <GridView ItemsSource="{Binding CardSets}" IsItemClickEnabled="True" Grid.Row="1" Grid.Column="1">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="ItemClick">
-            <interactcore:InvokeCommandAction Command="{Binding GoToSetCommand}" CommandParameter="{Binding}"/>
+            <interactcore:InvokeCommandAction Command="{Binding GoToSetCommand}"/>
           </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
