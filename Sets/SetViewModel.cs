@@ -40,14 +40,14 @@ namespace StudySmarterFlashcards.Sets
         FlashCardSet = cardSetModel;
       } else {
         FlashCardSet = new CardSetModel();
-        Messenger.Default.Send<AddSetMessage>(new AddSetMessage(FlashCardSet));
+        Messenger.Default.Send<EditSetMessage>(new EditSetMessage(FlashCardSet));
       }
       OnPropertyChanged("FlashCardSet");
     }
 
     private void EditAction()
     {
-      prNavigationService.NavigateTo("EditSetViewModel");
+      prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send(FlashCardSet);
     }
     #endregion

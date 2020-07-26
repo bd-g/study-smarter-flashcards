@@ -30,18 +30,13 @@
     </Grid.ColumnDefinitions>
 
     <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings"/>
+              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
+      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings" Stretch="UniformToFill"/>
     </Button>
-
-    <StackPanel Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-      <StackPanel.Resources>
-        <Style TargetType="TextBlock">
-          <Setter Property="FontSize" Value="60"/>
-        </Style>
-      </StackPanel.Resources>
-      <TextBlock Text="Create New Set" Visibility="{Binding IsCreatingNewSet, Converter={StaticResource boolToVisibilityConverter}}"/>
-      <TextBlock Text="Edit Set" Visibility="{Binding IsCreatingNewSet, Converter={StaticResource boolToVisibilityConverter}}"/>
+    
+    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,0">
+      <TextBox Text="{Binding FlashCardSet.Name, Mode=TwoWay}" FontSize="30"/>
+      <TextBox Text="{Binding FlashCardSet.Description, Mode=TwoWay}" FontSize="10"/>
     </StackPanel>
 
     <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -60,17 +55,17 @@
           <DataTemplate>
             <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15">
               <StackPanel Margin="50,50,50,50">
-                <TextBox Text="{Binding Term}" FontWeight="Bold" FontSize="12"/>
-                <TextBox Text="{Binding Definition}" FontSize="10"/>
-                <CheckBox IsChecked="{Binding IsLearned}" Content="Learned" />
-                <CheckBox IsChecked="{Binding IsArchived}" Content="Archived" />
+                <TextBox Text="{Binding Term, Mode=TwoWay}" FontWeight="Bold" FontSize="12"/>
+                <TextBox Text="{Binding Definition, Mode=TwoWay}" FontSize="10"/>
+                <CheckBox IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned" />
+                <CheckBox IsChecked="{Binding IsArchived, Mode=TwoWay}" Content="Archived" />
               </StackPanel>
             </Border>
           </DataTemplate>
         </GridView.ItemTemplate>
         <GridView.Footer>
           <Button Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Background="Transparent" Height="100px" HorizontalAlignment="Right">
-            <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card"/>
+            <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="UniformToFill"/>
           </Button>
         </GridView.Footer>
       </GridView>

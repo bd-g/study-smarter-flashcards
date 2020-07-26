@@ -63,9 +63,9 @@ namespace StudySmarterFlashcards.Sets
     }
     private void SaveAction()
     {
-      Messenger.Default.Send(new AddSetMessage(FlashCardSet));
-      Messenger.Default.Send(FlashCardSet);
       prNavigationService.NavigateTo("SetPage");
+      Messenger.Default.Send(FlashCardSet);
+      Messenger.Default.Send(new EditSetMessage(FlashCardSet));
     }
     #endregion
   }

@@ -134,7 +134,6 @@
       <DependentUpon>SetPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Sets\SetViewModel.cs" />
-    <Compile Include="Utils\AddSetMessage.cs" />
     <Compile Include="Utils\AsyncCommand.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
@@ -216,6 +215,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>

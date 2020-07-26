@@ -17,7 +17,7 @@ namespace StudySmarterFlashcards.Sets
 
 
     #region Constructors
-    public CardSetModel(string name = "New Flashcard Set", string description = "")
+    public CardSetModel(string name = "New Flashcard Set", string description = "New Description")
     {
       Name = name;
       Description = description;

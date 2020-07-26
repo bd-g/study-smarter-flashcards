@@ -13,23 +13,28 @@ namespace StudySmarterFlashcards.Menus
 {
   public class MainMenuViewModel : BaseViewModel
   {
-    #region Fields
-    public RelayCommand AddSetCommand { get; private set; }
-    #endregion
     #region Constructors
     public MainMenuViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<EditSetMessage>(this, editSetMessage => ReceiveEditSetMessage(editSetMessage));
-      Messenger.Default.Register<AddSetMessage>(this, addSetMessage => ReceiveAddSetMessage(addSetMessage));
+      Messenger.Default.Register<EditSetMessage>(this, async editSetMessage => await ReceiveEditSetMessage(editSetMessage));
       AddSetCommand = new RelayCommand(AddSetAction);
+      EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
+      ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetAction);
+      DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
+      GoToSetCommand = new RelayCommand<CardSetModel>(GoToSetAction);
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
     }
     #endregion
 
     #region Properties
     public NotifyTaskCompletion<string> NumSetsLoaded { get; private set; }
-
     public ObservableCollection<CardSetModel> CardSets { get; private set; }
+    public RelayCommand AddSetCommand { get; private set; }
+    public RelayCommand<CardSetModel> EditSetCommand { get; private set; }
+    public RelayCommand<CardSetModel> ArchiveSetCommand { get; private set; }
+    public RelayCommand<CardSetModel> DeleteSetCommand { get; private set; }
+    public RelayCommand<CardSetModel> GoToSetCommand { get; private set; }
+
     #endregion
 
     #region Private Methods
@@ -45,64 +50,69 @@ namespace StudySmarterFlashcards.Menus
       Messenger.Default.Send<CardSetModel>(null);
     }
 
-    private void ReceiveAddSetMessage(AddSetMessage addSetMessage)
+    private void GoToSetAction(CardSetModel cardSetModelToOpen)
     {
-      CardSets.Add(addSetMessage.NewCardSetModel);
+      prNavigationService.NavigateTo("SetPage");
+      Messenger.Default.Send<CardSetModel>(cardSetModelToOpen);
     }
 
-    private void ReceiveEditSetMessage(EditSetMessage editSetMessage)
+    private void EditSetAction(CardSetModel cardSetModelToEdit)
     {
+      prNavigationService.NavigateTo("EditSetPage");
+      Messenger.Default.Send<CardSetModel>(cardSetModelToEdit);
+    }
+
+
+    private void ArchiveSetAction(CardSetModel cardSetModelToArchive)
+    {
+      cardSetModelToArchive.IsArchived = !cardSetModelToArchive.IsArchived;
+    }
+
+
+    private void DeleteSetAction(CardSetModel cardSetModelToDelete)
+    {
+      CardSets.Remove(cardSetModelToDelete);
+    }
+
+
+    private async Task ReceiveEditSetMessage(EditSetMessage editSetMessage)
+    {
+      CardSetModel cardSetModelEdited = editSetMessage.EditedSet;
       CardSetModel cardSetModelToEdit = null;
       foreach (CardSetModel cardSetModel in CardSets) {
-        if (cardSetModel.SetID.Equals(editSetMessage.SetID)) {
+        if (cardSetModel.SetID.Equals(cardSetModelEdited.SetID)) {
           cardSetModelToEdit = cardSetModel;
         }
       }
 
       if (cardSetModelToEdit == null) {
-        throw new ArgumentException(string.Format("Could not find selected set {0}.", editSetMessage.SetID));
-      }
+        CardSets.Add(editSetMessage.EditedSet);
+      } else {
+        cardSetModelToEdit.Name = cardSetModelEdited.Name;
+        cardSetModelToEdit.Description = cardSetModelEdited.Description;
+        cardSetModelToEdit.IsArchived = cardSetModelToEdit.IsArchived;
 
-      if (editSetMessage.Name != null) {
-        cardSetModelToEdit.Name = editSetMessage.Name;
-      }
-      if (editSetMessage.Description != null) {
+        ObservableCollection<IndividualCardModel> flashcardsToEdit = cardSetModelToEdit.FlashcardCollection;
 
-        cardSetModelToEdit.Description = editSetMessage.Description;
-      }
-
-      switch (editSetMessage.SetStatus) {
-        case SetStatus.Active:
-          cardSetModelToEdit.IsArchived = false;
-          break;
-        case SetStatus.Archived:
-          cardSetModelToEdit.IsArchived = true;
-          break;
-        case SetStatus.Deleted:
-          if (!CardSets.Remove(cardSetModelToEdit)) {
-            throw new ArgumentException(string.Format("Could not delete selected set {0}.", editSetMessage.SetID));
-          }
-          return;
-      }
-
-      ObservableCollection<IndividualCardModel> flashcards = cardSetModelToEdit.FlashcardCollection; 
-
-      foreach(IndividualCardModel editedCard in editSetMessage.EditedCards) {
-        for (int i = 0; i < flashcards.Count; i++) {
-          IndividualCardModel originalCard = flashcards[i];
-          if (originalCard.CardID.Equals(editedCard.CardID)) {
-            if (originalCard.IsLearned != editedCard.IsLearned) {
-              cardSetModelToEdit.EditCardSwitchIsLearned(originalCard.CardID);
-            }
-            if (originalCard.IsArchived != editedCard.IsArchived) {
-              cardSetModelToEdit.EditCardSwitchIsArchived(originalCard.CardID);
-            }
-            if (originalCard.Term != editedCard.Term || originalCard.Definition != editedCard.Definition) {
-              cardSetModelToEdit.EditCardInSet(originalCard.CardID, editedCard.Term, editedCard.Definition);
+        foreach (IndividualCardModel editedCard in cardSetModelEdited.FlashcardCollection) {
+          for (int i = 0; i < flashcardsToEdit.Count; i++) {
+            IndividualCardModel originalCard = flashcardsToEdit[i];
+            if (originalCard.CardID.Equals(editedCard.CardID)) {
+              if (originalCard.IsLearned != editedCard.IsLearned) {
+                cardSetModelToEdit.EditCardSwitchIsLearned(originalCard.CardID);
+              }
+              if (originalCard.IsArchived != editedCard.IsArchived) {
+                cardSetModelToEdit.EditCardSwitchIsArchived(originalCard.CardID);
+              }
+              if (originalCard.Term != editedCard.Term || originalCard.Definition != editedCard.Definition) {
+                cardSetModelToEdit.EditCardInSet(originalCard.CardID, editedCard.Term, editedCard.Definition);
+              }
             }
           }
         }
       }
+
+      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }
     #endregion
   }

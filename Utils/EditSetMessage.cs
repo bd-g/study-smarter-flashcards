@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,22 +20,14 @@ namespace StudySmarterFlashcards.Utils
   public class EditSetMessage
   {
     #region Constructors
-    public EditSetMessage(Guid setID, string name, string description, List<IndividualCardModel> editedCards, SetStatus setStatus)
+    public EditSetMessage(CardSetModel editedSet)
     {
-      SetID = setID;
-      Name = name;
-      Description = description;
-      EditedCards = editedCards;
-      SetStatus = setStatus;
+      EditedSet = editedSet;
     }
     #endregion
 
     #region Properties
-    public Guid SetID { get; private set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
-    public List<IndividualCardModel> EditedCards { get; private set; }
-    public SetStatus SetStatus { get; private set; }
+    public CardSetModel EditedSet { get; private set;}
     #endregion
   }
 }
