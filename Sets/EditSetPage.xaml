@@ -16,7 +16,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
-      <RowDefinition Height="6*"/>
+      <RowDefinition Height="5*"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
@@ -31,13 +31,17 @@
 
     <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0" 
               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings" Stretch="UniformToFill"/>
+      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings" Stretch="Uniform"/>
     </Button>
     
-    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,0">
-      <TextBox Text="{Binding FlashCardSet.Name, Mode=TwoWay}" FontSize="30"/>
-      <TextBox Text="{Binding FlashCardSet.Description, Mode=TwoWay}" FontSize="10"/>
-    </StackPanel>
+    <Grid Grid.Row="0" Grid.Column="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="2*"/>
+      </Grid.ColumnDefinitions>
+      <TextBox Text="{Binding FlashCardSet.Name, Mode=TwoWay}" VerticalContentAlignment="Center" FontSize="30" Margin="5,10,5,10"/>
+      <TextBox Grid.Column="1" Text="{Binding FlashCardSet.Description, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" FontSize="10" Margin="5,10,5,10" VerticalAlignment="Stretch"/>
+    </Grid>
 
     <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
       <StackPanel.Resources>
@@ -50,13 +54,17 @@
     </StackPanel>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
-      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3">
+      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
         <GridView.ItemTemplate>
           <DataTemplate>
-            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15">
-              <StackPanel Margin="50,50,50,50">
+            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15"
+                    Margin="20,20,20,20" MaxWidth="400" MaxHeight="400"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+              <StackPanel Margin="10,10,10,10" MaxWidth="400" MaxHeight="400"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <TextBox Text="{Binding Term, Mode=TwoWay}" FontWeight="Bold" FontSize="12"/>
-                <TextBox Text="{Binding Definition, Mode=TwoWay}" FontSize="10"/>
+                <TextBox Text="{Binding Definition, Mode=TwoWay}" FontSize="10" TextWrapping="Wrap" MaxHeight="250"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 <CheckBox IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned" />
                 <CheckBox IsChecked="{Binding IsArchived, Mode=TwoWay}" Content="Archived" />
               </StackPanel>
@@ -64,8 +72,8 @@
           </DataTemplate>
         </GridView.ItemTemplate>
         <GridView.Footer>
-          <Button Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Background="Transparent" Height="100px" HorizontalAlignment="Right">
-            <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="UniformToFill"/>
+          <Button Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Background="Transparent" Height="50px" HorizontalAlignment="Right">
+            <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="Uniform"/>
           </Button>
         </GridView.Footer>
       </GridView>

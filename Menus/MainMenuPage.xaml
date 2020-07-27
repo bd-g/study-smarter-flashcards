@@ -18,7 +18,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
-      <RowDefinition Height="6*"/>
+      <RowDefinition Height="5*"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
@@ -57,9 +57,14 @@
         <DataTemplate>
           <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15">
           <StackPanel Orientation="Vertical">
-            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Margin="5,5,5,5"/>
-            <TextBlock Text="{Binding Description}" FontSize="10" Margin="5,5,5,5"/>
-            <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
+            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Margin="15,15,15,15"/>
+            <TextBlock Text="{Binding Description}" TextWrapping="WrapWholeWords" FontSize="10" Margin="15,15,15,15"/>
+            <StackPanel Orientation="Horizontal" Margin="15,15,15,15">
+              <StackPanel.Resources>
+                <Style TargetType="Button">
+                  <Setter Property="Margin" Value="10,0,10,0"/>
+                </Style>
+              </StackPanel.Resources>
               <Button Command="{Binding ElementName=MainMenuPageElement, Path=DataContext.EditSetCommand}" CommandParameter="{Binding}">
                 <Button.Content>
                   <Image Source="/Assets/EditIcon.png" ToolTipService.ToolTip="Edit Set" Width="15"/>
