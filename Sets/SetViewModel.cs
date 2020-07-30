@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 
 namespace StudySmarterFlashcards.Sets
@@ -16,7 +17,7 @@ namespace StudySmarterFlashcards.Sets
     #region Constructors
     public SetViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<CardSetModel>(this, cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<CardSetModel>(this, "SetView", cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
       BasicStudyCommand = new RelayCommand(BasicStudyAction);
@@ -42,7 +43,7 @@ namespace StudySmarterFlashcards.Sets
         FlashCardSet = cardSetModel;
       } else {
         FlashCardSet = new CardSetModel();
-        Messenger.Default.Send<EditSetMessage>(new EditSetMessage(FlashCardSet));
+        Messenger.Default.Send(FlashCardSet, "AddSet");
       }
       OnPropertyChanged("FlashCardSet");
     }
@@ -50,13 +51,17 @@ namespace StudySmarterFlashcards.Sets
     private void EditAction()
     {
       prNavigationService.NavigateTo("EditSetPage");
-      Messenger.Default.Send(FlashCardSet);
+      Messenger.Default.Send(FlashCardSet, "EditSetView");
     }
 
-    private void BasicStudyAction()
+    private async void BasicStudyAction()
     {
+      if (FlashCardSet.FlashcardCollection.Count == 0) {
+        await new MessageDialog("You can't study an empty flashcard set! Add some cards to study.").ShowAsync();
+        return;
+      }
       prNavigationService.NavigateTo("BasicStudyPage");
-      Messenger.Default.Send(FlashCardSet);
+      Messenger.Default.Send(FlashCardSet, "StudyView");
     }
     #endregion
   }

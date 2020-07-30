@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace StudySmarterFlashcards.Menus
@@ -17,13 +18,16 @@ namespace StudySmarterFlashcards.Menus
     #region Constructors
     public MainMenuViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<EditSetMessage>(this, async editSetMessage => await ReceiveEditSetMessage(editSetMessage));
+      Messenger.Default.Register<CardSetModel>(this, "AddSet", async addedCardSet => await ReceiveEditSetMessage(addedCardSet));
+      Messenger.Default.Register<CardSetModel>(this, "EditSet", async editedCardSet => await ReceiveEditSetMessage(editedCardSet));
       AddSetCommand = new RelayCommand(AddSetAction);
       EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
       ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetAction);
       DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
       GoToSetCommand = new RelayCommand<ItemClickEventArgs>(GoToSetAction);
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
+      GoToSettingsCommand = new RelayCommand(GoToSettingsAction);
+      ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
     #endregion
 
@@ -34,8 +38,10 @@ namespace StudySmarterFlashcards.Menus
     public RelayCommand<CardSetModel> EditSetCommand { get; private set; }
     public RelayCommand<CardSetModel> ArchiveSetCommand { get; private set; }
     public RelayCommand<CardSetModel> DeleteSetCommand { get; private set; }
+    public RelayCommand GoToSettingsCommand { get; private set; }
     public RelayCommand<ItemClickEventArgs> GoToSetCommand { get; private set; }
-
+    public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
+    public int SetColumnWidth { get; private set; } = 100;
     #endregion
 
     #region Private Methods
@@ -43,46 +49,64 @@ namespace StudySmarterFlashcards.Menus
     {
       CardSets = await LocalDataHandler.LoadAllSetsFromLocalMemory();
       OnPropertyChanged("CardSets");
-      return CardSets.Count + " sets loaded successfully";
+      return CardSets.Count + " set(s) loaded successfully";
     }
     private void AddSetAction()
     {
       prNavigationService.NavigateTo("EditSetPage");
-      Messenger.Default.Send<CardSetModel>(null);
+      Messenger.Default.Send<CardSetModel>(null, "EditSetView");
     }
 
     private void GoToSetAction(ItemClickEventArgs args)
     {
       CardSetModel cardSetClicked = args.ClickedItem as CardSetModel;
       prNavigationService.NavigateTo("SetPage");
-      Messenger.Default.Send<CardSetModel>(cardSetClicked);
+      Messenger.Default.Send(cardSetClicked, "SetView");
+    }
+
+    private void ResizeColumnWidthFunction(SizeChangedEventArgs args)
+    {
+      if (args.NewSize.Width - 75 > 800) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 75) / 3));
+      } else if (args.NewSize.Width - 50 > 400) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 50) / 2));
+      } else { 
+        SetColumnWidth = (int)Math.Floor(args.NewSize.Width - 25);
+      } 
+      OnPropertyChanged("SetColumnWidth");
+    }
+
+    private void GoToSettingsAction()
+    {
+      prNavigationService.NavigateTo("SettingsPage");
     }
 
     private void EditSetAction(CardSetModel cardSetModelToEdit)
     {
       prNavigationService.NavigateTo("EditSetPage");
-      Messenger.Default.Send<CardSetModel>(cardSetModelToEdit);
+      Messenger.Default.Send(cardSetModelToEdit, "EditSetView");
     }
 
 
-    private void ArchiveSetAction(CardSetModel cardSetModelToArchive)
+    private async void ArchiveSetAction(CardSetModel cardSetModelToArchive)
     {
       cardSetModelToArchive.IsArchived = !cardSetModelToArchive.IsArchived;
+      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }
 
 
-    private void DeleteSetAction(CardSetModel cardSetModelToDelete)
+    private async void DeleteSetAction(CardSetModel cardSetModelToDelete)
     {
-      CardSets.Remove(cardSetModelToDelete);
+      if (CardSets.Remove(cardSetModelToDelete)) {
+        await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+      }
     }
 
 
-    private async Task ReceiveEditSetMessage(EditSetMessage editSetMessage)
+    private async Task ReceiveEditSetMessage(CardSetModel editedSet)
     {
-      CardSetModel cardSetModelEdited = editSetMessage.EditedSet;
-      
-      if (!CardSets.Contains(cardSetModelEdited)) {
-        CardSets.Add(cardSetModelEdited);
+      if (!CardSets.Contains(editedSet)) {
+        CardSets.Add(editedSet);
       }
 
       await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);

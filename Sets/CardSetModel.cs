@@ -129,14 +129,7 @@ namespace StudySmarterFlashcards.Sets
     public override bool Equals(object obj)
     {
       return obj is CardSetModel model &&
-             Name == model.Name &&
-             Description == model.Description &&
-             EqualityComparer<ObservableCollection<IndividualCardModel>>.Default.Equals(FlashcardCollection, model.FlashcardCollection) &&
-             LearningProgress == model.LearningProgress &&
-             NumTimesReviewed == model.NumTimesReviewed &&
-             WhenCreated == model.WhenCreated &&
-             WhenLastReviewedUTC == model.WhenLastReviewedUTC &&
-             IsArchived == model.IsArchived;
+             SetID == model.SetID;
     }
 
     public override int GetHashCode()

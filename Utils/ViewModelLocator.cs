@@ -14,21 +14,24 @@ namespace StudySmarterFlashcards.Utils
     public const string SetPageKey = "SetPage";
     public const string EditSetPageKey = "EditSetPage";
     public const string BasicStudyPageKey = "BasicStudyPage";
+    public const string SettingsPageKey = "SettingsPage";
 
     public ViewModelLocator()
     {
       ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
       var nav = new NavigationService();
-      nav.Configure(MainMenuPageKey, typeof(MainMenuPage));
-      nav.Configure(SetPageKey, typeof(SetPage));
-      nav.Configure(EditSetPageKey, typeof(EditSetPage));
+      nav.Configure(MainMenuPageKey,   typeof(MainMenuPage));
+      nav.Configure(SetPageKey,        typeof(SetPage));
+      nav.Configure(EditSetPageKey,    typeof(EditSetPage));
       nav.Configure(BasicStudyPageKey, typeof(BasicStudyPage));
+      nav.Configure(SettingsPageKey,   typeof(SettingsPage));
 
       SimpleIoc.Default.Register<INavigationService>(() => nav);
       SimpleIoc.Default.Register<MainMenuViewModel>();
       SimpleIoc.Default.Register<SetViewModel>();
       SimpleIoc.Default.Register<EditSetViewModel>();
       SimpleIoc.Default.Register<BasicStudyViewModel>();
+      SimpleIoc.Default.Register<SettingsViewModel>();
     }
 
     public MainMenuViewModel MainMenuInstance
@@ -60,6 +63,14 @@ namespace StudySmarterFlashcards.Utils
       get
       {
         return ServiceLocator.Current.GetInstance<BasicStudyViewModel>();
+      }
+    }
+
+    public SettingsViewModel SettingsInstance
+    {
+      get
+      {
+        return ServiceLocator.Current.GetInstance<SettingsViewModel>();
       }
     }
   }

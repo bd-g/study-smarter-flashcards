@@ -1,5 +1,5 @@
 ﻿<Page Name="MainMenuPageElement"
-  x:Class="StudySmarterFlashcards.MainMenuPage"
+  x:Class="StudySmarterFlashcards.Menus.MainMenuPage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:menus="using:StudySmarterFlashcards.Menus"
@@ -7,8 +7,8 @@
   xmlns:interact="using:Microsoft.Xaml.Interactivity"
   xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      DataContext="{Binding MainMenuInstance, Source={StaticResource Locator}}"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  DataContext="{Binding MainMenuInstance, Source={StaticResource Locator}}"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
@@ -40,7 +40,7 @@
       <Button Command="{Binding AddSetCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
         <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add New Set" Stretch="UniformToFill"/>
       </Button>
-      <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
+      <Button Command="{Binding GoToSettingsCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
         <Image Source="/Assets/SettingsIcon.png" ToolTipService.ToolTip="Settings" Stretch="UniformToFill"/>
       </Button>
     </StackPanel>
@@ -52,14 +52,21 @@
           <interactcore:EventTriggerBehavior EventName="ItemClick">
             <interactcore:InvokeCommandAction Command="{Binding GoToSetCommand}"/>
           </interactcore:EventTriggerBehavior>
+          <interactcore:EventTriggerBehavior EventName="SizeChanged" >
+            <interactcore:InvokeCommandAction Command="{Binding ResizeColumnWidthCommand}" />
+          </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
-        <DataTemplate>
-          <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15">
-          <StackPanel Orientation="Vertical">
-            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Margin="15,15,15,15"/>
-            <TextBlock Text="{Binding Description}" TextWrapping="WrapWholeWords" FontSize="10" Margin="15,15,15,15"/>
-            <StackPanel Orientation="Horizontal" Margin="15,15,15,15">
+          <DataTemplate>
+            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15" Margin="10,10,10,10"
+                    Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">
+              <StackPanel Orientation="Vertical" Margin="10,10,10,10"
+                        Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">
+                <TextBlock Text="{Binding Name}" TextWrapping="WrapWholeWords" FontWeight="Bold" 
+                             MaxHeight="60" TextTrimming="CharacterEllipsis" FontSize="16" Margin="15,15,15,15"/>
+                <TextBlock Text="{Binding Description}" TextWrapping="WrapWholeWords" FontSize="14" 
+                             MaxHeight="60" TextTrimming="CharacterEllipsis" Margin="15,15,15,15"/>
+                <StackPanel Orientation="Horizontal" Margin="15,15,15,15">
               <StackPanel.Resources>
                 <Style TargetType="Button">
                   <Setter Property="Margin" Value="10,0,10,0"/>
@@ -85,18 +92,34 @@
           </Border>
         </DataTemplate>
       </GridView.ItemTemplate>
-    </GridView>
+      <GridView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VariableSizedWrapGrid
+          Orientation="Horizontal"
+          VerticalAlignment="Top"
+          ScrollViewer.VerticalScrollMode="Auto"
+              MaximumRowsOrColumns="3">
+          </VariableSizedWrapGrid>
+        </ItemsPanelTemplate>
+      </GridView.ItemsPanel>
+      </GridView>
     </Border>
 
     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
-      <TextBlock Text="Loading flashcard sets..." FontSize="25" Visibility="{Binding NumSetsLoaded.IsNotCompleted, 
-      Converter={StaticResource boolToVisibilityConverter}}"/>
-      <TextBlock Text="{Binding Path=NumSetsLoaded.Result}" FontSize="25" 
-      Visibility="{Binding NumSetsLoaded.IsSuccessfullyCompleted,
-      Converter={StaticResource boolToVisibilityConverter}}"/>
-      <TextBlock Text="{Binding NumSetsLoaded.ErrorMessage}" Foreground="Red" FontSize="10" 
-      Visibility="{Binding NumSetsLoaded.IsFaulted,
-      Converter={StaticResource boolToVisibilityConverter}}"/>
+      <ScrollViewer>
+        <TextBlock Text="Loading flashcard sets..." FontSize="20" Visibility="{Binding NumSetsLoaded.IsNotCompleted, 
+        Converter={StaticResource boolToVisibilityConverter}}"/>
+      </ScrollViewer>
+      <ScrollViewer>
+      <TextBlock Text="{Binding Path=NumSetsLoaded.Result}" FontSize="20" 
+        Visibility="{Binding NumSetsLoaded.IsSuccessfullyCompleted,
+        Converter={StaticResource boolToVisibilityConverter}}"/>
+      </ScrollViewer>
+      <ScrollViewer>
+        <TextBlock Text="{Binding NumSetsLoaded.ErrorMessage}" Foreground="Red" FontSize="10" 
+        Visibility="{Binding NumSetsLoaded.IsFaulted,
+        Converter={StaticResource boolToVisibilityConverter}}"/>
+      </ScrollViewer>
     </StackPanel>
   </Grid>  
 </Page>

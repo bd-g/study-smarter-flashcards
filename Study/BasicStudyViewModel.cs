@@ -21,7 +21,7 @@ namespace StudySmarterFlashcards.Study
     #region Constructors
     public BasicStudyViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<CardSetModel>(this, cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<CardSetModel>(this, "StudyView", cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);

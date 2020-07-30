@@ -33,25 +33,40 @@
               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
       <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings" Stretch="Uniform"/>
     </Button>
-    
+
     <Grid Grid.Row="0" Grid.Column="3">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <TextBox Text="{Binding TempFlashCardSet.Name, Mode=TwoWay}" VerticalContentAlignment="Center" FontSize="30" Margin="5,10,5,10"/>
-      <TextBox Grid.Column="1" Text="{Binding TempFlashCardSet.Description, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" FontSize="10" Margin="5,10,5,10" VerticalAlignment="Stretch"/>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="4*"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+      <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding TempName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+               VerticalContentAlignment="Center" FontSize="30" Margin="5,0,5,0"/>
+      <TextBlock Grid.Row="1" Grid.Column="0" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5,0,5,0"
+                 Text="{Binding Path=TempNameLength}" Foreground="{Binding TempNameLengthColor}"/>
+      <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TempDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+               AcceptsReturn="True" TextWrapping="Wrap" FontSize="15" Margin="5,0,5,0" VerticalAlignment="Stretch"/>
+      <TextBlock Grid.Row="1" Grid.Column="1" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5,0,5,0"
+                 Text="{Binding Path=TempDescriptionLength}" Foreground="{Binding TempDescriptionLengthColor}"/>
     </Grid>
 
     <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
       <StackPanel.Resources>
         <Style TargetType="Button">
-          <Setter Property="Margin" Value="0,0,0,20"/>
+          <Setter Property="Margin" Value="0,10,0,10"/>
         </Style>
       </StackPanel.Resources>
       <Button Command="{Binding SaveCommand}" Content="Save" HorizontalAlignment="Stretch"/>
       <Button Command="{Binding CancelCommand}" Content="Cancel" HorizontalAlignment="Stretch"/>
     </StackPanel>
+
+    <Button Grid.Row="1" Grid.Column="5" Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Margin="5,0,5,10"
+            Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+      <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="Uniform"/>
+    </Button>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
       <GridView ItemsSource="{Binding TempFlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
@@ -77,11 +92,6 @@
             </Border>
           </DataTemplate>
         </GridView.ItemTemplate>
-        <GridView.Footer>
-          <Button Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Background="Transparent" Height="50px" HorizontalAlignment="Right">
-            <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="Uniform"/>
-          </Button>
-        </GridView.Footer>
       </GridView>
     </Border>
   </Grid>

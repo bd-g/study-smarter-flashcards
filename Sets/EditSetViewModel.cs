@@ -8,7 +8,10 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -17,7 +20,7 @@ namespace StudySmarterFlashcards.Sets
     #region Constructors
     public EditSetViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<CardSetModel>(this, cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<CardSetModel>(this, "EditSetView", cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       CancelCommand = new RelayCommand(CancelAction);
       SaveCommand = new RelayCommand(SaveAction);
@@ -35,6 +38,54 @@ namespace StudySmarterFlashcards.Sets
     public RelayCommand<IndividualCardModel> DeleteCardCommand { get; private set; }
     public CardSetModel OriginalFlashCardSet { get; private set; } = new CardSetModel();
     public CardSetModel TempFlashCardSet { get; private set; } = new CardSetModel();
+    public string TempName
+    {
+      get {
+        return TempFlashCardSet.Name;
+      }
+      set {
+        TempFlashCardSet.Name = value;
+        OnPropertyChanged("TempName");
+        OnPropertyChanged("TempNameLength");
+        OnPropertyChanged("TempNameLengthColor");
+      }
+    }
+    public string TempNameLength
+    {
+      get {
+        return TempName.Length + "/30";
+      }
+    }
+    public Brush TempNameLengthColor
+    {
+      get {
+        return TempName.Length <= 30 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
+      }
+    }
+    public string TempDescription
+    {
+      get {
+        return TempFlashCardSet.Description;
+      }
+      set {
+        TempFlashCardSet.Description = value;
+        OnPropertyChanged("TempDescription");
+        OnPropertyChanged("TempDescriptionLength");
+        OnPropertyChanged("TempDescriptionLengthColor");
+      }
+    }
+    public string TempDescriptionLength
+    {
+      get {
+        return TempFlashCardSet.Description.Length + "/150";
+      }
+    }
+    public Brush TempDescriptionLengthColor
+    {
+      get {
+        return TempFlashCardSet.Description.Length <= 150 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
+      }
+    }
     #endregion
 
     #region Private Methods
@@ -73,9 +124,13 @@ namespace StudySmarterFlashcards.Sets
     {
       TempFlashCardSet.RemoveCardFromSet(cardToDelete.CardID);
     }
-    private void SaveAction()
+    private async void SaveAction()
     {
       if (OriginalFlashCardSet != null) {
+        if (!PerformValidation()) {
+          await new MessageDialog("Set name and\\or description are too long.").ShowAsync();
+          return;
+        }
         OriginalFlashCardSet.Name = TempFlashCardSet.Name;
         OriginalFlashCardSet.Description = TempFlashCardSet.Description;
         OriginalFlashCardSet.IsArchived = TempFlashCardSet.IsArchived;
@@ -112,8 +167,16 @@ namespace StudySmarterFlashcards.Sets
       }
 
       prNavigationService.NavigateTo("SetPage");
-      Messenger.Default.Send(OriginalFlashCardSet);
-      Messenger.Default.Send(new EditSetMessage(OriginalFlashCardSet));
+      Messenger.Default.Send(OriginalFlashCardSet, "SetView");
+      Messenger.Default.Send(OriginalFlashCardSet, "EditSet");
+    }
+
+    private bool PerformValidation()
+    {
+      if (TempFlashCardSet.Name.Length > 30 || TempFlashCardSet.Description.Length > 150) {
+        return false;
+      }
+      return true;
     }
     #endregion
   }

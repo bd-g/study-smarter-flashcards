@@ -29,7 +29,7 @@
     </Button>
 
     <Button Command="{Binding EditCommand}" CommandParameter="{Binding FlashCardSet}" Grid.Row="1" Grid.Column="5" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
+              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="7.5,15,7.5,0" Padding="0" BorderThickness="0" Background="Transparent">
       <Image Source="/Assets/EditIcon.png" ToolTipService.ToolTip="Edit"/>
     </Button>
 
@@ -41,12 +41,16 @@
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <TextBlock Text="{Binding FlashCardSet.Name, Mode=TwoWay}" FontSize="30" Margin="5,10,5,10" VerticalAlignment="Center"/>
-      <TextBlock Grid.Column="1" Text="{Binding FlashCardSet.Description, Mode=TwoWay}" TextWrapping="Wrap" FontSize="10" Margin="5,10,5,10"/>
+      <ScrollViewer>
+        <TextBlock Text="{Binding FlashCardSet.Name}" TextWrapping="WrapWholeWords" FontSize="30" Margin="5,10,5,10" VerticalAlignment="Center"/>
+      </ScrollViewer>
+      <ScrollViewer Grid.Column="1">
+        <TextBlock Text="{Binding FlashCardSet.Description}" TextWrapping="WrapWholeWords" FontSize="15" VerticalAlignment="Center" Margin="5,10,5,10"/>
+      </ScrollViewer>
     </Grid>
     
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
-      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3">
+      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" IsItemClickEnabled="False" Grid.Row="1" Grid.Column="3">
         <GridView.ItemTemplate>
           <DataTemplate>
             <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15"
