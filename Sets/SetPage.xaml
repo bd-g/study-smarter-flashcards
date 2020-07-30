@@ -33,6 +33,9 @@
       <Image Source="/Assets/EditIcon.png" ToolTipService.ToolTip="Edit"/>
     </Button>
 
+    <Button Content="Study"  Command="{Binding BasicStudyCommand}" Grid.Row="2" Grid.Column="3" 
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
     <Grid Grid.Row="0" Grid.Column="3">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*"/>

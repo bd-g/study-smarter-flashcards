@@ -18,7 +18,7 @@ namespace StudySmarterFlashcards.Utils
         StorageFile file = await folder.GetFileAsync("localCardSets.json");
         string text = await FileIO.ReadTextAsync(file);
         ObservableCollection<CardSetModel> localCardSets = JsonConvert.DeserializeObject<ObservableCollection<CardSetModel>>(text);
-        return localCardSets;
+        return localCardSets != null ? localCardSets : new ObservableCollection<CardSetModel>();
       } catch (FileNotFoundException) {
         return new ObservableCollection<CardSetModel>();
       }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using StudySmarterFlashcards.Utils;
 
 namespace StudySmarterFlashcards.Sets
@@ -12,6 +13,16 @@ namespace StudySmarterFlashcards.Sets
       Term = term;
       Definition = definition;
     }
+    
+    [JsonConstructor]
+    public IndividualCardModel(string term, string definition, Guid cardID, bool isLearned, bool isArchived)
+    {
+      Term = term;
+      Definition = definition;
+      CardID = cardID;
+      IsLearned = isLearned;
+      IsArchived = isArchived;
+    }
     #endregion
 
     #region Properties
@@ -23,7 +34,12 @@ namespace StudySmarterFlashcards.Sets
     #endregion
 
     #region Public Methods
-    public override bool Equals(object obj)
+    public IndividualCardModel Clone()
+    {
+      return new IndividualCardModel(this.Term, this.Definition, this.CardID, this.IsLearned, this.IsArchived);
+    }
+
+    public bool DeepEquals(object obj)
     {
       return obj is IndividualCardModel model &&
              Term == model.Term &&
@@ -31,7 +47,11 @@ namespace StudySmarterFlashcards.Sets
              IsLearned == model.IsLearned &&
              IsArchived == model.IsArchived;
     }
-
+    public override bool Equals(object obj)
+    {
+      return obj is IndividualCardModel model &&
+             CardID == model.CardID;
+    }
     public override int GetHashCode()
     {
       int hashCode = 849365176;

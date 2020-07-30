@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Views;
 using CommonServiceLocator;
 using StudySmarterFlashcards.Menus;
 using StudySmarterFlashcards.Sets;
+using StudySmarterFlashcards.Study;
 
 namespace StudySmarterFlashcards.Utils
 {
@@ -12,6 +13,7 @@ namespace StudySmarterFlashcards.Utils
     public const string MainMenuPageKey = "MainMenuPage";
     public const string SetPageKey = "SetPage";
     public const string EditSetPageKey = "EditSetPage";
+    public const string BasicStudyPageKey = "BasicStudyPage";
 
     public ViewModelLocator()
     {
@@ -20,11 +22,13 @@ namespace StudySmarterFlashcards.Utils
       nav.Configure(MainMenuPageKey, typeof(MainMenuPage));
       nav.Configure(SetPageKey, typeof(SetPage));
       nav.Configure(EditSetPageKey, typeof(EditSetPage));
+      nav.Configure(BasicStudyPageKey, typeof(BasicStudyPage));
 
       SimpleIoc.Default.Register<INavigationService>(() => nav);
       SimpleIoc.Default.Register<MainMenuViewModel>();
       SimpleIoc.Default.Register<SetViewModel>();
       SimpleIoc.Default.Register<EditSetViewModel>();
+      SimpleIoc.Default.Register<BasicStudyViewModel>();
     }
 
     public MainMenuViewModel MainMenuInstance
@@ -48,6 +52,14 @@ namespace StudySmarterFlashcards.Utils
       get
       {
         return ServiceLocator.Current.GetInstance<EditSetViewModel>();
+      }
+    }
+
+    public BasicStudyViewModel BasicStudyInstance
+    {
+      get
+      {
+        return ServiceLocator.Current.GetInstance<BasicStudyViewModel>();
       }
     }
   }

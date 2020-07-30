@@ -19,12 +19,14 @@ namespace StudySmarterFlashcards.Sets
       Messenger.Default.Register<CardSetModel>(this, cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
+      BasicStudyCommand = new RelayCommand(BasicStudyAction);
     }
     #endregion
 
     #region Properties
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand EditCommand { get; private set; }
+    public RelayCommand BasicStudyCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; } = new CardSetModel();
     #endregion
 
@@ -48,6 +50,12 @@ namespace StudySmarterFlashcards.Sets
     private void EditAction()
     {
       prNavigationService.NavigateTo("EditSetPage");
+      Messenger.Default.Send(FlashCardSet);
+    }
+
+    private void BasicStudyAction()
+    {
+      prNavigationService.NavigateTo("BasicStudyPage");
       Messenger.Default.Send(FlashCardSet);
     }
     #endregion

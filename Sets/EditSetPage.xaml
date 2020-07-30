@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page Name="EditSetPageElement"
     x:Class="StudySmarterFlashcards.Sets.EditSetPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -39,8 +39,8 @@
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <TextBox Text="{Binding FlashCardSet.Name, Mode=TwoWay}" VerticalContentAlignment="Center" FontSize="30" Margin="5,10,5,10"/>
-      <TextBox Grid.Column="1" Text="{Binding FlashCardSet.Description, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" FontSize="10" Margin="5,10,5,10" VerticalAlignment="Stretch"/>
+      <TextBox Text="{Binding TempFlashCardSet.Name, Mode=TwoWay}" VerticalContentAlignment="Center" FontSize="30" Margin="5,10,5,10"/>
+      <TextBox Grid.Column="1" Text="{Binding TempFlashCardSet.Description, Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" FontSize="10" Margin="5,10,5,10" VerticalAlignment="Stretch"/>
     </Grid>
 
     <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -54,7 +54,7 @@
     </StackPanel>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
-      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
+      <GridView ItemsSource="{Binding TempFlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
         <GridView.ItemTemplate>
           <DataTemplate>
             <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15"
@@ -67,6 +67,12 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 <CheckBox IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned" />
                 <CheckBox IsChecked="{Binding IsArchived, Mode=TwoWay}" Content="Archived" />
+                <Button Command="{Binding ElementName=EditSetPageElement, Path=DataContext.DeleteCardCommand}" 
+                        CommandParameter="{Binding}" Margin="10,10,10,10">
+                  <Button.Content>
+                    <Image Source="/Assets/DeleteIcon.png" ToolTipService.ToolTip="Delete Set" Width="15"/>
+                  </Button.Content>
+                </Button>
               </StackPanel>
             </Border>
           </DataTemplate>

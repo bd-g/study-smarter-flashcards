@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Text.Core;
 
 namespace StudySmarterFlashcards.Study
 {
@@ -15,6 +16,7 @@ namespace StudySmarterFlashcards.Study
   {
     #region Fields
     private static readonly Random prRandom = new Random();
+    private bool prIsShuffleMode = true;
     #endregion
     #region Constructors
     public BasicStudyViewModel(INavigationService navigationService) : base(navigationService)
@@ -40,7 +42,24 @@ namespace StudySmarterFlashcards.Study
       }
     }
     public Stack<int> PreviousFlashcardIndexes { get; private set; }
-    public bool IsShuffleMode { get; set; } = true;
+    public bool HasPreviousFlashcards {
+      get
+      {
+        return PreviousFlashcardIndexes.Count > 0;
+      } 
+    }
+    public bool IsShuffleMode
+    {
+      get
+      {
+        return prIsShuffleMode;
+      }
+      set
+      {
+        prIsShuffleMode = value;
+        OnPropertyChanged();
+      }
+    }
     #endregion
 
     #region Private Methods
@@ -61,6 +80,7 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("FlashCardSet");
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
+      OnPropertyChanged("HasPreviousFlashcards");
     }
 
     private void BackAction()
@@ -75,13 +95,14 @@ namespace StudySmarterFlashcards.Study
       }
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
+      OnPropertyChanged("HasPreviousFlashcards");
     }
 
     private void GoToNextFlashcard()
     {
       int currentIndex = CurrentFlashcardIndex; 
       if (IsShuffleMode) {
-        int nextIndex = prRandom.Next(0, FlashCardSet.FlashcardCollection.Count - 1);
+        int nextIndex = prRandom.Next(0, FlashCardSet.FlashcardCollection.Count);
         CurrentFlashcardIndex = currentIndex != nextIndex ? nextIndex : (nextIndex + 1) % FlashCardSet.FlashcardCollection.Count;
       } else {
         CurrentFlashcardIndex = (currentIndex + 1) % FlashCardSet.FlashcardCollection.Count;
@@ -89,6 +110,7 @@ namespace StudySmarterFlashcards.Study
       PreviousFlashcardIndexes.Push(currentIndex);
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
+      OnPropertyChanged("HasPreviousFlashcards");
     }
     #endregion
   }

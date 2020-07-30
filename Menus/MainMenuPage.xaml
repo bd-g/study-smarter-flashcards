@@ -89,17 +89,12 @@
     </Border>
 
     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
-      <StackPanel.Resources>
-        <Style TargetType="TextBlock">
-          <Setter Property="FontSize" Value="25"/>
-        </Style>
-      </StackPanel.Resources>
-      <TextBlock Text="Loading flashcard sets..." Visibility="{Binding NumSetsLoaded.IsNotCompleted, 
+      <TextBlock Text="Loading flashcard sets..." FontSize="25" Visibility="{Binding NumSetsLoaded.IsNotCompleted, 
       Converter={StaticResource boolToVisibilityConverter}}"/>
-      <TextBlock Text="{Binding Path=NumSetsLoaded.Result}"
+      <TextBlock Text="{Binding Path=NumSetsLoaded.Result}" FontSize="25" 
       Visibility="{Binding NumSetsLoaded.IsSuccessfullyCompleted,
       Converter={StaticResource boolToVisibilityConverter}}"/>
-      <TextBlock Text="{Binding NumSetsLoaded.ErrorMessage}" Foreground="Red"
+      <TextBlock Text="{Binding NumSetsLoaded.ErrorMessage}" Foreground="Red" FontSize="10" 
       Visibility="{Binding NumSetsLoaded.IsFaulted,
       Converter={StaticResource boolToVisibilityConverter}}"/>
     </StackPanel>

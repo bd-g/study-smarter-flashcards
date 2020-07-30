@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -22,6 +23,30 @@ namespace StudySmarterFlashcards.Sets
       Name = name;
       Description = description;
       FlashcardCollection = new ObservableCollection<IndividualCardModel>();
+    }
+
+    public CardSetModel(string name, string description,
+                        ObservableCollection<IndividualCardModel> flashcardCollection,
+                        int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC,
+                        bool isArchived) : this(name, description)
+    {
+      SetID = Guid.Empty;
+      FlashcardCollection = flashcardCollection;
+      NumTimesReviewed = numTimesReviewed;
+      WhenCreated = whenCreated;
+      WhenLastReviewedUTC = whenLastReviewedUTC;
+      IsArchived = isArchived;
+    }
+
+    [JsonConstructor]
+    public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool isArchived) : this(name, description)
+    {
+      SetID = setID;
+      FlashcardCollection = flashcardCollection;
+      NumTimesReviewed = numTimesReviewed;
+      WhenCreated = whenCreated;
+      WhenLastReviewedUTC = whenLastReviewedUTC;
+      IsArchived = isArchived;
     }
     #endregion
 
@@ -46,6 +71,16 @@ namespace StudySmarterFlashcards.Sets
     #endregion
 
     #region Public Methods
+    public CardSetModel Clone()
+    {
+      ObservableCollection<IndividualCardModel> clonedCards = new ObservableCollection<IndividualCardModel>();
+      foreach(IndividualCardModel originalCard in FlashcardCollection) {
+        clonedCards.Add(originalCard.Clone());
+      }
+      return new CardSetModel(this.Name, this.Description, clonedCards, this.NumTimesReviewed, this.WhenCreated,
+                              this.WhenLastReviewedUTC, this.IsArchived);
+    }
+
     public void AddCardToSet(string cardTerm = "", string cardDefinition = "")
     {
       FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));

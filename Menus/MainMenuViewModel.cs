@@ -80,38 +80,9 @@ namespace StudySmarterFlashcards.Menus
     private async Task ReceiveEditSetMessage(EditSetMessage editSetMessage)
     {
       CardSetModel cardSetModelEdited = editSetMessage.EditedSet;
-      CardSetModel cardSetModelToEdit = null;
-      foreach (CardSetModel cardSetModel in CardSets) {
-        if (cardSetModel.SetID.Equals(cardSetModelEdited.SetID)) {
-          cardSetModelToEdit = cardSetModel;
-        }
-      }
-
-      if (cardSetModelToEdit == null) {
-        CardSets.Add(editSetMessage.EditedSet);
-      } else {
-        cardSetModelToEdit.Name = cardSetModelEdited.Name;
-        cardSetModelToEdit.Description = cardSetModelEdited.Description;
-        cardSetModelToEdit.IsArchived = cardSetModelToEdit.IsArchived;
-
-        ObservableCollection<IndividualCardModel> flashcardsToEdit = cardSetModelToEdit.FlashcardCollection;
-
-        foreach (IndividualCardModel editedCard in cardSetModelEdited.FlashcardCollection) {
-          for (int i = 0; i < flashcardsToEdit.Count; i++) {
-            IndividualCardModel originalCard = flashcardsToEdit[i];
-            if (originalCard.CardID.Equals(editedCard.CardID)) {
-              if (originalCard.IsLearned != editedCard.IsLearned) {
-                cardSetModelToEdit.EditCardSwitchIsLearned(originalCard.CardID);
-              }
-              if (originalCard.IsArchived != editedCard.IsArchived) {
-                cardSetModelToEdit.EditCardSwitchIsArchived(originalCard.CardID);
-              }
-              if (originalCard.Term != editedCard.Term || originalCard.Definition != editedCard.Definition) {
-                cardSetModelToEdit.EditCardInSet(originalCard.CardID, editedCard.Term, editedCard.Definition);
-              }
-            }
-          }
-        }
+      
+      if (!CardSets.Contains(cardSetModelEdited)) {
+        CardSets.Add(cardSetModelEdited);
       }
 
       await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
