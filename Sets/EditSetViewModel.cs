@@ -126,10 +126,18 @@ namespace StudySmarterFlashcards.Sets
       OnPropertyChanged("SetColumnWidth");
     }
 
-    private void CancelAction()
+    private async void CancelAction()
     {
-      prNavigationService.GoBack();
-      TempFlashCardSet = null;
+      MessageDialog messageDialog = new MessageDialog("Are you sure you want to continue without saving?");
+      messageDialog.Commands.Add(new UICommand("Yes", null));
+      messageDialog.Commands.Add(new UICommand("No", null));
+      messageDialog.DefaultCommandIndex = 0;
+      messageDialog.CancelCommandIndex = 1;
+      IUICommand cmdResult = await messageDialog.ShowAsync();
+      if (cmdResult.Label == "Yes") {
+        prNavigationService.GoBack();
+        TempFlashCardSet = null;
+      } 
     }
 
     private void AddCardAction()
