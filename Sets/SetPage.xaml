@@ -96,7 +96,7 @@
                   <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Margin="15,15,15,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Grid.Row="1" Margin="15,15,15,15" Text="{Binding Description}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Row="1" Margin="15,15,15,15" Text="{Binding Definition}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
               </Grid>
             </Border>
           </DataTemplate>

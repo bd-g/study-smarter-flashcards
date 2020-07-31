@@ -103,9 +103,9 @@
         <GridView.ItemTemplate>
           <DataTemplate>
             <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}" Background="{ThemeResource SystemAltHighColor}"
-                    BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
-                    Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
-              <Grid Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
+                    BorderThickness="3" CornerRadius="15" Margin="10"
+                    Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
+              <Grid Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="1*"/>
                   <RowDefinition Height="1*"/>
@@ -116,19 +116,21 @@
                   <ColumnDefinition Width="1*"/>
                   <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.ColumnSpan="3" Text="{Binding Term, Mode=TwoWay}" FontWeight="Bold" TextWrapping="WrapWholeWords" FontSize="12"/>
-                <TextBox Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Definition, Mode=TwoWay}" FontSize="10" TextWrapping="WrapWholeWords"/>
-                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned" />
+                <TextBox Grid.ColumnSpan="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" AcceptsReturn="True"
+                         Text="{Binding Term, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,10,15,10"/>
+                <TextBox Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="3" TextWrapping="Wrap" FontSize="10" Margin="5,10,15,10" AcceptsReturn="True"
+                         Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned"  Margin="10"/>
                 <Button Grid.Row="2" Grid.Column="1" Command="{Binding ElementName=EditSetPageElement, Path=DataContext.ArchiveCardCommand}" 
-                        CommandParameter="{Binding}" ToolTipService.ToolTip="Archive Card">
+                        CommandParameter="{Binding}" ToolTipService.ToolTip="Archive Card" Margin="10">
                   <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE711;"/>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"/>
                   </Button.Content>
                 </Button>
                 <Button Grid.Row="2" Grid.Column="2" Command="{Binding ElementName=EditSetPageElement, Path=DataContext.DeleteCardCommand}" 
-                        CommandParameter="{Binding}" ToolTipService.ToolTip="Delete Card">
+                        CommandParameter="{Binding}" ToolTipService.ToolTip="Delete Card" Margin="10">
                   <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"/>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE711;"/>
                   </Button.Content>
                 </Button>
               </Grid>
@@ -140,37 +142,6 @@
             <controls:WrapPanel Orientation="Horizontal"/>
           </ItemsPanelTemplate>
         </GridView.ItemsPanel>
-      </GridView>
-    </Border>
-
-    <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
-      <GridView ItemsSource="{Binding TempFlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
-        <interact:Interaction.Behaviors>
-          <interactcore:EventTriggerBehavior EventName="SizeChanged" >
-            <interactcore:InvokeCommandAction Command="{Binding ResizeColumnWidthCommand}" />
-          </interactcore:EventTriggerBehavior>
-        </interact:Interaction.Behaviors>
-        <GridView.ItemTemplate>
-          <DataTemplate>
-            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15" Margin="10,10,10,10"
-                    Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
-              <StackPanel Margin="10,10,10,10" 
-                          Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
-                <TextBox Text="{Binding Term, Mode=TwoWay}" FontWeight="Bold" FontSize="12"/>
-                <TextBox Text="{Binding Definition, Mode=TwoWay}" FontSize="10" TextWrapping="Wrap" MaxHeight="250"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                <CheckBox IsChecked="{Binding IsLearned, Mode=TwoWay}" Content="Learned" />
-                <CheckBox IsChecked="{Binding IsArchived, Mode=TwoWay}" Content="Archived" />
-                <Button Command="{Binding ElementName=EditSetPageElement, Path=DataContext.DeleteCardCommand}" 
-                        CommandParameter="{Binding}" Margin="10,10,10,10">
-                  <Button.Content>
-                    <Image Source="/Assets/DeleteIcon.png" ToolTipService.ToolTip="Delete Set" Width="15"/>
-                  </Button.Content>
-                </Button>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </GridView.ItemTemplate>
       </GridView>
     </Border>
   </Grid>
