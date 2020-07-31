@@ -37,11 +37,19 @@
           <Setter Property="Margin" Value="0,0,0,20"/>
         </Style>
       </StackPanel.Resources>
-      <Button Command="{Binding AddSetCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
-        <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add New Set" Stretch="UniformToFill"/>
+      <Button Command="{Binding AddSetCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Add Set">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
+        </Viewbox>
       </Button>
-      <Button Command="{Binding GoToSettingsCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" BorderThickness="0" Background="Transparent">
-        <Image Source="/Assets/SettingsIcon.png" ToolTipService.ToolTip="Settings" Stretch="UniformToFill"/>
+      <Button Command="{Binding GoToSettingsCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Settings">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;"/>
+        </Viewbox>
       </Button>
     </StackPanel>
     

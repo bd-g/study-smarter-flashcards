@@ -25,14 +25,20 @@
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Home"/>
+    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
+      </Viewbox>
     </Button>
 
-    <Button Command="{Binding EditCommand}" CommandParameter="{Binding FlashCardSet}" Grid.Row="1" Grid.Column="5" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="7.5,15,7.5,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/EditIcon.png" ToolTipService.ToolTip="Edit"/>
+    <Button Command="{Binding EditCommand}" Grid.Row="1" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Top"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Edit">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;"/>
+      </Viewbox>
     </Button>
 
     <Button Content="Study"  Command="{Binding BasicStudyCommand}" Grid.Row="2" Grid.Column="3" 
@@ -43,9 +49,9 @@
         <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <ScrollViewer>
-        <TextBlock Text="{Binding FlashCardSet.Name}" TextWrapping="WrapWholeWords" FontSize="30" Margin="5,10,5,10" VerticalAlignment="Center"/>
-      </ScrollViewer>
+      <Viewbox>
+        <TextBlock Text="{Binding FlashCardSet.Name}" Margin="5,10,5,10" VerticalAlignment="Center"/>
+      </Viewbox>
       <ScrollViewer Grid.Column="1">
         <TextBlock Text="{Binding FlashCardSet.Description}" TextWrapping="WrapWholeWords" FontSize="15" VerticalAlignment="Center" Margin="5,10,5,10"/>
       </ScrollViewer>

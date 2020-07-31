@@ -31,9 +31,12 @@
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Settings" Stretch="Uniform"/>
+    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
+      </Viewbox>
     </Button>
 
     <Grid Grid.Row="0" Grid.Column="3">
@@ -55,19 +58,34 @@
                  Text="{Binding Path=TempDescriptionLength}" Foreground="{Binding TempDescriptionLengthColor}"/>
     </Grid>
 
-    <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <StackPanel Grid.Row="1" Grid.Column="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
       <StackPanel.Resources>
         <Style TargetType="Button">
-          <Setter Property="Margin" Value="0,10,0,10"/>
+          <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>
       </StackPanel.Resources>
-      <Button Command="{Binding SaveCommand}" Content="Save" HorizontalAlignment="Stretch"/>
-      <Button Command="{Binding CancelCommand}" Content="Cancel" HorizontalAlignment="Stretch"/>
+      <Button Command="{Binding SaveCommand}"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Save">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;"/>
+        </Viewbox>
+      </Button>
+      <Button Command="{Binding CancelCommand}"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Cancel">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE711;"/>
+        </Viewbox>
+      </Button>
     </StackPanel>
 
-    <Button Grid.Row="1" Grid.Column="5" Command="{Binding AddCardCommand}" Padding="0" BorderThickness="0" Margin="5,0,5,10"
-            Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-      <Image Source="/Assets/AddButtonIcon.png" ToolTipService.ToolTip="Add Card" Stretch="Uniform"/>
+    <Button Command="{Binding AddCardCommand}" Grid.Row="1" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Bottom"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Add Card">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
+      </Viewbox>
     </Button>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">

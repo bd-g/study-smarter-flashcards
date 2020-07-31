@@ -21,27 +21,31 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
-      <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="18*"/>
-      <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
 
-    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/HomeIcon.png" ToolTipService.ToolTip="Home"/>
+    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
+      </Viewbox>
     </Button>
-    <Button Command="{Binding BackCommand}" Grid.Row="0" Grid.Column="1" 
-              HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,15,0,0" Padding="0" BorderThickness="0" Background="Transparent">
-      <Image Source="/Assets/BackIcon.png" ToolTipService.ToolTip="Back"/>
+    <Button Command="{Binding BackCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Back">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
+      </Viewbox>
     </Button>
 
-    <Button Grid.Row="1" Grid.Column="3" Content="Previous" Command="{Binding GoToPreviousFlashcardCommand}"
+    <Button Grid.Row="1" Grid.Column="2" Content="Previous" Command="{Binding GoToPreviousFlashcardCommand}"
             Visibility="{Binding HasPreviousFlashcards,
       Converter={StaticResource boolToVisibilityConverter}}"/>
-    <Border Grid.Row="1" Grid.Column="4" BorderBrush="DimGray" BorderThickness="2" CornerRadius="25">
+    <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="2*"/>
@@ -53,9 +57,9 @@
         <CheckBox Grid.Row="2" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned}"/>
       </Grid>
     </Border>
-    <Button Grid.Row="1" Grid.Column="5" Content="Next" Command="{Binding GoToNextFlashcardCommand}"/>
+    <Button Grid.Row="1" Grid.Column="4" Content="Next" Command="{Binding GoToNextFlashcardCommand}"/>
 
-    <ProgressBar Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3"
+    <ProgressBar Grid.Row="2" Grid.Column="3"
                  Value="{Binding FlashCardSet.LearningProgress}" Maximum="100"/>
     <CheckBox Grid.Row="2" Grid.Column="5" Content="Shuffle Mode" IsChecked="{Binding IsShuffleMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
   </Grid>
