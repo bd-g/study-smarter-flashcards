@@ -26,6 +26,7 @@ namespace StudySmarterFlashcards.Sets
       CancelCommand = new RelayCommand(CancelAction);
       SaveCommand = new RelayCommand(SaveAction);
       AddCardCommand = new RelayCommand(AddCardAction);
+      ArchiveCardCommand = new RelayCommand<IndividualCardModel>(ArchiveCardFunction);
       DeleteCardCommand = new RelayCommand<IndividualCardModel>(DeleteCardFunction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
@@ -37,6 +38,7 @@ namespace StudySmarterFlashcards.Sets
     public RelayCommand CancelCommand { get; private set; }
     public RelayCommand SaveCommand { get; private set; }
     public RelayCommand AddCardCommand { get; private set; }
+    public RelayCommand<IndividualCardModel> ArchiveCardCommand { get; private set; }
     public RelayCommand<IndividualCardModel> DeleteCardCommand { get; private set; }
     public CardSetModel OriginalFlashCardSet { get; private set; } = new CardSetModel();
     public CardSetModel TempFlashCardSet { get; private set; } = new CardSetModel();
@@ -144,9 +146,14 @@ namespace StudySmarterFlashcards.Sets
     {
       TempFlashCardSet.AddCardToSet();
     }
-    private void DeleteCardFunction(IndividualCardModel cardToDelete)
+    private void ArchiveCardFunction(IndividualCardModel cardToArchive)
     {
-      TempFlashCardSet.RemoveCardFromSet(cardToDelete.CardID);
+      cardToArchive.IsArchived = !cardToArchive.IsArchived;
+    }
+
+    private void DeleteCardFunction(IndividualCardModel cardlToDelete)
+    {
+      TempFlashCardSet.RemoveCardFromSet(cardlToDelete);  
     }
     private async void SaveAction()
     {
@@ -164,15 +171,10 @@ namespace StudySmarterFlashcards.Sets
           if (indexOfOriginal > -1) {
             IndividualCardModel originalCard = OriginalFlashCardSet.FlashcardCollection[indexOfOriginal];
             if (originalCard.CardID.Equals(editedCard.CardID)) {
-              if (originalCard.IsLearned != editedCard.IsLearned) {
-                OriginalFlashCardSet.EditCardSwitchIsLearned(originalCard.CardID);
-              }
-              if (originalCard.IsArchived != editedCard.IsArchived) {
-                OriginalFlashCardSet.EditCardSwitchIsArchived(originalCard.CardID);
-              }
-              if (originalCard.Term != editedCard.Term || originalCard.Definition != editedCard.Definition) {
-                OriginalFlashCardSet.EditCardInSet(originalCard.CardID, editedCard.Term, editedCard.Definition);
-              }
+              originalCard.IsLearned = editedCard.IsLearned;
+              originalCard.IsArchived = editedCard.IsArchived;
+              originalCard.Term = editedCard.Term;
+              originalCard.Definition = editedCard.Definition;
             }
           } else {
             OriginalFlashCardSet.FlashcardCollection.Add(editedCard);

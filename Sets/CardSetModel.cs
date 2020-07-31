@@ -86,34 +86,9 @@ namespace StudySmarterFlashcards.Sets
       FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
     }
 
-    public void RemoveCardFromSet(Guid guidOfCardToRemove)
+    public void RemoveCardFromSet(IndividualCardModel cardToRemove)
     {
-      IndividualCardModel cardToRemove = FindCardInCollection(guidOfCardToRemove);
       FlashcardCollection.Remove(cardToRemove);
-    }
-
-    public void EditCardInSet(Guid guidofCardToEdit, string newTerm = "", string newDefinition = "")
-    {
-      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
-
-      if (!String.IsNullOrWhiteSpace(newTerm)) {
-        cardToEdit.Term = newTerm;
-      }
-      if (!String.IsNullOrWhiteSpace(newDefinition)) {
-        cardToEdit.Definition = newDefinition;
-      }
-    }
-
-    public void EditCardSwitchIsLearned(Guid guidofCardToEdit)
-    {
-      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
-      cardToEdit.IsLearned = !cardToEdit.IsLearned;
-    }
-
-    public void EditCardSwitchIsArchived(Guid guidofCardToEdit)
-    {
-      IndividualCardModel cardToEdit = FindCardInCollection(guidofCardToEdit);
-      cardToEdit.IsArchived = !cardToEdit.IsArchived;
     }
 
     public void IncrementNumTimesReviewed()
