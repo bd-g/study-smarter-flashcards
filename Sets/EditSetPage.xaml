@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:menus="using:StudySmarterFlashcards.Menus"
     xmlns:utils="using:StudySmarterFlashcards.Utils"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding EditSetInstance, Source={StaticResource Locator}}"
@@ -70,13 +72,17 @@
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
       <GridView ItemsSource="{Binding TempFlashCardSet.FlashcardCollection}" Grid.Row="1" Grid.Column="3" IsItemClickEnabled="False">
+        <interact:Interaction.Behaviors>
+          <interactcore:EventTriggerBehavior EventName="SizeChanged" >
+            <interactcore:InvokeCommandAction Command="{Binding ResizeColumnWidthCommand}" />
+          </interactcore:EventTriggerBehavior>
+        </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
           <DataTemplate>
-            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15"
-                    Margin="20,20,20,20" MaxWidth="400" MaxHeight="400"
-                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-              <StackPanel Margin="10,10,10,10" MaxWidth="400" MaxHeight="400"
-                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15" Margin="10,10,10,10"
+                    Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
+              <StackPanel Margin="10,10,10,10" 
+                          Width="{Binding ElementName=EditSetPageElement, Path=DataContext.SetColumnWidth}">
                 <TextBox Text="{Binding Term, Mode=TwoWay}" FontWeight="Bold" FontSize="12"/>
                 <TextBox Text="{Binding Definition, Mode=TwoWay}" FontSize="10" TextWrapping="Wrap" MaxHeight="250"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>

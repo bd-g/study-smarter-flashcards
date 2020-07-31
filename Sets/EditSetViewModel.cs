@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -26,6 +27,7 @@ namespace StudySmarterFlashcards.Sets
       SaveCommand = new RelayCommand(SaveAction);
       AddCardCommand = new RelayCommand(AddCardAction);
       DeleteCardCommand = new RelayCommand<IndividualCardModel>(DeleteCardFunction);
+      ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
     #endregion
 
@@ -86,6 +88,8 @@ namespace StudySmarterFlashcards.Sets
         return TempFlashCardSet.Description.Length <= 150 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
       }
     }
+    public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
+    public int SetColumnWidth { get; private set; } = 100;
     #endregion
 
     #region Private Methods
@@ -108,6 +112,18 @@ namespace StudySmarterFlashcards.Sets
       OnPropertyChanged("OriginalFlashCardSet");
       OnPropertyChanged("TempFlashCardSet");
       OnPropertyChanged("IsCreatingNewSet");
+    }
+
+    private void ResizeColumnWidthFunction(SizeChangedEventArgs args)
+    {
+      if (args.NewSize.Width - 75 > 800) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 75) / 3));
+      } else if (args.NewSize.Width - 50 > 400) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 50) / 2));
+      } else {
+        SetColumnWidth = (int)Math.Floor(args.NewSize.Width - 25);
+      }
+      OnPropertyChanged("SetColumnWidth");
     }
 
     private void CancelAction()

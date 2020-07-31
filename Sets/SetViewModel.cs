@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace StudySmarterFlashcards.Sets
@@ -21,6 +22,7 @@ namespace StudySmarterFlashcards.Sets
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
       BasicStudyCommand = new RelayCommand(BasicStudyAction);
+      ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
     #endregion
 
@@ -29,6 +31,8 @@ namespace StudySmarterFlashcards.Sets
     public RelayCommand EditCommand { get; private set; }
     public RelayCommand BasicStudyCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; } = new CardSetModel();
+    public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
+    public int SetColumnWidth { get; private set; } = 100;
     #endregion
 
     #region Private Methods
@@ -46,6 +50,17 @@ namespace StudySmarterFlashcards.Sets
         Messenger.Default.Send(FlashCardSet, "AddSet");
       }
       OnPropertyChanged("FlashCardSet");
+    }
+    private void ResizeColumnWidthFunction(SizeChangedEventArgs args)
+    {
+      if (args.NewSize.Width - 75 > 800) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 75) / 3));
+      } else if (args.NewSize.Width - 50 > 400) {
+        SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 50) / 2));
+      } else {
+        SetColumnWidth = (int)Math.Floor(args.NewSize.Width - 25);
+      }
+      OnPropertyChanged("SetColumnWidth");
     }
 
     private void EditAction()
