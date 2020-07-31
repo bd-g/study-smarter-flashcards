@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -97,11 +98,18 @@ namespace StudySmarterFlashcards.Menus
 
     private async void DeleteSetAction(CardSetModel cardSetModelToDelete)
     {
-      if (CardSets.Remove(cardSetModelToDelete)) {
-        await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
-      }
+      MessageDialog messageDialog = new MessageDialog("Are you sure you want to permanently delete this set?");
+      messageDialog.Commands.Add(new UICommand("Yes", null));
+      messageDialog.Commands.Add(new UICommand("No", null));
+      messageDialog.DefaultCommandIndex = 0;
+      messageDialog.CancelCommandIndex = 1;
+      IUICommand cmdResult = await messageDialog.ShowAsync();
+      if (cmdResult.Label == "Yes") {
+        if (CardSets.Remove(cardSetModelToDelete)) {
+          await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+        }
+      }       
     }
-
 
     private async Task ReceiveEditSetMessage(CardSetModel editedSet)
     {

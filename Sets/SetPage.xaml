@@ -5,14 +5,17 @@
     xmlns:interact="using:Microsoft.Xaml.Interactivity"
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding SetInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="1*"/>
       <RowDefinition Height="5*"/>
+      <RowDefinition Height="25*"/>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="3*"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
@@ -41,8 +44,22 @@
       </Viewbox>
     </Button>
 
-    <Button Content="Study"  Command="{Binding BasicStudyCommand}" Grid.Row="2" Grid.Column="3" 
-            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Viewbox  Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Button Command="{Binding BasicStudyCommand}" BorderThickness="0" Background="Transparent" >
+       <Button.Content>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1" Text="Study"/>
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
+          </Grid>
+        </Button.Content>
+      </Button>
+    </Viewbox>
 
     <Grid Grid.Row="0" Grid.Column="3">
       <Grid.ColumnDefinitions>
@@ -56,30 +73,41 @@
         <TextBlock Text="{Binding FlashCardSet.Description}" TextWrapping="WrapWholeWords" FontSize="15" VerticalAlignment="Center" Margin="5,10,5,10"/>
       </ScrollViewer>
     </Grid>
-    
-    <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
-      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" IsItemClickEnabled="False" Grid.Row="1" Grid.Column="3">
+
+    <Border Grid.Row="1" Grid.Column="3" BorderBrush="{ThemeResource SystemAccentColor}"
+            BorderThickness="3" CornerRadius="25">
+      <Border.Background>
+        <SolidColorBrush Color="{ThemeResource SystemAccentColor}" Opacity=".2"/>
+      </Border.Background>
+      <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" CornerRadius="25" IsItemClickEnabled="False" Grid.Row="1" Grid.Column="3">
         <interact:Interaction.Behaviors>
-          <interactcore:EventTriggerBehavior EventName="SizeChanged">
+          <interactcore:EventTriggerBehavior EventName="SizeChanged" >
             <interactcore:InvokeCommandAction Command="{Binding ResizeColumnWidthCommand}" />
           </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
           <DataTemplate>
-            <Border BorderBrush="DimGray" BorderThickness="1" CornerRadius="15" Margin="10,10,10,10"
+            <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}" Background="{ThemeResource SystemAltHighColor}"
+                    BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
                     Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
-              <StackPanel Margin="10,10,10,10" 
-                          Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
-                <TextBlock Text="{Binding Term}" FontWeight="Bold" FontSize="12"/>
-                <TextBlock Text="{Binding Definition}" FontSize="10"  TextWrapping="Wrap" MaxHeight="250"
-                           ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                <CheckBox IsChecked="{Binding IsLearned}" Content="Learned" />
-                <CheckBox IsChecked="{Binding IsArchived}" Content="Archived" />
-              </StackPanel>
+              <Grid Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="2*"/>
+                  <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Margin="15,15,15,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Row="1" Margin="15,15,15,15" Text="{Binding Description}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+              </Grid>
             </Border>
           </DataTemplate>
         </GridView.ItemTemplate>
+        <GridView.ItemsPanel>
+          <ItemsPanelTemplate>
+            <controls:WrapPanel Orientation="Horizontal"/>
+          </ItemsPanelTemplate>
+        </GridView.ItemsPanel>
       </GridView>
     </Border>
+
   </Grid>
 </Page>
