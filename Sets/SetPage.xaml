@@ -6,10 +6,16 @@
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:utils="using:StudySmarterFlashcards.Utils"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding SetInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Page.Resources>
+    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
+    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="Last Reviewed: {0:dd MMMM yyyy h:mm tt}" ConvertToLocalTime="True"/>
+    <utils:StringFormatConverter x:Key="DateStringNoTimeConverter" StringFormat="Created: {0:dd MMMM yyyy}" ConvertToLocalTime="False"/>
+  </Page.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="5*"/>
@@ -77,7 +83,7 @@
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="{ThemeResource SystemAccentColor}"
             BorderThickness="3" CornerRadius="25">
       <Border.Background>
-        <SolidColorBrush Color="{ThemeResource SystemAccentColor}" Opacity=".2"/>
+        <SolidColorBrush Color="{ThemeResource SystemAccentColor}" Opacity=".1"/>
       </Border.Background>
       <GridView ItemsSource="{Binding FlashCardSet.FlashcardCollection}" CornerRadius="25" IsItemClickEnabled="False" Grid.Row="1" Grid.Column="3">
         <interact:Interaction.Behaviors>
@@ -87,7 +93,8 @@
         </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
           <DataTemplate>
-            <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}" Background="{ThemeResource SystemAltHighColor}"
+            <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}"
+                    Background="{Binding IsArchived, Converter={StaticResource boolToBackgroundConverter}}"
                     BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
                     Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
               <Grid Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
