@@ -81,9 +81,13 @@ namespace StudySmarterFlashcards.Sets
                               this.WhenLastReviewedUTC, this.IsArchived);
     }
 
-    public void AddCardToSet(string cardTerm = "", string cardDefinition = "")
+    public void AddCardToSet(string cardTerm = "", string cardDefinition = "", int indexToAddAt = -1)
     {
-      FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
+      if (indexToAddAt >= 0 && indexToAddAt <= FlashcardCollection.Count) {
+        FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition));
+      } else {
+        FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
+      }
     }
 
     public void RemoveCardFromSet(IndividualCardModel cardToRemove)

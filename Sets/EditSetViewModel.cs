@@ -144,11 +144,29 @@ namespace StudySmarterFlashcards.Sets
 
     private void AddCardAction()
     {
-      TempFlashCardSet.AddCardToSet();
+      int indexOfFirstArchivedCard = -1;
+      for (int i = 0; i < TempFlashCardSet.FlashcardCollection.Count; i++) {
+        if (TempFlashCardSet.FlashcardCollection[i].IsArchived) {
+          indexOfFirstArchivedCard = i;
+          break;
+        }
+      }
+      TempFlashCardSet.AddCardToSet(indexToAddAt:indexOfFirstArchivedCard);
     }
     private void ArchiveCardFunction(IndividualCardModel cardToArchive)
     {
-      cardToArchive.IsArchived = !cardToArchive.IsArchived;
+      if (cardToArchive.IsArchived) {
+        for (int i = 0; i < TempFlashCardSet.FlashcardCollection.Count; i++) {
+          if (TempFlashCardSet.FlashcardCollection[i].IsArchived) {
+            TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToArchive), i);
+            break;
+          }
+        }
+        cardToArchive.IsArchived = false;
+      } else {
+        TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToArchive), TempFlashCardSet.FlashcardCollection.Count - 1);
+        cardToArchive.IsArchived = true;
+      }      
     }
 
     private void DeleteCardFunction(IndividualCardModel cardlToDelete)
