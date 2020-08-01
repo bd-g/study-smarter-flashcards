@@ -77,6 +77,7 @@ namespace StudySmarterFlashcards.Sets
       }
       prNavigationService.NavigateTo("BasicStudyPage");
       Messenger.Default.Send(FlashCardSet, "StudyView");
+      FlashCardSet.RegisterNewReviewSession();
     }
     #endregion
   }
