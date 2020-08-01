@@ -16,7 +16,6 @@ namespace StudySmarterFlashcards.Sets
     protected static readonly NLog.Logger prNLogLogger = NLog.LogManager.GetCurrentClassLogger();
     #endregion
 
-
     #region Constructors
     public CardSetModel(string name = "New Flashcard Set", string description = "New Description")
     {
@@ -95,13 +94,9 @@ namespace StudySmarterFlashcards.Sets
       FlashcardCollection.Remove(cardToRemove);
     }
 
-    public void IncrementNumTimesReviewed()
+    public void RegisterNewReviewSession()
     {
       NumTimesReviewed++;
-    }
-
-    public void UpdatedLastReviewedTime()
-    {
       WhenLastReviewedUTC = DateTime.UtcNow;
     }
 
