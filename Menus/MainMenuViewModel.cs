@@ -23,7 +23,7 @@ namespace StudySmarterFlashcards.Menus
       Messenger.Default.Register<CardSetModel>(this, "EditSet", async editedCardSet => await ReceiveEditSetMessage(editedCardSet));
       AddSetCommand = new RelayCommand(AddSetAction);
       EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
-      ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetAction);
+      ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetFunction);
       DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
       GoToSetCommand = new RelayCommand<ItemClickEventArgs>(GoToSetAction);
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
@@ -87,11 +87,21 @@ namespace StudySmarterFlashcards.Menus
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send(cardSetModelToEdit, "EditSetView");
     }
-
-
-    private async void ArchiveSetAction(CardSetModel cardSetModelToArchive)
+    
+    private async void ArchiveSetFunction(CardSetModel cardSetModelToArchive)
     {
-      cardSetModelToArchive.IsArchived = !cardSetModelToArchive.IsArchived;
+      if (cardSetModelToArchive.IsArchived) {
+        for (int i = 0; i < CardSets.Count; i++) {
+          if (CardSets[i].IsArchived) {
+            CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), i);
+            break;
+          }
+        }
+        cardSetModelToArchive.IsArchived = false;
+      } else {
+        CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), CardSets.Count - 1);
+        cardSetModelToArchive.IsArchived = true;
+      }
       await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }
 
