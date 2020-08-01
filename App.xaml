@@ -5,6 +5,11 @@
     xmlns:local="using:StudySmarterFlashcards"
     xmlns:utils="using:StudySmarterFlashcards.Utils">
   <Application.Resources>
-    <utils:ViewModelLocator x:Key="Locator" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+      </ResourceDictionary.MergedDictionaries>
+      <utils:ViewModelLocator x:Key="Locator" />
+    </ResourceDictionary>
   </Application.Resources>
 </Application>

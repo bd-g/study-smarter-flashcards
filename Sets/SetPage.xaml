@@ -13,8 +13,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
-    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="Last Reviewed: {0:dd MMMM yyyy h:mm tt}" ConvertToLocalTime="True"/>
-    <utils:StringFormatConverter x:Key="DateStringNoTimeConverter" StringFormat="Created: {0:dd MMMM yyyy}" ConvertToLocalTime="False"/>
+    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
+    <utils:StringFormatConverter x:Key="DateStringNoTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy\}" Title="Created" ConvertToLocalTime="False"/>
+    <utils:StringFormatConverter x:Key="NumTimesReviewdConverter" StringFormat="\{0\}: \{1\}" Title="Number of Times Reviewed"/>
   </Page.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -40,6 +41,23 @@
       <Viewbox>
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
       </Viewbox>
+    </Button>
+
+
+    <Button Grid.Row="0" Grid.Column="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="More Details">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;"/>
+      </Viewbox>
+      <Button.Flyout>
+        <Flyout>
+          <StackPanel Orientation="Vertical">
+            <TextBlock Text="{Binding FlashCardSet.WhenCreated, Converter={StaticResource DateStringNoTimeConverter}}"/>
+            <TextBlock Text="{Binding FlashCardSet.WhenLastReviewedUTC, Converter={StaticResource DateStringWithTimeConverter}}"/>
+            <TextBlock Text="{Binding FlashCardSet.NumTimesReviewed, Converter={StaticResource NumTimesReviewdConverter}}"/>
+          </StackPanel>
+        </Flyout>
+      </Button.Flyout>
     </Button>
 
     <Button Command="{Binding EditCommand}" Grid.Row="1" Grid.Column="5"

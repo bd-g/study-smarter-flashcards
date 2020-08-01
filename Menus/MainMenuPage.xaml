@@ -14,7 +14,7 @@
   <Page.Resources>
     <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
-    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="Last Reviewed: {0:dd MMMM yyyy h:mm tt}" ConvertToLocalTime="True"/>
+    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
   </Page.Resources>
   
   <Grid>

@@ -10,20 +10,28 @@ namespace StudySmarterFlashcards.Utils
   public class StringFormatConverter : IValueConverter
   {
     public string StringFormat { get; set; }
+    public string StringFormatNormalized
+    {
+      get
+      {
+        return StringFormat.Replace("\\", "");
+      }
+    }
     public bool ConvertToLocalTime { get; set; }
+    public string Title { get; set; }
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
 
       if (!String.IsNullOrEmpty(StringFormat)) {
         if (value is DateTime && ((DateTime)value).Equals(DateTime.MinValue)) {
-          return String.Format(StringFormat, "Never");
+          return String.Format(StringFormatNormalized, Title, "Never");
         } else {
           if (ConvertToLocalTime) {
             DateTime localDateTime = ((DateTime)value).ToLocalTime();
-            return String.Format(StringFormat, localDateTime);
+            return String.Format(StringFormatNormalized, Title, localDateTime);
           }
-          return String.Format(StringFormat, value);
+          return String.Format(StringFormatNormalized, Title, value);
         }
       }
       return value;
