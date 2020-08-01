@@ -14,6 +14,7 @@
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
   </Page.Resources>
   
   <Grid>
@@ -58,7 +59,7 @@
     <Border Grid.Row="1" Grid.Column="1" BorderBrush="{ThemeResource SystemAccentColor}"
             BorderThickness="3" CornerRadius="25">
       <Border.Background>
-        <SolidColorBrush Color="{ThemeResource SystemAccentColor}" Opacity=".2"/>
+        <SolidColorBrush Color="{ThemeResource SystemAccentColor}" Opacity=".1"/>
       </Border.Background>
       <GridView ItemsSource="{Binding CardSets}" CornerRadius="25" IsItemClickEnabled="True" Grid.Row="1" Grid.Column="1">
         <interact:Interaction.Behaviors>
@@ -71,7 +72,8 @@
         </interact:Interaction.Behaviors>
         <GridView.ItemTemplate>
           <DataTemplate>
-            <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}" Background="{ThemeResource SystemAltHighColor}"
+            <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}"
+                    Background="{Binding IsArchived, Converter={StaticResource boolToBackgroundConverter}}"
                     BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
                     Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">
             <Grid Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">
