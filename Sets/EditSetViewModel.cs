@@ -95,9 +95,22 @@ namespace StudySmarterFlashcards.Sets
     #endregion
 
     #region Private Methods
-    private void NavigateHomeAction()
+    private async void NavigateHomeAction()
     {
-      prNavigationService.NavigateTo("MainMenuPage");
+      MessageDialog messageDialog = new MessageDialog("Would you like to save before exiting?");
+      messageDialog.Commands.Add(new UICommand("Yes", null));
+      messageDialog.Commands.Add(new UICommand("No", null));
+      messageDialog.Commands.Add(new UICommand("Cancel", null));
+      messageDialog.DefaultCommandIndex = 0;
+      messageDialog.CancelCommandIndex = 2;
+      IUICommand cmdResult = await messageDialog.ShowAsync();
+      if (cmdResult.Label == "Yes") {
+        SaveAction();
+        prNavigationService.NavigateTo("MainMenuPage");
+      } else if (cmdResult.Label == "No") {
+        prNavigationService.NavigateTo("MainMenuPage");
+        TempFlashCardSet = null;
+      }
     }
 
     private void InitializeSetPage(CardSetModel cardSetModel)
@@ -130,7 +143,7 @@ namespace StudySmarterFlashcards.Sets
 
     private async void CancelAction()
     {
-      MessageDialog messageDialog = new MessageDialog("Are you sure you want to continue without saving?");
+      MessageDialog messageDialog = new MessageDialog("Are you sure you want to exit without saving?");
       messageDialog.Commands.Add(new UICommand("Yes", null));
       messageDialog.Commands.Add(new UICommand("No", null));
       messageDialog.DefaultCommandIndex = 0;
