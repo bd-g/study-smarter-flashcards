@@ -14,14 +14,17 @@ namespace StudySmarterFlashcards.Utils
 {
   public class BooleanToBackgroundConverter : IValueConverter
   {
+    public bool AccentColor { get; set; }
     public object Convert(object value, Type targetType, object parameter, string language)
     {
       if ((bool)value) {
         {
-          return new SolidColorBrush((Color)Application.Current.Resources["SystemBaseMediumLowColor"]);
+          return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColorLight1"])
+                             : new SolidColorBrush((Color)Application.Current.Resources["SystemBaseMediumLowColor"]);
         }
       }
-      return new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"]);
+      return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"])
+                         : new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"]);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -16,8 +16,8 @@ namespace StudySmarterFlashcards.Study
   {
     #region Fields
     private static readonly Random prRandom = new Random();
-    private bool prIsShuffleMode = true;
     #endregion
+
     #region Constructors
     public BasicStudyViewModel(INavigationService navigationService) : base(navigationService)
     {
@@ -26,6 +26,8 @@ namespace StudySmarterFlashcards.Study
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
       GoToPreviousFlashcardCommand = new RelayCommand(GoToPreviousFlashcard);
+      FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
+      SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
     }
     #endregion
 
@@ -34,8 +36,19 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand BackCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
     public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
+    public RelayCommand FlipFlashcardCommand { get; private set; }
+    public RelayCommand SwitchShuffleModeCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
+    public bool IsShowingTerm { get; private set; } = true;
+    public string CurrentSideShowing
+    {
+      get
+      {
+        return IsShowingTerm ? CurrentFlashcard.Term : CurrentFlashcard.Definition;
+      }
+    }
+
     public IndividualCardModel CurrentFlashcard {
       get {
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
@@ -48,18 +61,7 @@ namespace StudySmarterFlashcards.Study
         return PreviousFlashcardIndexes.Count > 0;
       } 
     }
-    public bool IsShuffleMode
-    {
-      get
-      {
-        return prIsShuffleMode;
-      }
-      set
-      {
-        prIsShuffleMode = value;
-        OnPropertyChanged();
-      }
-    }
+    public bool IsShuffleMode { get; set; } = true;
     #endregion
 
     #region Private Methods
@@ -96,6 +98,7 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
+      OnPropertyChanged("CurrentSideShowing");
     }
 
     private void GoToNextFlashcard()
@@ -107,10 +110,25 @@ namespace StudySmarterFlashcards.Study
       } else {
         CurrentFlashcardIndex = (currentIndex + 1) % FlashCardSet.FlashcardCollection.Count;
       }
+      IsShowingTerm = true;
       PreviousFlashcardIndexes.Push(currentIndex);
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
+      OnPropertyChanged("CurrentSideShowing");
+    }
+
+    private void FlipFlashcardAction()
+    {
+      IsShowingTerm = !IsShowingTerm;
+      OnPropertyChanged("IsShowingTerm");
+      OnPropertyChanged("CurrentSideShowing");
+    }
+
+    private void SwitchShuffleModeAction()
+    {
+      IsShuffleMode = !IsShuffleMode;
+      OnPropertyChanged("IsShuffleMode");
     }
     #endregion
   }

@@ -10,6 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -42,25 +43,49 @@
       </Viewbox>
     </Button>
 
-    <Button Grid.Row="1" Grid.Column="2" Content="Previous" Command="{Binding GoToPreviousFlashcardCommand}"
-            Visibility="{Binding HasPreviousFlashcards,
-      Converter={StaticResource boolToVisibilityConverter}}"/>
+    <Button Command="{Binding GoToPreviousFlashcardCommand}" Grid.Row="1" Grid.Column="2"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Previous Flashcard"
+            Visibility="{Binding HasPreviousFlashcards, Converter={StaticResource boolToVisibilityConverter}}">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE973;"/>
+      </Viewbox>
+    </Button>
+
+    <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="4"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE974;"/>
+      </Viewbox>
+    </Button>
+
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
       <Grid>
         <Grid.RowDefinitions>
-          <RowDefinition Height="2*"/>
-          <RowDefinition Height="3*"/>
+          <RowDefinition Height="5*"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding CurrentFlashcard.Term}"/>
-        <TextBlock Grid.Row="1" Text="{Binding CurrentFlashcard.Definition}"/>
-        <CheckBox Grid.Row="2" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned}"/>
+        <Button Command="{Binding FlipFlashcardCommand}" Grid.Row="0"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="20"
+            Padding="0" BorderThickness="0" Background="Transparent">
+          <Viewbox>
+            <TextBlock Text="{Binding CurrentSideShowing}"/>
+          </Viewbox>
+        </Button>
+        <CheckBox Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                  Margin="5" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned}"/>
       </Grid>
     </Border>
-    <Button Grid.Row="1" Grid.Column="4" Content="Next" Command="{Binding GoToNextFlashcardCommand}"/>
 
-    <ProgressBar Grid.Row="2" Grid.Column="3"
-                 Value="{Binding FlashCardSet.LearningProgress}" Maximum="100"/>
-    <CheckBox Grid.Row="2" Grid.Column="5" Content="Shuffle Mode" IsChecked="{Binding IsShuffleMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button Command="{Binding SwitchShuffleModeCommand}" Grid.Row="2" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" ToolTipService.ToolTip="Shuffle On/Off"
+            Background="{Binding IsShuffleMode, Converter={StaticResource boolToBackgroundConverter}}">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8B1;"/>
+      </Viewbox>
+    </Button>
   </Grid>
 </Page>
