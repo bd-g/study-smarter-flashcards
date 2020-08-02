@@ -80,7 +80,7 @@ namespace StudySmarterFlashcards.Sets
                               this.WhenLastReviewedUTC, this.IsArchived);
     }
 
-    public void AddCardToSet(string cardTerm = "", string cardDefinition = "", int indexToAddAt = -1)
+    public void AddCardToSet(string cardTerm = "New Term", string cardDefinition = "New Definition", int indexToAddAt = -1)
     {
       if (indexToAddAt >= 0 && indexToAddAt <= FlashcardCollection.Count) {
         FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition));
