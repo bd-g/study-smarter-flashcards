@@ -75,7 +75,7 @@
           </Viewbox>
         </Button>
         <CheckBox Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                  Margin="5" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned}"/>
+                  Margin="5" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
       </Grid>
     </Border>
 
