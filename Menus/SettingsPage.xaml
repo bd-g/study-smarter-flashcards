@@ -15,12 +15,16 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
-      <RowDefinition Height="5*"/>
+      <RowDefinition Height="3*"/>
+      <RowDefinition Height="2*"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="3*"/>
-      <ColumnDefinition Width="18*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="9*"/>
+      <ColumnDefinition Width="9*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
@@ -34,8 +38,13 @@
       </Viewbox>
     </Button>
 
-    <Button x:Name="feedbackButton" FontFamily="Segoe MDL2 Assets" Content="&#xE939;" 
-            Grid.Row="1" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
+    <TextBlock Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
+
+    <TextBlock Grid.Row="2" Grid.Column="3" Text="Feedback" FontSize="16" Margin="0,0,5,0"
+               HorizontalAlignment="Right" VerticalAlignment="Top"/>
+    <Button x:Name="feedbackButton" FontFamily="Segoe MDL2 Assets" FontSize="16" Content="&#xE939;" Margin="5,0,0,0"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            Grid.Row="2" Grid.Column="4" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,
             Converter={StaticResource boolToVisibilityConverter}}"  />
   </Grid>
