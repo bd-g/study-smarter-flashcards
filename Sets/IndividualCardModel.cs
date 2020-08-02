@@ -8,7 +8,7 @@ namespace StudySmarterFlashcards.Sets
   public class IndividualCardModel
   {
     #region Constructors
-    public IndividualCardModel(string term = "", string definition = "")
+    public IndividualCardModel(string term = "New Term", string definition = "New Definition")
     {
       Term = term;
       Definition = definition;
