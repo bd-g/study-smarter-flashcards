@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utils="using:StudySmarterFlashcards.Utils"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
@@ -12,6 +14,11 @@
     <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
+  <interact:Interaction.Behaviors>
+    <interactcore:EventTriggerBehavior EventName="KeyDown" >
+      <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
+    </interactcore:EventTriggerBehavior>
+  </interact:Interaction.Behaviors>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
@@ -54,7 +61,7 @@
 
     <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="4"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
-            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard" AccessKey="Ri">
       <Viewbox>
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE974;"/>
       </Viewbox>

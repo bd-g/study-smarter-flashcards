@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Text.Core;
+using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
 {
@@ -28,6 +29,7 @@ namespace StudySmarterFlashcards.Study
       GoToPreviousFlashcardCommand = new RelayCommand(GoToPreviousFlashcard);
       FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
       SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
+      KeyDownCommand = new RelayCommand<KeyRoutedEventArgs>(KeyDownFunction);
     }
     #endregion
 
@@ -38,6 +40,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
     public RelayCommand FlipFlashcardCommand { get; private set; }
     public RelayCommand SwitchShuffleModeCommand { get; private set; }
+    public RelayCommand<KeyRoutedEventArgs> KeyDownCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
     public bool IsShowingTerm { get; private set; } = true;
@@ -116,6 +119,22 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
       OnPropertyChanged("CurrentSideShowing");
+    }
+
+    private void KeyDownFunction(KeyRoutedEventArgs args)
+    {
+      switch(args.Key) {
+        case Windows.System.VirtualKey.Right:
+          GoToNextFlashcard();
+          break;
+        case Windows.System.VirtualKey.Left:
+          GoToPreviousFlashcard();
+          break;
+        case Windows.System.VirtualKey.Up:
+        case Windows.System.VirtualKey.Down:
+          FlipFlashcardAction();
+          break;
+      }
     }
 
     private void FlipFlashcardAction()
