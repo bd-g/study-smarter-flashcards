@@ -134,6 +134,12 @@ namespace StudySmarterFlashcards.Study
         case Windows.System.VirtualKey.Down:
           FlipFlashcardAction();
           break;
+        case Windows.System.VirtualKey.S:
+          SwitchShuffleModeAction();
+          break;
+        case Windows.System.VirtualKey.L:
+          SwitchCardIsLearned();
+          break;
       }
     }
 
@@ -148,6 +154,12 @@ namespace StudySmarterFlashcards.Study
     {
       IsShuffleMode = !IsShuffleMode;
       OnPropertyChanged("IsShuffleMode");
+    }
+
+    private void SwitchCardIsLearned()
+    {
+      CurrentFlashcard.IsLearned = !CurrentFlashcard.IsLearned;
+      OnPropertyChanged("CurrentFlashcard");
     }
     #endregion
   }
