@@ -64,6 +64,14 @@
           <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>
       </StackPanel.Resources>
+      <Button Command="{Binding AddCardCommand}"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Add Card">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
+        </Viewbox>
+      </Button>
+      <Rectangle Fill="{StaticResource SystemBaseMediumLowColor}" Height="3" Margin="0,10,0,20"/>
       <Button Command="{Binding SaveCommand}"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Save">
@@ -79,14 +87,6 @@
         </Viewbox>
       </Button>
     </StackPanel>
-
-    <Button Command="{Binding AddCardCommand}" Grid.Row="1" Grid.Column="5"
-            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Bottom"
-            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Add Card">
-      <Viewbox>
-        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
-      </Viewbox>
-    </Button>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="{ThemeResource SystemAccentColor}"
             BorderThickness="3" CornerRadius="25">
