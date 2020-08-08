@@ -91,24 +91,17 @@
                         FontSize="10" Text="{Binding WhenLastReviewedUTC, Converter={StaticResource DateStringWithTimeConverter}}"/>
               <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,30,15,15" HorizontalAlignment="Right" Height="25">
                 <Button Command="{Binding ElementName=MainMenuPageElement, Path=DataContext.EditSetCommand}" CommandParameter="{Binding}"
-                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,0,0,0"
-                        Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Edit Set">
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,0,0,0"
+                      Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Edit Set">
                   <Viewbox>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;"/>
-                  </Viewbox>
-                </Button>
-                <Button Command="{Binding ElementName=MainMenuPageElement, Path=DataContext.ArchiveSetCommand}" CommandParameter="{Binding}"
-                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,0,0,0"
-                      Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Archive Set">
-                  <Viewbox>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"/>
                   </Viewbox>
                 </Button>
                 <Button Command="{Binding ElementName=MainMenuPageElement, Path=DataContext.DeleteSetCommand}" CommandParameter="{Binding}"
                       HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,0,0,0"
                       Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Delete Set">
                   <Viewbox>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE711;"/>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"/>
                   </Viewbox>
                 </Button>
               </StackPanel>
