@@ -13,6 +13,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
+    <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
     <utils:StringFormatConverter x:Key="DateStringNoTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy\}" Title="Created" ConvertToLocalTime="False"/>
     <utils:StringFormatConverter x:Key="NumTimesReviewdConverter" StringFormat="\{0\}: \{1\}" Title="Number of Times Reviewed"/>
@@ -112,7 +113,7 @@
         <GridView.ItemTemplate>
           <DataTemplate>
             <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}"
-                    Background="{Binding IsArchived, Converter={StaticResource boolToBackgroundConverter}}"
+                    Background="{Binding IsStarred, Converter={StaticResource boolToBackgroundConverter}}"
                     BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
                     Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
               <Grid Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
@@ -120,8 +121,14 @@
                   <RowDefinition Height="2*"/>
                   <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Margin="15,15,15,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Grid.Row="1" Margin="15,15,15,15" Text="{Binding Definition}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="4*"/>
+                  <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Margin="15,15,5,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="1" Margin="0,15,15,0" FontFamily="Segoe MDL2 Assets" Text="&#xE735;" HorizontalAlignment="Right"
+                           Visibility="{Binding IsStarred, Converter={StaticResource boolToVisibilityConverter}}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="15,15,15,15" Text="{Binding Definition}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
               </Grid>
             </Border>
           </DataTemplate>

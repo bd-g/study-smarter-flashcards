@@ -145,6 +145,7 @@
     <Compile Include="Utils\AsyncCommand.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\BooleanToBackgroundConverter.cs" />
+    <Compile Include="Utils\BooleanToStarFillConverter.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />

@@ -73,7 +73,7 @@
         <GridView.ItemTemplate>
           <DataTemplate>
             <Border BorderBrush="{ThemeResource SystemBaseMediumLowColor}"
-                    Background="{Binding IsArchived, Converter={StaticResource boolToBackgroundConverter}}"
+                    Background="{Binding IsStarred, Converter={StaticResource boolToBackgroundConverter}}"
                     BorderThickness="3" CornerRadius="15" Margin="10,10,10,10"
                     Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">
             <Grid Width="{Binding ElementName=MainMenuPageElement, Path=DataContext.SetColumnWidth}">

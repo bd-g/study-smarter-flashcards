@@ -90,17 +90,17 @@ namespace StudySmarterFlashcards.Menus
     
     private async void ArchiveSetFunction(CardSetModel cardSetModelToArchive)
     {
-      if (cardSetModelToArchive.IsArchived) {
+      if (cardSetModelToArchive.IsStarred) {
         for (int i = 0; i < CardSets.Count; i++) {
-          if (CardSets[i].IsArchived) {
+          if (CardSets[i].IsStarred) {
             CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), i);
             break;
           }
         }
-        cardSetModelToArchive.IsArchived = false;
+        cardSetModelToArchive.IsStarred = false;
       } else {
         CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), CardSets.Count - 1);
-        cardSetModelToArchive.IsArchived = true;
+        cardSetModelToArchive.IsStarred = true;
       }
       await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }

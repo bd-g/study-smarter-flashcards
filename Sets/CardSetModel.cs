@@ -27,25 +27,25 @@ namespace StudySmarterFlashcards.Sets
     public CardSetModel(string name, string description,
                         ObservableCollection<IndividualCardModel> flashcardCollection,
                         int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC,
-                        bool isArchived) : this(name, description)
+                        bool isStarred) : this(name, description)
     {
       SetID = Guid.Empty;
       FlashcardCollection = flashcardCollection;
       NumTimesReviewed = numTimesReviewed;
       WhenCreated = whenCreated;
       WhenLastReviewedUTC = whenLastReviewedUTC;
-      IsArchived = isArchived;
+      IsStarred = isStarred;
     }
 
     [JsonConstructor]
-    public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool isArchived) : this(name, description)
+    public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool IsStarred) : this(name, description)
     {
       SetID = setID;
       FlashcardCollection = flashcardCollection;
       NumTimesReviewed = numTimesReviewed;
       WhenCreated = whenCreated;
       WhenLastReviewedUTC = whenLastReviewedUTC;
-      IsArchived = isArchived;
+      IsStarred = IsStarred;
     }
     #endregion
 
@@ -65,7 +65,7 @@ namespace StudySmarterFlashcards.Sets
     public int NumTimesReviewed { get; private set; } = 0;
     public DateTime WhenCreated { get; } = DateTime.Now;
     public DateTime WhenLastReviewedUTC { get; private set; } = DateTime.MinValue;
-    public bool IsArchived { get; set; } = false;
+    public bool IsStarred { get; set; } = true;
 
     #endregion
 
@@ -77,7 +77,7 @@ namespace StudySmarterFlashcards.Sets
         clonedCards.Add(originalCard.Clone());
       }
       return new CardSetModel(this.Name, this.Description, clonedCards, this.NumTimesReviewed, this.WhenCreated,
-                              this.WhenLastReviewedUTC, this.IsArchived);
+                              this.WhenLastReviewedUTC, this.IsStarred);
     }
 
     public void AddCardToSet(string cardTerm = "New Term", string cardDefinition = "New Definition", int indexToAddAt = -1)
@@ -117,7 +117,7 @@ namespace StudySmarterFlashcards.Sets
       hashCode = hashCode * -1521134295 + NumTimesReviewed.GetHashCode();
       hashCode = hashCode * -1521134295 + WhenCreated.GetHashCode();
       hashCode = hashCode * -1521134295 + WhenLastReviewedUTC.GetHashCode();
-      hashCode = hashCode * -1521134295 + IsArchived.GetHashCode();
+      hashCode = hashCode * -1521134295 + IsStarred.GetHashCode();
       return hashCode;
     }
     #endregion

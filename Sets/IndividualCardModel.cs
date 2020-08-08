@@ -15,13 +15,13 @@ namespace StudySmarterFlashcards.Sets
     }
     
     [JsonConstructor]
-    public IndividualCardModel(string term, string definition, Guid cardID, bool isLearned, bool isArchived)
+    public IndividualCardModel(string term, string definition, Guid cardID, bool isLearned, bool isStarred)
     {
       Term = term;
       Definition = definition;
       CardID = cardID;
       IsLearned = isLearned;
-      IsArchived = isArchived;
+      IsStarred = isStarred;
     }
     #endregion
 
@@ -30,13 +30,13 @@ namespace StudySmarterFlashcards.Sets
     public string Definition { get; set; }
     public Guid CardID { get; } = Guid.NewGuid();
     public bool IsLearned { get; set; } = false;
-    public bool IsArchived { get; set; } = false;
+    public bool IsStarred { get; set; } = true;
     #endregion
 
     #region Public Methods
     public IndividualCardModel Clone()
     {
-      return new IndividualCardModel(this.Term, this.Definition, this.CardID, this.IsLearned, this.IsArchived);
+      return new IndividualCardModel(this.Term, this.Definition, this.CardID, this.IsLearned, this.IsStarred);
     }
 
     public bool DeepEquals(object obj)
@@ -45,7 +45,7 @@ namespace StudySmarterFlashcards.Sets
              Term == model.Term &&
              Definition == model.Definition &&
              IsLearned == model.IsLearned &&
-             IsArchived == model.IsArchived;
+             IsStarred == model.IsStarred;
     }
     public override bool Equals(object obj)
     {
@@ -59,7 +59,7 @@ namespace StudySmarterFlashcards.Sets
       hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Definition);
       hashCode = hashCode * -1521134295 + CardID.GetHashCode();
       hashCode = hashCode * -1521134295 + IsLearned.GetHashCode();
-      hashCode = hashCode * -1521134295 + IsArchived.GetHashCode();
+      hashCode = hashCode * -1521134295 + IsStarred.GetHashCode();
       return hashCode;
     }
     #endregion

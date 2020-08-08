@@ -17,7 +17,7 @@ namespace StudySmarterFlashcards.Utils
     public bool AccentColor { get; set; }
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-      if ((bool)value) {
+      if ((bool)value == false) {
         {
           return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColorLight1"])
                              : new SolidColorBrush((Color)Application.Current.Resources["SystemBaseMediumLowColor"]);

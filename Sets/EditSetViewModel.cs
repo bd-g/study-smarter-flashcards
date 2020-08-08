@@ -26,7 +26,7 @@ namespace StudySmarterFlashcards.Sets
       CancelCommand = new RelayCommand(CancelAction);
       SaveCommand = new RelayCommand(SaveAction);
       AddCardCommand = new RelayCommand(AddCardAction);
-      ArchiveCardCommand = new RelayCommand<IndividualCardModel>(ArchiveCardFunction);
+      StarCardCommand = new RelayCommand<IndividualCardModel>(StarCardFunction);
       DeleteCardCommand = new RelayCommand<IndividualCardModel>(DeleteCardFunction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
@@ -38,7 +38,7 @@ namespace StudySmarterFlashcards.Sets
     public RelayCommand CancelCommand { get; private set; }
     public RelayCommand SaveCommand { get; private set; }
     public RelayCommand AddCardCommand { get; private set; }
-    public RelayCommand<IndividualCardModel> ArchiveCardCommand { get; private set; }
+    public RelayCommand<IndividualCardModel> StarCardCommand { get; private set; }
     public RelayCommand<IndividualCardModel> DeleteCardCommand { get; private set; }
     public CardSetModel OriginalFlashCardSet { get; private set; } = new CardSetModel();
     public CardSetModel TempFlashCardSet { get; private set; } = new CardSetModel();
@@ -157,28 +157,28 @@ namespace StudySmarterFlashcards.Sets
 
     private void AddCardAction()
     {
-      int indexOfFirstArchivedCard = -1;
+      int indexOfFirstUnstarredCard = -1;
       for (int i = 0; i < TempFlashCardSet.FlashcardCollection.Count; i++) {
-        if (TempFlashCardSet.FlashcardCollection[i].IsArchived) {
-          indexOfFirstArchivedCard = i;
+        if (!TempFlashCardSet.FlashcardCollection[i].IsStarred) {
+          indexOfFirstUnstarredCard = i;
           break;
         }
       }
-      TempFlashCardSet.AddCardToSet(indexToAddAt:indexOfFirstArchivedCard);
+      TempFlashCardSet.AddCardToSet(indexToAddAt:indexOfFirstUnstarredCard);
     }
-    private void ArchiveCardFunction(IndividualCardModel cardToArchive)
+    private void StarCardFunction(IndividualCardModel cardToStar)
     {
-      if (cardToArchive.IsArchived) {
+      if (!cardToStar.IsStarred) {
         for (int i = 0; i < TempFlashCardSet.FlashcardCollection.Count; i++) {
-          if (TempFlashCardSet.FlashcardCollection[i].IsArchived) {
-            TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToArchive), i);
+          if (!TempFlashCardSet.FlashcardCollection[i].IsStarred) {
+            TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToStar), i);
             break;
           }
         }
-        cardToArchive.IsArchived = false;
+        cardToStar.IsStarred = true;
       } else {
-        TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToArchive), TempFlashCardSet.FlashcardCollection.Count - 1);
-        cardToArchive.IsArchived = true;
+        TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToStar), TempFlashCardSet.FlashcardCollection.Count - 1);
+        cardToStar.IsStarred = false;
       }      
     }
 
@@ -195,7 +195,7 @@ namespace StudySmarterFlashcards.Sets
         }
         OriginalFlashCardSet.Name = TempFlashCardSet.Name;
         OriginalFlashCardSet.Description = TempFlashCardSet.Description;
-        OriginalFlashCardSet.IsArchived = TempFlashCardSet.IsArchived;
+        OriginalFlashCardSet.IsStarred = TempFlashCardSet.IsStarred;
 
         foreach (IndividualCardModel editedCard in TempFlashCardSet.FlashcardCollection) {
           int indexOfOriginal = OriginalFlashCardSet.FlashcardCollection.IndexOf(editedCard);
@@ -203,7 +203,7 @@ namespace StudySmarterFlashcards.Sets
             IndividualCardModel originalCard = OriginalFlashCardSet.FlashcardCollection[indexOfOriginal];
             if (originalCard.CardID.Equals(editedCard.CardID)) {
               originalCard.IsLearned = editedCard.IsLearned;
-              originalCard.IsArchived = editedCard.IsArchived;
+              originalCard.IsStarred = editedCard.IsStarred;
               originalCard.Term = editedCard.Term;
               originalCard.Definition = editedCard.Definition;
             }
@@ -217,6 +217,13 @@ namespace StudySmarterFlashcards.Sets
           if (!TempFlashCardSet.FlashcardCollection.Contains(originalCard)) {
             OriginalFlashCardSet.FlashcardCollection.Remove(originalCard);
             i--;
+          }
+        }
+
+        for (int i = 0; i < TempFlashCardSet.FlashcardCollection.Count; i++) {
+          int indexInOriginal = OriginalFlashCardSet.FlashcardCollection.IndexOf(TempFlashCardSet.FlashcardCollection[i]);
+          if (indexInOriginal > -1) {
+            OriginalFlashCardSet.FlashcardCollection.Move(indexInOriginal, i);
           }
         }
       } else {

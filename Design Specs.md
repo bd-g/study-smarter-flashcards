@@ -57,7 +57,7 @@ I will use the MVVM design pattern.
     - Definition
     - CardID - GUID
     - bool IsLearned
-    - bool IsArchived
+    - bool IsStarred
   - ```CardSetModel```
     - Set Name
     - Set Description
@@ -66,7 +66,7 @@ I will use the MVVM design pattern.
     - Number of times viewed
     - DateTime WhenCreated
     - DateTime LastOpened
-    - Boolean IsArchived
+    - Boolean IsStarred
 - View Models
   - ```MainMenuViewModel```
     - Contains logic for main menu, presenting all the different sets in order that they were last opened
