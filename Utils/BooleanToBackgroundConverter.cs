@@ -19,11 +19,11 @@ namespace StudySmarterFlashcards.Utils
     {
       if ((bool)value == false) {
         {
-          return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColorLight1"])
+          return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"])
                              : new SolidColorBrush((Color)Application.Current.Resources["SystemBaseMediumLowColor"]);
         }
       }
-      return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"])
+      return AccentColor ? new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColorLight1"])
                          : new SolidColorBrush((Color)Application.Current.Resources["SystemAltHighColor"]);
     }
 

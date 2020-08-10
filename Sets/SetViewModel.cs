@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
@@ -75,6 +74,18 @@ namespace StudySmarterFlashcards.Sets
         await new MessageDialog("You can't study an empty flashcard set! Add some cards to study.").ShowAsync();
         return;
       }
+      bool containsStarredCard = false;
+      foreach (IndividualCardModel individualCard in FlashCardSet.FlashcardCollection) {
+        if (individualCard.IsStarred) {
+          containsStarredCard = true;
+          break;
+        }
+      }
+      if (!containsStarredCard) {
+        await new MessageDialog("There are no starred cards in this set. Star some cards to study them, and leave any cards you don't want to study yet unstarred.").ShowAsync();
+        return;
+      }
+
       prNavigationService.NavigateTo("BasicStudyPage");
       Messenger.Default.Send(FlashCardSet, "StudyView");
       FlashCardSet.RegisterNewReviewSession();

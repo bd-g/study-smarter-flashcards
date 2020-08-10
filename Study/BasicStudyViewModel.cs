@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
@@ -43,6 +42,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand<KeyRoutedEventArgs> KeyDownCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
+    private int IndexOfFirstUnstarredCard { get; set; }
     public bool IsShowingTerm { get; private set; } = true;
     public string CurrentSideShowing
     {
@@ -79,6 +79,12 @@ namespace StudySmarterFlashcards.Study
         FlashCardSet = cardSetModel;
         CurrentFlashcardIndex = 0;
         PreviousFlashcardIndexes = new Stack<int>();
+        IndexOfFirstUnstarredCard = cardSetModel.FlashcardCollection.Count;
+        for (int i = 0; i < cardSetModel.FlashcardCollection.Count; i++) {
+          if (!cardSetModel.FlashcardCollection[i].IsStarred) {
+            IndexOfFirstUnstarredCard = i;
+          }
+        }
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
       }
@@ -108,10 +114,16 @@ namespace StudySmarterFlashcards.Study
     {
       int currentIndex = CurrentFlashcardIndex; 
       if (IsShuffleMode) {
-        int nextIndex = prRandom.Next(0, FlashCardSet.FlashcardCollection.Count);
-        CurrentFlashcardIndex = currentIndex != nextIndex ? nextIndex : (nextIndex + 1) % FlashCardSet.FlashcardCollection.Count;
+        int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
+        if (currentIndex != nextIndex) {
+          CurrentFlashcardIndex = nextIndex;
+        } else if (nextIndex > 0) {
+          CurrentFlashcardIndex = nextIndex - 1;
+        } else {
+          CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
+        }      
       } else {
-        CurrentFlashcardIndex = (currentIndex + 1) % FlashCardSet.FlashcardCollection.Count;
+        CurrentFlashcardIndex = (currentIndex + 1) % IndexOfFirstUnstarredCard;
       }
       IsShowingTerm = true;
       PreviousFlashcardIndexes.Push(currentIndex);
