@@ -126,7 +126,8 @@
                 <Button Grid.Row="2" Grid.Column="1" Command="{Binding ElementName=EditSetPageElement, Path=DataContext.StarCardCommand}" 
                         CommandParameter="{Binding}" ToolTipService.ToolTip="Star Card" Margin="10">
                   <Button.Content>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="{Binding IsStarred, Converter={StaticResource boolToStarFillConverter}}"/>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource SystemAccentColor}" 
+                               Text="{Binding IsStarred, Converter={StaticResource boolToStarFillConverter}}"/>
                   </Button.Content>
                 </Button>
                 <Button Grid.Row="2" Grid.Column="2" Command="{Binding ElementName=EditSetPageElement, Path=DataContext.DeleteCardCommand}" 

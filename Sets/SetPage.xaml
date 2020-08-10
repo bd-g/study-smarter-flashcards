@@ -127,6 +127,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Margin="15,15,5,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
                 <TextBlock Grid.Column="1" Margin="0,15,15,0" FontFamily="Segoe MDL2 Assets" Text="&#xE735;" HorizontalAlignment="Right"
+                           Foreground="{StaticResource SystemAccentColor}"
                            Visibility="{Binding IsStarred, Converter={StaticResource boolToVisibilityConverter}}"/>
                 <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="15,15,15,15" Text="{Binding Definition}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
               </Grid>
