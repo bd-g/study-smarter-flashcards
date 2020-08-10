@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -10,7 +6,6 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 

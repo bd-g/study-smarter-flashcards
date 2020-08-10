@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
-using Windows.UI.Text.Core;
 using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study

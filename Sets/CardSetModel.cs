@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace StudySmarterFlashcards.Sets
@@ -38,14 +33,14 @@ namespace StudySmarterFlashcards.Sets
     }
 
     [JsonConstructor]
-    public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool IsStarred) : this(name, description)
+    public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool isStarred) : this(name, description)
     {
       SetID = setID;
       FlashcardCollection = flashcardCollection;
       NumTimesReviewed = numTimesReviewed;
       WhenCreated = whenCreated;
       WhenLastReviewedUTC = whenLastReviewedUTC;
-      IsStarred = IsStarred;
+      IsStarred = isStarred;
     }
     #endregion
 
@@ -58,7 +53,12 @@ namespace StudySmarterFlashcards.Sets
     {
       get
       {
-        int numLearned = FlashcardCollection.Count(x => x.IsLearned);
+        int numLearned = 0;
+        foreach (IndividualCardModel cardModel in FlashcardCollection) {
+          if (cardModel.IsLearned) {
+            numLearned++;
+          }
+        }
         return (double)numLearned/FlashcardCollection.Count * 100;
       }
     }
