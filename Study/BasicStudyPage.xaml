@@ -15,10 +15,11 @@
     <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
   <interact:Interaction.Behaviors>
-    <interactcore:EventTriggerBehavior EventName="KeyDown" >
+    <interactcore:EventTriggerBehavior EventName="KeyUp" >
       <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
     </interactcore:EventTriggerBehavior>
   </interact:Interaction.Behaviors>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
@@ -34,7 +35,6 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
-
     <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
@@ -69,20 +69,20 @@
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="DimGray" BorderThickness="3" CornerRadius="25">
       <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="5*"/>
-          <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Button Command="{Binding FlipFlashcardCommand}" Grid.Row="0"
-            HorizontalAlignment="Center" VerticalAlignment="Center"
-            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="20"
-            Padding="0" BorderThickness="0" Background="Transparent">
-          <Viewbox>
-            <TextBlock Text="{Binding CurrentSideShowing}"/>
-          </Viewbox>
-        </Button>
-        <CheckBox Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                  Margin="5" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+          <interact:Interaction.Behaviors>
+            <interactcore:EventTriggerBehavior EventName="Tapped" >
+              <interactcore:InvokeCommandAction Command="{Binding MouseDownOnCardCommand}" />
+            </interactcore:EventTriggerBehavior>
+            <interactcore:EventTriggerBehavior EventName="KeyUp" >
+              <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
+            </interactcore:EventTriggerBehavior>
+          </interact:Interaction.Behaviors>
+          <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="20"
+                   Text="{Binding CurrentSideShowing}"/>
+        </ScrollViewer>
+        <CheckBox VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                  Margin="15" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
       </Grid>
     </Border>
 

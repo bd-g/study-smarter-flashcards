@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Xaml.Input;
@@ -26,6 +28,7 @@ namespace StudySmarterFlashcards.Study
       FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
       SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
       KeyDownCommand = new RelayCommand<KeyRoutedEventArgs>(KeyDownFunction);
+      MouseDownOnCardCommand = new RelayCommand<TappedRoutedEventArgs>(MouseDownOnCardFunction);
     }
     #endregion
 
@@ -37,6 +40,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand FlipFlashcardCommand { get; private set; }
     public RelayCommand SwitchShuffleModeCommand { get; private set; }
     public RelayCommand<KeyRoutedEventArgs> KeyDownCommand { get; private set; }
+    public RelayCommand<TappedRoutedEventArgs> MouseDownOnCardCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
     private int IndexOfFirstUnstarredCard { get; set; }
@@ -163,6 +167,11 @@ namespace StudySmarterFlashcards.Study
     {
       IsShuffleMode = !IsShuffleMode;
       OnPropertyChanged("IsShuffleMode");
+    }
+
+    private void MouseDownOnCardFunction(TappedRoutedEventArgs args)
+    {
+      FlipFlashcardAction();
     }
 
     private void SwitchCardIsLearned()

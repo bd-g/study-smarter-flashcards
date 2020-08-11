@@ -160,14 +160,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\AddButtonIcon.png" />
-    <Content Include="Assets\ArchiveIcon.png" />
-    <Content Include="Assets\BackIcon.png" />
     <Content Include="Assets\BookLogo.svg" />
-    <Content Include="Assets\DeleteIcon.png" />
-    <Content Include="Assets\EditIcon.png" />
-    <Content Include="Assets\HomeIcon.png" />
-    <Content Include="Assets\SettingsIcon.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
