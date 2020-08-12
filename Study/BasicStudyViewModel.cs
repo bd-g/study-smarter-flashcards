@@ -96,7 +96,7 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
 
-      await InstructionsDialogService.ShowAsync(InstructionDialogType.StudyInstructions);
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.BasicStudyInstructions);
     }
 
     private void BackAction()

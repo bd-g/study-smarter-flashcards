@@ -43,7 +43,7 @@ namespace StudySmarterFlashcards.Menus
     {
       bool? showStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] as bool?;
       ShowStudyInstructions = showStudyInstructions == true ? true : false;
-      bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsPrompt"] as bool?;
+      bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] as bool?;
       ShowMainInstructions = showMainInstructions == true ? true : false;
     }
     #endregion

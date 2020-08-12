@@ -120,6 +120,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\InstructionsDialogService.cs" />
+    <Compile Include="Dialogs\MainInstructionsDialog.xaml.cs">
+      <DependentUpon>MainInstructionsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MainInstructionsViewModel.cs" />
     <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
     <Compile Include="Menus\MainMenuViewModel.cs" />
     <Compile Include="Menus\MainMenuPage.xaml.cs">
@@ -208,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\MainInstructionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Menus\MainMenuPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
