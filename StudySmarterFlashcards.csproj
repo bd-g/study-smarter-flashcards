@@ -148,11 +148,11 @@
       <DependentUpon>BasicStudyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Study\BasicStudyViewModel.cs" />
-    <Compile Include="Utils\AsyncCommand.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\BooleanToBackgroundConverter.cs" />
     <Compile Include="Utils\BooleanToStarFillConverter.cs" />
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Utils\EqualityToVisibilityConverter.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
     <Compile Include="Dialogs\StudyInstructionsDialog.xaml.cs">

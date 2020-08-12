@@ -29,7 +29,7 @@ namespace StudySmarterFlashcards.Menus
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
       GoToSettingsCommand = new RelayCommand(GoToSettingsAction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
-      InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions);
+      InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions).FireAndForgetSafeAsync(this);
     }
     #endregion
 

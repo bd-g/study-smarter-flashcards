@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using StudySmarterFlashcards.Menus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -40,6 +41,8 @@ namespace StudySmarterFlashcards
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -62,6 +65,9 @@ namespace StudySmarterFlashcards
 
             if (e.PrelaunchActivated == false)
             {
+                if (canEnablePrelaunch) {
+                  TryEnablePrelaunch();
+                }
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
@@ -73,13 +79,25 @@ namespace StudySmarterFlashcards
                 Window.Current.Activate();
             }
         }
-
+    
         /// <summary>
-        /// Invoked when Navigation to a certain page fails
+        /// Encapsulates the call to CoreApplication.EnablePrelaunch() so that the JIT
+        /// won't encounter that call (and prevent the app from running when it doesn't
+        /// find it), unless this method gets called. This method should only
+        /// be called when the caller determines that we are running on a system that
+        /// supports CoreApplication.EnablePrelaunch().
         /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void TryEnablePrelaunch()
+        {
+          Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+        }
+
+    /// <summary>
+    /// Invoked when Navigation to a certain page fails
+    /// </summary>
+    /// <param name="sender">The Frame which failed navigation</param>
+    /// <param name="e">Details about the navigation failure</param>
+    void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

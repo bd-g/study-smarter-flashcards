@@ -5,27 +5,46 @@
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utils="using:StudySmarterFlashcards.Utils"
-    mc:Ignorable="d"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:utils="using:StudySmarterFlashcards.Utils" 
+  mc:Ignorable="d"
     Title="Study Smarter Flashcards Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
     CloseButtonText="Close">
   <ContentDialog.DataContext>
-    <local:StudyInstructionsViewModel/>
+    <local:MainInstructionsViewModel/>
   </ContentDialog.DataContext>
   <ContentDialog.Resources>
     <utils:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+    <utils:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
   </ContentDialog.Resources>
 
+
+
   <StackPanel>
-    <TextBlock FontWeight="Bold" Text="Study Controls"/>
-    <TextBlock TextWrapping="WrapWholeWords" Text="Flip through various flashcards - the forward button will give you the next flashcard, and the previous button will take you to the last flashcard you reviewed. You can mark cards as learned when you feel you have learned them. You may have shuffle mode on or off, as indicated in the lower right corner."/>
-    <TextBlock Margin="0,10,0,0" FontWeight="Bold" Text="Keyboard Shortcuts"/>
-    <TextBlock TextWrapping="WrapWholeWords" Text="Previous/Next Flashcard - Left/Right Arrow Keys"/>
-    <TextBlock TextWrapping="WrapWholeWords" Text="Flip Flashcard - Up/Down Arrow Keys"/>
-    <TextBlock TextWrapping="WrapWholeWords" Text="Mark Flashcard As Learned - 'L' Key"/>
-    <TextBlock TextWrapping="WrapWholeWords" Text="Toggle Shuffle Mode - 'S' Key"/>
-    <CheckBox  Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=Welcome}">
+      <TextBlock Text="Welcome Content!"/>
+    </StackPanel>
+
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=MainMenu}">
+      <TextBlock Text="MainMenu Content!"/>
+    </StackPanel>
+
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=SetPage}">
+      <TextBlock Text="Set Page Content!"/>
+    </StackPanel>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
+              Visibility="{Binding HasPreviousContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+      <Button Grid.Column="1" Content="Next" Command="{Binding GoToNextContentCommand}"
+              Visibility="{Binding HasNextContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+    </Grid>
+    <CheckBox Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     <TextBlock TextWrapping="WrapWholeWords" Text="You can configure this message to show again in the settings" Visibility="{Binding DontShowAgain, Converter={StaticResource boolToVisiblityConverter}}"/>
   </StackPanel>
 </ContentDialog>
