@@ -5,13 +5,17 @@
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utils="using:StudySmarterFlashcards.Utils"
     mc:Ignorable="d"
     Title="Basic Study Mode Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
     CloseButtonText="Close">
    <ContentDialog.DataContext>
       <local:StudyInstructionsViewModel/>
-    </ContentDialog.DataContext>
+  </ContentDialog.DataContext>
+  <ContentDialog.Resources>
+    <utils:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+  </ContentDialog.Resources>
 
   <StackPanel>
     <TextBlock FontWeight="Bold" Text="Study Controls"/>
@@ -22,5 +26,6 @@
     <TextBlock TextWrapping="WrapWholeWords" Text="Mark Flashcard As Learned - 'L' Key"/>
     <TextBlock TextWrapping="WrapWholeWords" Text="Toggle Shuffle Mode - 'S' Key"/>
     <CheckBox  Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="You can configure this message to show again in the settings" Visibility="{Binding DontShowAgain, Converter={StaticResource boolToVisiblityConverter}}"/>
   </StackPanel>
 </ContentDialog>
