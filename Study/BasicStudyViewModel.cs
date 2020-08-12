@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Xaml.Input;
@@ -20,7 +22,7 @@ namespace StudySmarterFlashcards.Study
     #region Constructors
     public BasicStudyViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<CardSetModel>(this, "StudyView", cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<CardSetModel>(this, "StudyView", async (cardSetModel) => await InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
@@ -74,7 +76,7 @@ namespace StudySmarterFlashcards.Study
       prNavigationService.NavigateTo("MainMenuPage");
     }
 
-    private void InitializeSetPage(CardSetModel cardSetModel)
+    private async Task InitializeSetPage(CardSetModel cardSetModel)
     {
       if (cardSetModel != null && cardSetModel.FlashcardCollection.Count > 0) {
         FlashCardSet = cardSetModel;
@@ -93,6 +95,8 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
+
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.StudyInstructions);
     }
 
     private void BackAction()

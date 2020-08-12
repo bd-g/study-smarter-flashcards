@@ -26,5 +26,13 @@ namespace StudySmarterFlashcards.Menus
     {
       this.InitializeComponent();
     }
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+      if (DataContext is SettingsViewModel) {
+        SettingsViewModel dataContext = DataContext as SettingsViewModel;
+        dataContext.UpdateSettings();
+      }
+      base.OnNavigatedTo(e);
+    }
   }
 }

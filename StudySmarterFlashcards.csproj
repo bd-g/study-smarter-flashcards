@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\InstructionsDialogService.cs" />
+    <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
     <Compile Include="Menus\MainMenuViewModel.cs" />
     <Compile Include="Menus\MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
@@ -149,6 +151,9 @@
     <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
+    <Compile Include="Dialogs\StudyInstructionsDialog.xaml.cs">
+      <DependentUpon>StudyInstructionsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
     <Compile Include="Utils\StringFormatConverter.cs" />
     <Compile Include="Utils\TaskUtils.cs" />
@@ -220,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Study\BasicStudyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\StudyInstructionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

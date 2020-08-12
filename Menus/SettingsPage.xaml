@@ -4,7 +4,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:utils="using:StudySmarterFlashcards.Utils"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:interact="using:Microsoft.Xaml.Interactivity" xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
       DataContext="{Binding SettingsInstance, Source={StaticResource Locator}}"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -15,16 +15,14 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="1*"/>
-      <RowDefinition Height="3*"/>
-      <RowDefinition Height="2*"/>
+      <RowDefinition Height="5*"/>
       <RowDefinition Height="1*"/>
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
-      <ColumnDefinition Width="9*"/>
-      <ColumnDefinition Width="9*"/>
+      <ColumnDefinition Width="18*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
@@ -38,14 +36,46 @@
       </Viewbox>
     </Button>
 
-    <TextBlock Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
+    <Viewbox Grid.Row="0" Grid.Column="3">
+      <TextBlock Text="Settings"/>
+    </Viewbox>
 
-    <TextBlock Grid.Row="2" Grid.Column="3" Text="Feedback" FontSize="16" Margin="0,0,5,0"
+    <Grid Grid.Row="1" Grid.Column="3">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <ToggleSwitch Grid.Row="0" Header="Show Main Instructions" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <interact:Interaction.Behaviors>
+          <interactcore:EventTriggerBehavior EventName="Toggled" >
+            <interactcore:InvokeCommandAction Command="{Binding ToggleMainInstructionsCommand}" />
+          </interactcore:EventTriggerBehavior>
+        </interact:Interaction.Behaviors>
+      </ToggleSwitch>
+      <ToggleSwitch Grid.Row="1" Header="Show Study Instructions" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <interact:Interaction.Behaviors>
+          <interactcore:EventTriggerBehavior EventName="Toggled" >
+            <interactcore:InvokeCommandAction Command="{Binding ToggleStudyInstructionsCommand}" />
+          </interactcore:EventTriggerBehavior>
+        </interact:Interaction.Behaviors>
+      </ToggleSwitch>
+
+      <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
+      <TextBlock Grid.Row="4" Grid.Column="0" Text="Feedback" FontSize="16" Margin="0,0,5,0"
                HorizontalAlignment="Right" VerticalAlignment="Top"/>
-    <Button x:Name="feedbackButton" FontFamily="Segoe MDL2 Assets" FontSize="16" Content="&#xE939;" Margin="5,0,0,0"
+      <Button x:Name="feedbackButton" FontFamily="Segoe MDL2 Assets" FontSize="16" Content="&#xE939;" Margin="5,0,0,0"
             HorizontalAlignment="Left" VerticalAlignment="Top"
-            Grid.Row="2" Grid.Column="4" Command="{Binding LaunchFeedbackHubCommand}"
+            Grid.Row="4" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,
-            Converter={StaticResource boolToVisibilityConverter}}"  />
+            Converter={StaticResource boolToVisibilityConverter}}"/>
+    </Grid>
   </Grid>
 </Page>

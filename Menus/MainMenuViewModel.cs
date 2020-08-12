@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Popups;
