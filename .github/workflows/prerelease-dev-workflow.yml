@@ -65,7 +65,7 @@ jobs:
     - name: Get All Folders To Find Build Objects v2
       id: getFolders
       run: |
-        Get-ChildItem -Path .\$env:UWP_Test_Project_Directory\ -Recurse -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName
+        Get-ChildItem -Path $env -Recurse -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName
       shell: pwsh
         
         
