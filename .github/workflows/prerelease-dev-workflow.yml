@@ -63,7 +63,7 @@ jobs:
         Configuration: Debug
         
     - name: VSTest
-      run: vstest.console.exe /Platform:x64 .\$env:UWP_Test_Project_Directory\AppPackages\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.result}}_Debug_Test\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.result}}_x86_Debug.appxsym
+      run: vstest.console.exe /Platform:x64 .\$env:UWP_Test_Project_Directory\AppPackages\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_x86_Debug.appxsym
       
     - name: Create release
       id: create_release
@@ -72,7 +72,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: RC ${{steps.getVersion.output.result}}
+        release_name: RC ${{steps.getVersion.output.version}}
         draft: false
         prerelease: true
     
@@ -83,8 +83,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: .\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.result}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.result}}_x86_Debug.msixbundle
-        asset_name: StorePackage_${{steps.getVersion.outputs.result}}.msixbundle
+        asset_path: .\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle
+        asset_name: StorePackage_${{steps.getVersion.outputs.version}}.msixbundle
         asset_content_type: application/msixbundle   
         
         
