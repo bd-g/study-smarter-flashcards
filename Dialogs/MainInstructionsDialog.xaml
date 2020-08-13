@@ -24,26 +24,82 @@
 
   <StackPanel>
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=Welcome}">
-      <TextBlock Text="Welcome Content!"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="This tutorial will step you through how to create, manage, and study your flashcard sets."/>
     </StackPanel>
 
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=MainMenu}">
-      <TextBlock Text="MainMenu Content!"/>
+      <TextBlock FontWeight="Bold" Text="Main Menu"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Displays all of your flashcard sets"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Shows the sets' names, descriptions, and the last time you reviewed each"/>
+      <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="- Click on a set to go to its detailed view"/>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Edit"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE70F;"/>
+        <Run Text="or delete"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"/>
+        <Run Text="each set with respective buttons"/>
+      </TextBlock>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Buttons on right side to add a new set"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
+        <Run Text="or go to the settings page"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE713;"/>
+      </TextBlock>
     </StackPanel>
 
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=SetPage}">
-      <TextBlock Text="Set Page Content!"/>
+      <TextBlock FontWeight="Bold" Text="Set Page"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Displays each card in a given flashcard set"/>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Individual flashcards show whether they are learned"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xEB50;"/>
+        <Run Text="or starred"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE735;"/>
+      </TextBlock>
+      <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords">
+        <Run Text="- Can edit"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE70F;"/>
+        <Run Text="the set or access additional info"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE946;"/>
+      </TextBlock>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Button at bottom to study flashcards"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xEA80;"/>
+        <Run Text="(only starred cards will be studied)"/>
+      </TextBlock>      
     </StackPanel>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="1*"/>
-        <ColumnDefinition Width="1*"/>
-      </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
-              Visibility="{Binding HasPreviousContent, Converter={StaticResource boolToVisiblityConverter}}"/>
-      <Button Grid.Column="1" Content="Next" Command="{Binding GoToNextContentCommand}"
-              Visibility="{Binding HasNextContent, Converter={StaticResource boolToVisiblityConverter}}"/>
-    </Grid>
+
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=EditSetPage}">
+      <TextBlock FontWeight="Bold" Text="Edit Set Page"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Can edit set name &amp; description and card terms &amp; definitions"/>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Mark cards as learned"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xEB50;"/>
+        <Run Text="or star them"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE735;"/>
+      </TextBlock>
+      <TextBlock TextWrapping="WrapWholeWords">
+        <Run Text="- Buttons on right to add new cards"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
+        <Run Text=", save"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE74E;"/>
+        <Run Text=", or cancel changes"/>
+        <Run FontFamily="Segoe MDL2 Assets" Text="&#xE711;"/>
+      </TextBlock>
+    </StackPanel>
+
+    <Border BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="0,0,0,1"  Margin="0,15,0,0">
+      <Grid  Margin="0,15,0,15">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" HorizontalAlignment="Left" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
+                Visibility="{Binding HasPreviousContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+        <Button Grid.Column="1" HorizontalAlignment="Right" Content="Next" Command="{Binding GoToNextContentCommand}"
+                Visibility="{Binding HasNextContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+      </Grid>
+    </Border>
     <CheckBox Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     <TextBlock TextWrapping="WrapWholeWords" Text="You can configure this message to show again in the settings" Visibility="{Binding DontShowAgain, Converter={StaticResource boolToVisiblityConverter}}"/>
   </StackPanel>

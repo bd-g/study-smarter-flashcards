@@ -13,7 +13,8 @@ namespace StudySmarterFlashcards.Dialogs
   {
     Welcome,
     MainMenu,
-    SetPage
+    SetPage,
+    EditSetPage
   }
   #endregion
   class MainInstructionsViewModel : BaseViewModel
@@ -27,6 +28,8 @@ namespace StudySmarterFlashcards.Dialogs
       SaveSettingsAndCloseCommand = new RelayCommand(SaveSettingsAndCloseAction);
       GoToPreviousContentCommand = new RelayCommand(GoToPreviousContentAction);
       GoToNextContentCommand = new RelayCommand(GoToNextContentAction);
+      bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] as bool?;
+      dontShowAgain = showMainInstructions == false ? true : false;
     }
     #endregion
 

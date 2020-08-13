@@ -71,18 +71,10 @@
 
     <Viewbox  Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
       <Button Command="{Binding BasicStudyCommand}" BorderThickness="0">
-       <Button.Content>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="1*"/>
-              <ColumnDefinition Width="1*"/>
-              <ColumnDefinition Width="1*"/>
-              <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="1" Text="Study"/>
-            <TextBlock Grid.Column="2" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
-          </Grid>
-        </Button.Content>
+        <TextBlock>
+            <Run Text="Study"/>
+            <Run FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
+        </TextBlock>
       </Button>
     </Viewbox>
 
@@ -119,17 +111,24 @@
               <Grid Width="{Binding ElementName=SetPageElement, Path=DataContext.SetColumnWidth}">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="2*"/>
+                  <RowDefinition Height="2*"/>
                   <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="4*"/>
                   <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Margin="15,15,5,15" Text="{Binding Term}" FontSize="12" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Row="0" Margin="15,15,5,15" Text="{Binding Term}" FontWeight="Bold" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="15" Text="{Binding Definition}" FontSize="12" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+
                 <TextBlock Grid.Column="1" Margin="0,15,15,0" FontFamily="Segoe MDL2 Assets" Text="&#xE735;" HorizontalAlignment="Right"
                            Foreground="{StaticResource SystemAccentColor}"
                            Visibility="{Binding IsStarred, Converter={StaticResource boolToVisibilityConverter}}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="15,15,15,15" Text="{Binding Definition}" FontSize="10" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="15,0,0,0" HorizontalAlignment="Left" FontSize="12"
+                           Visibility="{Binding IsLearned, Converter={StaticResource boolToVisibilityConverter}}">
+                  <Run Text="Learned"/>
+                  <Run FontFamily="Segoe MDL2 Assets" Text="&#xEB50;"/>
+                </TextBlock>
               </Grid>
             </Border>
           </DataTemplate>

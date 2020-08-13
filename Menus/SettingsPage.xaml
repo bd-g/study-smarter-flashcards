@@ -52,14 +52,18 @@
         <ColumnDefinition Width="3*"/>
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
-
+      
       <ToggleSwitch Grid.Row="0" Header="Show Main Instructions" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
-          <interactcore:EventTriggerBehavior EventName="Toggled" >
+          <interactcore:EventTriggerBehavior EventName="Toggled">
             <interactcore:InvokeCommandAction Command="{Binding ToggleMainInstructionsCommand}" />
           </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
+      <Button  Grid.Row="0" Grid.Column="1" Command="{Binding ShowMainInstructionsCommand}">
+        <TextBlock Text="Main Instruction Shortcut" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+      </Button>
+
       <ToggleSwitch Grid.Row="1" Header="Show Study Instructions" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
@@ -68,14 +72,17 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
-      <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
-      <TextBlock Grid.Row="4" Grid.Column="0" Text="Feedback" FontSize="16" Margin="0,0,5,0"
-               HorizontalAlignment="Right" VerticalAlignment="Top"/>
-      <Button x:Name="feedbackButton" FontFamily="Segoe MDL2 Assets" FontSize="16" Content="&#xE939;" Margin="5,0,0,0"
-            HorizontalAlignment="Left" VerticalAlignment="Top"
-            Grid.Row="4" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
+      <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better
+meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
+      <Button x:Name="feedbackButton"  HorizontalAlignment="Left" VerticalAlignment="Top"
+            Grid.Row="4" Grid.Column="0" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,
-            Converter={StaticResource boolToVisibilityConverter}}"/>
+            Converter={StaticResource boolToVisibilityConverter}}">
+        <TextBlock FontSize="16">
+          <Run FontFamily="Segoe MDL2 Assets" Text="&#xE939;"/>
+          <Run Text="Feedback"/>
+        </TextBlock>
+      </Button>
     </Grid>
   </Grid>
 </Page>
