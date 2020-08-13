@@ -31,7 +31,7 @@ jobs:
     - name: Extract version from tag
       id: getVersion
       run: |
-        $rawVersionTag = ${{steps.tag.outputs.tag}}
+        $rawVersionTag = "${{steps.tag.outputs.tag}}"
         echo "##[set-output name=version;]$(($rawVersionTag).Split('v')[1])"
       shell: pwsh
         
