@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="214bb72c-58fd-4364-92d4-1006584144d2" Publisher="CN=brent" Version="1.0.0.0" />
+  <Identity Name="214bb72c-58fd-4364-92d4-1006584144d2" Publisher="CN=brent" Version="0.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="214bb72c-58fd-4364-92d4-1006584144d2" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>StudySmarterFlashcards</DisplayName>
-    <PublisherDisplayName>brent</PublisherDisplayName>
+    <PublisherDisplayName>Brent George</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
