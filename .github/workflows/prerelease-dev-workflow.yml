@@ -25,9 +25,6 @@ jobs:
       id: tag
       uses: dawidd6/action-get-tag@v1
       
-    - name: Use tag
-      run: echo ${{steps.tag.outputs.tag}}
-      
     - name: Extract version from tag
       id: getVersion
       run: |
@@ -62,12 +59,6 @@ jobs:
         BuildMode: StoreUpload
         Configuration: Debug
 
-    - name: Get All Folders To Find Build Objects v2
-      id: getFolders
-      run: |
-        Get-ChildItem -Path .\$env:UWP_Project_Directory\AppPackages\ -Recurse -Force -ErrorAction SilentlyContinue | Select-Object Name
-      shell: pwsh       
-        
     - name: VSTest
       run: vstest.console.exe /Platform:x64 .\$env:UWP_Test_Project_Directory\AppPackages\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_x86_Debug.appxsym
       
@@ -88,10 +79,6 @@ jobs:
         echo "##[set-output name=artifact_path;].\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle"
       shell: pwsh
     
-    - name: Check artifact metadata
-      id: check_artifact_metadata
-      run: echo ${{steps.prepare_artifact_metadata.outputs.artifact_path}}
-
     - name: Upload release asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
