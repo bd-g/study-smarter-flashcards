@@ -56,7 +56,7 @@ jobs:
         $testManifest.save(".\$env:UWP_Test_Project_Directory\Package.appxmanifest")
       
     - name: Build the solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:BuildMode=StoreUpload /p:Configuration=Debug /restore
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=Always /p:BuildMode=StoreUpload /p:Configuration=Debug p:AppxPackageSigningEnabled=false /restore
       env:
         AppxBunde: Always
         BuildMode: StoreUpload
