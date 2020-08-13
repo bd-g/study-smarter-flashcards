@@ -85,8 +85,13 @@ jobs:
     - name: Prepare artifact metadata
       id: prepare_artifact_metadata
       run: |
-        echo ::set-output name=artifact_path::.\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle
+        echo "##[set-output name=artifact_path;].\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle"
+      shell: pwsh
     
+    - name: Check artifact metadata
+      id: check_artifact_metadata
+      run: echo ${{steps.prepare_artifact_metadata.outputs.artifact_path}}
+
     - name: Upload release asset
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
