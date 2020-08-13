@@ -21,13 +21,6 @@ jobs:
       UWP_Test_Project_Directory: .\StudySmarterFlashcardsTests\
 
     steps:
-    - name: Configure Pagefile
-      uses: bd-g/prerelease-dev-workflow@v1
-      with:
-        minimum-size: 32GB
-        maximum-size: 32GB
-        disk-root: "C:"
-        
     - name: Get tag
       id: tag
       uses: dawidd6/action-get-tag@v1
