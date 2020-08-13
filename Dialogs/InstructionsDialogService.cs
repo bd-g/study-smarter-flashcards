@@ -10,18 +10,26 @@ namespace StudySmarterFlashcards.Dialogs
   #region Outer Enums
   public enum InstructionDialogType
   {
-    StudyInstructions
+    BasicStudyInstructions,
+    MainInstructions
   }
   #endregion
   public static class InstructionsDialogService
   {
-    public static async Task<ContentDialogResult> ShowAsync(InstructionDialogType dialogType)
+    public static async Task<ContentDialogResult> ShowAsync(InstructionDialogType dialogType, bool overrideSettings = false)
     {
       switch (dialogType) {
-        case InstructionDialogType.StudyInstructions:
+        case InstructionDialogType.BasicStudyInstructions:
           bool? showStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] as bool?;
-          if (showStudyInstructions != false) {
+          if (showStudyInstructions != false || overrideSettings) {
             return await new StudyInstructionsDialog().ShowAsync();
+          } else {
+            return ContentDialogResult.None;
+          }
+        case InstructionDialogType.MainInstructions:
+          bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] as bool?;
+          if (showMainInstructions != false || overrideSettings) {
+            return await new MainInstructionsDialog().ShowAsync();
           } else {
             return ContentDialogResult.None;
           }

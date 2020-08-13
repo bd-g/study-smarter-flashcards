@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Utils;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,6 +19,7 @@ namespace StudySmarterFlashcards.Menus
     {
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       LaunchFeedbackHubCommand = new RelayCommand(LaunchFeedbackHubAction);
+      ShowMainInstructionsCommand = new RelayCommand(ShowMainInstructionsAction);
       ToggleStudyInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleStudyInstructionsFunction);
       ToggleMainInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleMainInstructionsFunction);
       UpdateSettings();
@@ -27,6 +29,7 @@ namespace StudySmarterFlashcards.Menus
     #region Properties
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand LaunchFeedbackHubCommand { get; private set; }
+    public RelayCommand ShowMainInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleStudyInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleMainInstructionsCommand { get; private set; }
     public bool IsFeedbackHubSupported {
@@ -43,8 +46,10 @@ namespace StudySmarterFlashcards.Menus
     {
       bool? showStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] as bool?;
       ShowStudyInstructions = showStudyInstructions == true ? true : false;
-      bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsPrompt"] as bool?;
+      bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] as bool?;
       ShowMainInstructions = showMainInstructions == true ? true : false;
+      OnPropertyChanged("ShowMainInstructions");
+      OnPropertyChanged("ShowStudyInstructions");
     }
     #endregion
 
@@ -73,6 +78,12 @@ namespace StudySmarterFlashcards.Menus
       Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] = toggleSwitch.IsOn;
       ShowStudyInstructions = toggleSwitch.IsOn;
       OnPropertyChanged("ShowMainInstructions");
+    }
+
+    private async void ShowMainInstructionsAction()
+    {
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions, true);
+      UpdateSettings();
     }
     #endregion
   }
