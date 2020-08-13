@@ -81,6 +81,11 @@ jobs:
         release_name: RC ${{steps.getVersion.outputs.version}}
         draft: false
         prerelease: true
+
+    - name: Prepare artifact metadata
+      id: prepare_artifact_metadata
+      run: |
+        echo ::set-output name=artifact_path::.\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle
     
     - name: Upload release asset
       id: upload-release-asset
@@ -89,7 +94,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: .\$env:UWP_Project_Directory\AppPackages\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcards_${{steps.getVersion.outputs.version}}_x86_Debug.msixbundle
+        asset_path: ${{ steps.prepare_artifact_metadata.outputs.artifact_path }}
         asset_name: StorePackage_${{steps.getVersion.outputs.version}}.msixbundle
         asset_content_type: application/msixbundle   
         
