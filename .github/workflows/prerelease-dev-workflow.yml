@@ -29,10 +29,9 @@ jobs:
       run: echo ${{steps.tag.outputs.tag}}
       
     - name: Extract version from tag
-      uses: Amadevus/pwsh-script@v1
       id: getVersion
-      with:
-        script: '("{{steps.tag.outputs.tag}}").Split("v")[1]'
+      run: ("${{steps.tag.outputs.tag}}").Split("v")[1]
+      shell: pwsh
         
     - name: Checkout
       uses: actions/checkout@v2
