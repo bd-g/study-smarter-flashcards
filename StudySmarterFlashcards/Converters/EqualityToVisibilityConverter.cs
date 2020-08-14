@@ -6,7 +6,7 @@ using StudySmarterFlashcards.Dialogs;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace StudySmarterFlashcards.Utils
+namespace StudySmarterFlashcards.Converters
 {
   public class EqualityToVisibilityConverter : IValueConverter
   {

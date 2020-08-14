@@ -5,7 +5,7 @@
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utils="using:StudySmarterFlashcards.Utils"
+    xmlns:converters="using:StudySmarterFlashcards.Converters"
     mc:Ignorable="d"
     Title="Basic Study Mode Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
@@ -14,7 +14,7 @@
       <local:StudyInstructionsViewModel/>
   </ContentDialog.DataContext>
   <ContentDialog.Resources>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
   </ContentDialog.Resources>
 
   <StackPanel>

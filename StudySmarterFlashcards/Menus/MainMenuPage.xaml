@@ -3,7 +3,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-  xmlns:utils="using:StudySmarterFlashcards.Utils"
+  xmlns:converters="using:StudySmarterFlashcards.Converters"
   xmlns:interact="using:Microsoft.Xaml.Interactivity"
   xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,9 +12,9 @@
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
-    <utils:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
+    <converters:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
   </Page.Resources>
   
   <Grid>

@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
-namespace StudySmarterFlashcards.Utils
+namespace StudySmarterFlashcards.Converters
 {
   public class BooleanToBackgroundConverter : IValueConverter
   {

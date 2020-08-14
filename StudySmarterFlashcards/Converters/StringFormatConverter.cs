@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace StudySmarterFlashcards.Utils
+namespace StudySmarterFlashcards.Converters
 {
   public class StringFormatConverter : IValueConverter
   {

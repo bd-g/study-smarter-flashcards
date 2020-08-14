@@ -5,9 +5,7 @@
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interact="using:Microsoft.Xaml.Interactivity"
-    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:utils="using:StudySmarterFlashcards.Utils" 
+    xmlns:converters="using:StudySmarterFlashcards.Converters" 
   mc:Ignorable="d"
     Title="Study Smarter Flashcards Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
@@ -16,11 +14,9 @@
     <local:MainInstructionsViewModel/>
   </ContentDialog.DataContext>
   <ContentDialog.Resources>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
-    <utils:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+    <converters:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
   </ContentDialog.Resources>
-
-
 
   <StackPanel>
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=Welcome}">

@@ -2,7 +2,7 @@
     x:Class="StudySmarterFlashcards.Sets.EditSetPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:utils="using:StudySmarterFlashcards.Utils"
+    xmlns:converters="using:StudySmarterFlashcards.Converters"
     xmlns:interact="using:Microsoft.Xaml.Interactivity"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
@@ -12,8 +12,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
   </Page.Resources>
   
   <Grid>
