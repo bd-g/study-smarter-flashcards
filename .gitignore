@@ -1,6 +1,7 @@
 bin
 obj
 .vs
+*.pfx
 
 StudySmarterFlashcards/AppPackages
 StudySmarterFlashcards/BundleArtifacts
