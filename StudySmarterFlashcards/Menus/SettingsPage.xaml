@@ -36,7 +36,7 @@
       </Viewbox>
     </Button>
 
-    <Viewbox Grid.Row="0" Grid.Column="3">
+    <Viewbox Margin="5" Grid.Row="0" Grid.Column="3">
       <TextBlock Text="Settings"/>
     </Viewbox>
 
@@ -49,22 +49,24 @@
         <RowDefinition Height="1*"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="1*"/>
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
-      
-      <ToggleSwitch Grid.Row="0" Header="Show Main Instructions" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+
+      <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Tutorial Settings" FontSize="30"/>
+
+      <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Show Main Instructions" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled">
             <interactcore:InvokeCommandAction Command="{Binding ToggleMainInstructionsCommand}" />
           </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
-      <Button  Grid.Row="0" Grid.Column="1" Command="{Binding ShowMainInstructionsCommand}">
-        <TextBlock Text="Main Instruction Shortcut" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+      <Button  Grid.Row="2" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowMainInstructionsCommand}">
+        <TextBlock Text="Main Instructions Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
       </Button>
 
-      <ToggleSwitch Grid.Row="1" Header="Show Study Instructions" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Show Study Instructions" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleStudyInstructionsCommand}" />
@@ -72,10 +74,12 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
-      <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="We appreciate any and all feedback you can give so we can improve this app to better
+      <TextBlock Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Feedback" FontSize="30"/>
+
+      <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="We appreciate any and all feedback you can give so we can improve this app to better
 meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
       <Button x:Name="feedbackButton"  HorizontalAlignment="Left" VerticalAlignment="Top"
-            Grid.Row="4" Grid.Column="0" Command="{Binding LaunchFeedbackHubCommand}"
+            Grid.Row="2" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,
             Converter={StaticResource boolToVisibilityConverter}}">
         <TextBlock FontSize="16">
