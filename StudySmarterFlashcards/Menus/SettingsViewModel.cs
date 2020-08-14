@@ -14,6 +14,11 @@ namespace StudySmarterFlashcards.Menus
 {
   public class SettingsViewModel : BaseViewModel
   {
+    #region Fields
+    private bool prShowStudyInstructions;
+    private bool prShowMainInstructions;
+    #endregion
+
     #region Constructors
     public SettingsViewModel(INavigationService navigationService) : base(navigationService)
     {
@@ -37,8 +42,34 @@ namespace StudySmarterFlashcards.Menus
         return Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
       } 
     }
-    public bool ShowStudyInstructions { get; private set; }
-    public bool ShowMainInstructions { get; private set; }
+    public bool ShowStudyInstructions
+    {
+      get
+      {
+        return prShowStudyInstructions;
+      }
+      private set
+      {
+        if (value != prShowStudyInstructions) {
+          prShowStudyInstructions = value;
+          OnPropertyChanged();
+        }
+      }
+    }
+    public bool ShowMainInstructions
+    {
+      get
+      {
+        return prShowMainInstructions;
+      }
+      private set
+      {
+        if (value != prShowMainInstructions) {
+          prShowMainInstructions = value;
+          OnPropertyChanged();
+        }
+      }
+    }
     #endregion
 
     #region Public Methods
@@ -48,8 +79,6 @@ namespace StudySmarterFlashcards.Menus
       ShowStudyInstructions = showStudyInstructions == true ? true : false;
       bool? showMainInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] as bool?;
       ShowMainInstructions = showMainInstructions == true ? true : false;
-      OnPropertyChanged("ShowMainInstructions");
-      OnPropertyChanged("ShowStudyInstructions");
     }
     #endregion
 
@@ -70,14 +99,12 @@ namespace StudySmarterFlashcards.Menus
       ToggleSwitch toggleSwitch = args.OriginalSource as ToggleSwitch;
       Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] = toggleSwitch.IsOn;
       ShowStudyInstructions = toggleSwitch.IsOn;
-      OnPropertyChanged("ShowStudyInstructions");
     }
     private void ToggleMainInstructionsFunction(RoutedEventArgs args)
     {
       ToggleSwitch toggleSwitch = args.OriginalSource as ToggleSwitch;
       Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMainInstructionsDialog"] = toggleSwitch.IsOn;
-      ShowStudyInstructions = toggleSwitch.IsOn;
-      OnPropertyChanged("ShowMainInstructions");
+      ShowMainInstructions = toggleSwitch.IsOn;
     }
 
     private async void ShowMainInstructionsAction()

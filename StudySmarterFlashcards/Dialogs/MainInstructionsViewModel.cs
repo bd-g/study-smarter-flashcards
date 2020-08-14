@@ -22,6 +22,7 @@ namespace StudySmarterFlashcards.Dialogs
     #region Fields
     private bool dontShowAgain = false;
     #endregion
+
     #region Constructors
     public MainInstructionsViewModel() : base(null)
     {
