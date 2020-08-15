@@ -30,6 +30,7 @@ namespace StudySmarterFlashcards
         /// </summary>
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9");
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
