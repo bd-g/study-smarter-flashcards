@@ -21,7 +21,8 @@ namespace StudySmarterFlashcards.Menus
     {
       Messenger.Default.Register<CardSetModel>(this, "AddSet", async addedCardSet => await ReceiveEditSetMessage(addedCardSet));
       Messenger.Default.Register<CardSetModel>(this, "EditSet", async editedCardSet => await ReceiveEditSetMessage(editedCardSet));
-      AddSetCommand = new RelayCommand(AddSetAction);
+      AddEmptySetCommand = new RelayCommand(AddEmptySetAction);
+      ImportSetFromFileCommand = new RelayCommand(ImportSetFromFileAction);
       EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
       ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetFunction);
       DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
@@ -36,7 +37,8 @@ namespace StudySmarterFlashcards.Menus
     #region Properties
     public NotifyTaskCompletion<string> NumSetsLoaded { get; private set; }
     public ObservableCollection<CardSetModel> CardSets { get; private set; }
-    public RelayCommand AddSetCommand { get; private set; }
+    public RelayCommand AddEmptySetCommand { get; private set; }
+    public RelayCommand ImportSetFromFileCommand { get; private set; }
     public RelayCommand<CardSetModel> EditSetCommand { get; private set; }
     public RelayCommand<CardSetModel> ArchiveSetCommand { get; private set; }
     public RelayCommand<CardSetModel> DeleteSetCommand { get; private set; }
@@ -53,7 +55,12 @@ namespace StudySmarterFlashcards.Menus
       OnPropertyChanged("CardSets");
       return CardSets.Count + " set(s) loaded successfully";
     }
-    private void AddSetAction()
+    private void AddEmptySetAction()
+    {
+      prNavigationService.NavigateTo("EditSetPage");
+      Messenger.Default.Send<CardSetModel>(null, "EditSetView");
+    }
+    private void ImportSetFromFileAction()
     {
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send<CardSetModel>(null, "EditSetView");
