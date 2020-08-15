@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarSymbols;
 using StudySmarterFlashcards.Sets;
@@ -11,11 +12,14 @@ namespace StudySmarterFlashcards.ImportTools
   public static class ImportFlashcardService
   {
     #region Public Methods
-    public async static Task<CardSetModel> ImportFromFile(StorageFile storageFile)
+    public async static Task<CardSetModel> ImportFromFile(StorageFile storageFile, CancellationToken cancellationToken)
     {
       if (storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 5)).Equals(".xlsx")){
         ExcelEngine excelEngine = new ExcelEngine();
         IWorkbook workbook = await excelEngine.Excel.Workbooks.OpenAsync(await storageFile.OpenStreamForReadAsync());
+        if (cancellationToken.IsCancellationRequested) {
+          return null;
+        }
 
         VerifyExcelFileIsParseable(workbook);
 
@@ -26,6 +30,9 @@ namespace StudySmarterFlashcards.ImportTools
         int lastRow = usedRange.LastRow;
 
         for (int i = 2; i < lastRow + 1; i++) {
+          if (cancellationToken.IsCancellationRequested) {
+            return newCardSetModel;
+          }
           string cardTerm = usedRange[i, 1].Text;
           string cardDefinition = usedRange[i, 2].Text;
           bool overrideStarredValue = bool.TryParse(usedRange[i, 3].Text, out bool cardIsStarred);

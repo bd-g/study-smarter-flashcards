@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -72,9 +73,17 @@ namespace StudySmarterFlashcards.Menus
       StorageFile file = await openPicker.PickSingleFileAsync();
       if (file != null) {
         try {
-          CardSetModel importedCardSetModel = await ImportFlashcardService.ImportFromFile(file);
-          prNavigationService.NavigateTo("EditSetPage");
-          Messenger.Default.Send(importedCardSetModel, "EditSetView");
+          CancellationTokenSource cancelSource = new CancellationTokenSource();
+          Task<ContentDialogResult> loadingScreenTask = new LoadingDialog().ShowAsync().AsTask(cancelSource.Token);
+          Task<CardSetModel> importingTask = ImportFlashcardService.ImportFromFile(file, cancelSource.Token);
+
+          Task firstToFinish = await Task.WhenAny(loadingScreenTask, importingTask);
+          cancelSource.Cancel();
+          if (firstToFinish == importingTask) {
+            CardSetModel importedCardSetModel = await importingTask;
+            prNavigationService.NavigateTo("EditSetPage");
+            Messenger.Default.Send(importedCardSetModel, "EditSetView");
+          }         
         } catch (Exception ex) {
           await new MessageDialog(ex.Message).ShowAsync();
         }

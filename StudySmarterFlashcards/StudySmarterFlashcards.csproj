@@ -127,6 +127,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\LoadingDialog.xaml.cs">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\InstructionsDialogService.cs" />
     <Compile Include="Dialogs\MainInstructionsDialog.xaml.cs">
       <DependentUpon>MainInstructionsDialog.xaml</DependentUpon>
@@ -222,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\LoadingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\MainInstructionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

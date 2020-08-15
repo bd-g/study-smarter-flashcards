@@ -33,6 +33,7 @@
     <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,5">
       <TextBlock Text="Study Smarter Flashcards"/>
     </Viewbox>
+
     <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Vertical">
       <StackPanel.Resources>
         <Style TargetType="Button">
@@ -48,8 +49,8 @@
         </Viewbox>
         <Button.Flyout>
           <MenuFlyout Placement="Bottom">
-            <MenuFlyoutItem Text="Add empty set" Command="{Binding AddEmptySetCommand}"/>
-            <MenuFlyoutItem Text="Import set from file"  Command="{Binding ImportSetFromFileCommand}"/>
+            <MenuFlyoutItem Text="Add Empty Set" Command="{Binding AddEmptySetCommand}"/>
+            <MenuFlyoutItem Text="Import Set From File"  Command="{Binding ImportSetFromFileCommand}"/>
           </MenuFlyout>
         </Button.Flyout>
       </Button>
