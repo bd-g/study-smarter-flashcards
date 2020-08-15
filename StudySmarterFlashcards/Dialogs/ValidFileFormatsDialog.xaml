@@ -32,11 +32,11 @@
       <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=WordFile}">
         <TextBlock TextWrapping="WrapWholeWords" FontWeight="Bold" Text="Microsoft Word Files"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="- Bulleted list format"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="- Each bullet that is not indented will be treated as a seperate set"/>
+        <TextBlock Margin="0,5,0,0" TextWrapping="WrapWholeWords" Text="- Each bullet that is not indented will be treated as a seperate set"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="    - The text in that bullet point will be the set name"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="- Bullet points that are indented once will be treated as a single flashcard in the set"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="   - The text in these bullet points will be the text term"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="- Bullet points that are indented twice or more will be treated as the definition for the bullet point above them"/>
+        <TextBlock Margin="0,5,0,0" TextWrapping="WrapWholeWords" Text="- Bullet points that are indented once will be a single flashcard in the set"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="   - The text in these bullet points will be the card's term"/>
+        <TextBlock Margin="0,5,0,0" TextWrapping="WrapWholeWords" Text="- Bullet points that are indented twice or more will be treated as the definition for a card"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="   - You can have multiple bullet points indented twice or more, and they will be combined to form one long definition"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="   - Alternatively, if you don't have a definition bullet point for a card, you can include the definition in the term after a hypen (&#8211;)"/>
         <Image Margin="0,15,0,0" Source="/Assets/ValidWordFileFormat.png"/>
@@ -45,10 +45,9 @@
       <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=FutureSupportedFormats}">
         <TextBlock FontWeight="Bold" Text="Future Supported Formats"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="Development is underway to support the following import(s):"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft Word Documents"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Google Sheets"/>
         <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="Plans are set to eventually support the following import(s):"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="- Google Docs"/>
-        <TextBlock TextWrapping="WrapWholeWords" Text="- Google Sheets"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft OneNote files"/>
       </StackPanel>
 
