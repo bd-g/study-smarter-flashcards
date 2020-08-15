@@ -61,7 +61,7 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte) 
 
     - name: Build the solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=Always /p:BuildMode=StoreUpload /p:Configuration=Debug /p:PackageCertificateKeyFile=$env:SigningCertificate /restore
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=Always /p:BuildMode=StoreUpload /p:Configuration=Debug /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword="${{ secrets.SSF_TOKEN_PASSWORD }}" /restore
       env:
         AppxBunde: Always
         BuildMode: StoreUpload
@@ -69,6 +69,12 @@ jobs:
 
     - name: Remove the .pfx
       run: Remove-Item -Path $env:UWP_Project_Directory/$env:SigningCertificate
+      
+    - name: Get All Folders To Find Build Objects v2
+      id: getFolders
+      run: |	      
+        Get-ChildItem -Path .\$env:UWP_Project_Directory\ -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
+      shell: pwsh
 
     - name: VSTest
       run: vstest.console.exe /Platform:x64 .\$env:UWP_Test_Project_Directory\AppPackages\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_x86_Debug.appxsym
