@@ -2,8 +2,8 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarSymbols;
 using StudySmarterFlashcards.Sets;
+using Syncfusion.DocIO.DLS;
 using Syncfusion.XlsIO;
 using Windows.Storage;
 
@@ -50,9 +50,18 @@ namespace StudySmarterFlashcards.ImportTools
         }
 
         return newCardSetModel;
+      } else if (storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 5)).Equals(".docx") || storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 4)).Equals(".doc")) {
+        WordDocument wordDocument = new WordDocument(await storageFile.OpenStreamForReadAsync());
+        CardSetModel newCardSetModel = new CardSetModel();
+        foreach (WSection wSection in wordDocument.Sections) {
+          foreach (IWParagraph paragraph in wSection.Paragraphs) {
+          }
+          foreach (IWTable table in wSection.Tables) {
+
+          }
+
+        }
       }
-
-
       return null;
     }
     #endregion

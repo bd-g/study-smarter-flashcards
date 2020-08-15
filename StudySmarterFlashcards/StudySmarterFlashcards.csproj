@@ -292,6 +292,9 @@
     <PackageReference Include="NLog">
       <Version>4.7.3</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.DocIO.UWP">
+      <Version>18.2.0.48</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.XlsIO.UWP">
       <Version>18.2.0.48</Version>
     </PackageReference>

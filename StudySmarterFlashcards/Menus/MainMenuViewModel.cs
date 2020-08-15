@@ -69,6 +69,8 @@ namespace StudySmarterFlashcards.Menus
       openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
       openPicker.FileTypeFilter.Add(".xlsx");
       openPicker.FileTypeFilter.Add(".xls");
+      openPicker.FileTypeFilter.Add(".docx");
+      openPicker.FileTypeFilter.Add(".doc");
 
       StorageFile file = await openPicker.PickSingleFileAsync();
       if (file != null) {
