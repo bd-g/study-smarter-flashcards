@@ -85,7 +85,7 @@ namespace StudySmarterFlashcards.Sets
       if (indexToAddAt >= 0 && indexToAddAt <= FlashcardCollection.Count) {
         FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       } else {
-        FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
+        FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       }
     }
 

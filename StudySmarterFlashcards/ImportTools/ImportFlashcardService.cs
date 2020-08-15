@@ -28,17 +28,25 @@ namespace StudySmarterFlashcards.ImportTools
         worksheet.UsedRangeIncludesFormatting = false;
         IRange usedRange = worksheet.UsedRange;
         int lastRow = usedRange.LastRow;
+        bool thirdColumnIsStarred = worksheet.Range["C1"].Text.Contains("Star", StringComparison.CurrentCultureIgnoreCase);
+        int indexOfFirstUnstarredCard = 0;
 
         for (int i = 2; i < lastRow + 1; i++) {
           if (cancellationToken.IsCancellationRequested) {
             return newCardSetModel;
           }
-          string cardTerm = usedRange[i, 1].Text;
-          string cardDefinition = usedRange[i, 2].Text;
-          bool overrideStarredValue = bool.TryParse(usedRange[i, 3].Text, out bool cardIsStarred);
-          bool overrideLearnedValue = bool.TryParse(usedRange[i, 4].Text, out bool cardIsLearned);
+          string cardTerm = usedRange[i, 1].Value;
+          string cardDefinition = usedRange[i, 2].Value;
+          bool overrideStarredValue = bool.TryParse(usedRange[i, (thirdColumnIsStarred ? 3 : 4)].Value, out bool cardIsStarred);
+          bool overrideLearnedValue = bool.TryParse(usedRange[i, (thirdColumnIsStarred ? 4 : 3)].Value, out bool cardIsLearned);
 
-          newCardSetModel.AddCardToSet(cardTerm, cardDefinition, isLearned: overrideLearnedValue ? (bool?)cardIsLearned : null, isStarred:overrideStarredValue ? (bool?)cardIsStarred : null);
+          if (overrideStarredValue && !cardIsStarred) {
+            newCardSetModel.AddCardToSet(cardTerm, cardDefinition, isLearned: overrideLearnedValue ? (bool?)cardIsLearned : null, isStarred: overrideStarredValue ? (bool?)cardIsStarred : null);
+          } else {
+            newCardSetModel.AddCardToSet(cardTerm, cardDefinition, isLearned: overrideLearnedValue ? (bool?)cardIsLearned : null, isStarred: overrideStarredValue ? (bool?)cardIsStarred : null, indexOfFirstUnstarredCard);
+            indexOfFirstUnstarredCard++;
+          }
+
         }
 
         return newCardSetModel;
@@ -54,7 +62,7 @@ namespace StudySmarterFlashcards.ImportTools
     {
       if(workbook.Worksheets.Count > 0) {
         IWorksheet worksheet = workbook.Worksheets[0];
-        if (!worksheet.Range["A1"].Text.Contains("Term", StringComparison.CurrentCultureIgnoreCase) || !worksheet.Range["B1"].Text.Contains("Definition", StringComparison.CurrentCultureIgnoreCase)) {
+        if (!worksheet.Range["A1"].Value.Contains("Term", StringComparison.CurrentCultureIgnoreCase) || !worksheet.Range["B1"].Value.Contains("Definition", StringComparison.CurrentCultureIgnoreCase)) {
           throw new NotSupportedException(string.Format("Excel file is not in a supported format. The worksheet {0} doesn't contain the proper headers. Please review formatting rules for importing excel files.", worksheet.Name));
         }
       } else {
