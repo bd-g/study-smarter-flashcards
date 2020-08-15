@@ -5,9 +5,7 @@
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interact="using:Microsoft.Xaml.Interactivity"
-    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:utils="using:StudySmarterFlashcards.Utils" 
+    xmlns:converters="using:StudySmarterFlashcards.Converters" 
   mc:Ignorable="d"
     Title="Study Smarter Flashcards Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
@@ -16,11 +14,9 @@
     <local:MainInstructionsViewModel/>
   </ContentDialog.DataContext>
   <ContentDialog.Resources>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
-    <utils:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+    <converters:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
   </ContentDialog.Resources>
-
-
 
   <StackPanel>
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=Welcome}">
@@ -45,6 +41,16 @@
         <Run Text="or go to the settings page"/>
         <Run FontFamily="Segoe MDL2 Assets" Text="&#xE713;"/>
       </TextBlock>
+    </StackPanel>
+
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ImportInstructions}">
+      <TextBlock FontWeight="Bold" Text="Importing Sets"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Can currently import Excel files"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Excel file format must match below criteria"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="    - Top cell in first column labeled &quot;Terms&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="    - Top cell in second column labeled &quot;Definition&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="    - Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="        - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
     </StackPanel>
 
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=SetPage}">

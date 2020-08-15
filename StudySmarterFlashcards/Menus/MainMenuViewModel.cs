@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
+using StudySmarterFlashcards.ImportTools;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,7 +24,8 @@ namespace StudySmarterFlashcards.Menus
     {
       Messenger.Default.Register<CardSetModel>(this, "AddSet", async addedCardSet => await ReceiveEditSetMessage(addedCardSet));
       Messenger.Default.Register<CardSetModel>(this, "EditSet", async editedCardSet => await ReceiveEditSetMessage(editedCardSet));
-      AddSetCommand = new RelayCommand(AddSetAction);
+      AddEmptySetCommand = new RelayCommand(AddEmptySetAction);
+      ImportSetFromFileCommand = new RelayCommand(ImportSetFromFileAction);
       EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
       ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetFunction);
       DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
@@ -36,7 +40,8 @@ namespace StudySmarterFlashcards.Menus
     #region Properties
     public NotifyTaskCompletion<string> NumSetsLoaded { get; private set; }
     public ObservableCollection<CardSetModel> CardSets { get; private set; }
-    public RelayCommand AddSetCommand { get; private set; }
+    public RelayCommand AddEmptySetCommand { get; private set; }
+    public RelayCommand ImportSetFromFileCommand { get; private set; }
     public RelayCommand<CardSetModel> EditSetCommand { get; private set; }
     public RelayCommand<CardSetModel> ArchiveSetCommand { get; private set; }
     public RelayCommand<CardSetModel> DeleteSetCommand { get; private set; }
@@ -53,10 +58,36 @@ namespace StudySmarterFlashcards.Menus
       OnPropertyChanged("CardSets");
       return CardSets.Count + " set(s) loaded successfully";
     }
-    private void AddSetAction()
+    private void AddEmptySetAction()
     {
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send<CardSetModel>(null, "EditSetView");
+    }
+    private async void ImportSetFromFileAction()
+    {
+      FileOpenPicker openPicker = new FileOpenPicker();
+      openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+      openPicker.FileTypeFilter.Add(".xlsx");
+      openPicker.FileTypeFilter.Add(".xls");
+
+      StorageFile file = await openPicker.PickSingleFileAsync();
+      if (file != null) {
+        try {
+          CancellationTokenSource cancelSource = new CancellationTokenSource();
+          Task<ContentDialogResult> loadingScreenTask = new LoadingDialog().ShowAsync().AsTask(cancelSource.Token);
+          Task<CardSetModel> importingTask = ImportFlashcardService.ImportFromFile(file, cancelSource.Token);
+
+          Task firstToFinish = await Task.WhenAny(loadingScreenTask, importingTask);
+          cancelSource.Cancel();
+          if (firstToFinish == importingTask) {
+            CardSetModel importedCardSetModel = await importingTask;
+            prNavigationService.NavigateTo("EditSetPage");
+            Messenger.Default.Send(importedCardSetModel, "EditSetView");
+          }         
+        } catch (Exception ex) {
+          await new MessageDialog(ex.Message).ShowAsync();
+        }
+      }
     }
 
     private void GoToSetAction(ItemClickEventArgs args)

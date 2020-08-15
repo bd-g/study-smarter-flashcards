@@ -80,12 +80,12 @@ namespace StudySmarterFlashcards.Sets
                               this.WhenLastReviewedUTC, this.IsStarred);
     }
 
-    public void AddCardToSet(string cardTerm = "New Term", string cardDefinition = "New Definition", int indexToAddAt = -1)
+    public void AddCardToSet(string cardTerm = "New Term", string cardDefinition = "New Definition", bool? isLearned = null, bool? isStarred = null, int indexToAddAt = -1)
     {
       if (indexToAddAt >= 0 && indexToAddAt <= FlashcardCollection.Count) {
-        FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition));
+        FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       } else {
-        FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition));
+        FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       }
     }
 

@@ -11,7 +11,8 @@ namespace StudySmarterFlashcards.Dialogs
   public enum InstructionDialogType
   {
     BasicStudyInstructions,
-    MainInstructions
+    MainInstructions,
+    ValidFileFormats
   }
   #endregion
   public static class InstructionsDialogService
@@ -33,6 +34,8 @@ namespace StudySmarterFlashcards.Dialogs
           } else {
             return ContentDialogResult.None;
           }
+        case InstructionDialogType.ValidFileFormats:
+          return await new ValidFileFormatsDialog().ShowAsync();
         default:
           return ContentDialogResult.None;
       }

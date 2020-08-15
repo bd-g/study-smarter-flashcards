@@ -127,12 +127,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\LoadingDialog.xaml.cs">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\InstructionsDialogService.cs" />
     <Compile Include="Dialogs\MainInstructionsDialog.xaml.cs">
       <DependentUpon>MainInstructionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\MainInstructionsViewModel.cs" />
     <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
+    <Compile Include="Dialogs\ValidFileFormatsDialog.xaml.cs">
+      <DependentUpon>ValidFileFormatsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ValidFileFormatsViewModel.cs" />
+    <Compile Include="ImportTools\ImportFlashcardService.cs" />
     <Compile Include="Menus\MainMenuViewModel.cs" />
     <Compile Include="Menus\MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
@@ -157,17 +165,17 @@
     </Compile>
     <Compile Include="Study\BasicStudyViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
-    <Compile Include="Utils\BooleanToBackgroundConverter.cs" />
-    <Compile Include="Utils\BooleanToStarFillConverter.cs" />
-    <Compile Include="Utils\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Utils\EqualityToVisibilityConverter.cs" />
+    <Compile Include="Converters\BooleanToBackgroundConverter.cs" />
+    <Compile Include="Converters\BooleanToStarFillConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\EqualityToVisibilityConverter.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
     <Compile Include="Dialogs\StudyInstructionsDialog.xaml.cs">
       <DependentUpon>StudyInstructionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
-    <Compile Include="Utils\StringFormatConverter.cs" />
+    <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Utils\TaskUtils.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
   </ItemGroup>
@@ -208,6 +216,7 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\ValidExcelFileFormat.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -221,7 +230,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\LoadingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\MainInstructionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ValidFileFormatsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -258,10 +275,10 @@
       <Version>10.1901.28001</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.4.2</Version>
+      <Version>2.4.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
@@ -273,7 +290,10 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.2</Version>
+      <Version>4.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.XlsIO.UWP">
+      <Version>18.2.0.48</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -285,9 +305,6 @@
   <ItemGroup>
     <SDKReference Include="Microsoft.Services.Store.Engagement, Version=10.0">
       <Name>Microsoft Engagement Framework</Name>
-    </SDKReference>
-    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
-      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

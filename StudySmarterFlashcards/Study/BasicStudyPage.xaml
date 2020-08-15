@@ -6,14 +6,15 @@
     xmlns:interact="using:Microsoft.Xaml.Interactivity"
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utils="using:StudySmarterFlashcards.Utils"
+    xmlns:converters="using:StudySmarterFlashcards.Converters"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <utils:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-    <utils:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
+
   <interact:Interaction.Behaviors>
     <interactcore:EventTriggerBehavior EventName="KeyUp" >
       <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
