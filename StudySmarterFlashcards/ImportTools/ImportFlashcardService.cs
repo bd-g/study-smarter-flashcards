@@ -14,7 +14,7 @@ namespace StudySmarterFlashcards.ImportTools
     #region Public Methods
     public async static Task<CardSetModel> ImportFromFile(StorageFile storageFile, CancellationToken cancellationToken)
     {
-      if (storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 5)).Equals(".xlsx")){
+      if (storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 5)).Equals(".xlsx") || storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 4)).Equals(".xls")) {
         ExcelEngine excelEngine = new ExcelEngine();
         IWorkbook workbook = await excelEngine.Excel.Workbooks.OpenAsync(await storageFile.OpenStreamForReadAsync());
         if (cancellationToken.IsCancellationRequested) {
@@ -60,10 +60,10 @@ namespace StudySmarterFlashcards.ImportTools
     #region Private Methods
     private static void VerifyExcelFileIsParseable(IWorkbook workbook)
     {
-      if(workbook.Worksheets.Count > 0) {
+      if (workbook.Worksheets.Count > 0) {
         IWorksheet worksheet = workbook.Worksheets[0];
         if (!worksheet.Range["A1"].Value.Contains("Term", StringComparison.CurrentCultureIgnoreCase) || !worksheet.Range["B1"].Value.Contains("Definition", StringComparison.CurrentCultureIgnoreCase)) {
-          throw new NotSupportedException(string.Format("Excel file is not in a supported format. The worksheet {0} doesn't contain the proper headers. Please review formatting rules for importing excel files.", worksheet.Name));
+          throw new NotSupportedException(string.Format("Excel file is not in a supported format. The worksheet \"{0}\" doesn't contain the proper headers.\n\nMake sure the first column's topmost cell is labeled \"Terms\", the second column's topmost cell is labeled \"Definitions\", and the third and fourth columns (if included) are labeled \"Starred\" and \"Learned\" and values are only \"true\" or \"false\".", worksheet.Name));
         }
       } else {
         throw new NotSupportedException("Excel file needs to contain at least one worksheet.");

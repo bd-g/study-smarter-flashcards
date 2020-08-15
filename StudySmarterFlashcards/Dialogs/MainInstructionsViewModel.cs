@@ -13,6 +13,7 @@ namespace StudySmarterFlashcards.Dialogs
   {
     Welcome,
     MainMenu,
+    ImportInstructions,
     SetPage,
     EditSetPage
   }

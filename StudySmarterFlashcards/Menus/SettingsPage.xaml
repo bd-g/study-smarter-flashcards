@@ -77,7 +77,7 @@
       <TextBlock Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Feedback" FontSize="30"/>
 
       <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="We appreciate any and all feedback you can give so we can improve this app to better
-meet your needs. To submit feedback, click the button below and fill out the form in  the window that appears." TextWrapping="WrapWholeWords"/>
+meet your needs. To submit feedback, click the button below and fill out the form in the window that appears." TextWrapping="WrapWholeWords"/>
       <Button x:Name="feedbackButton"  HorizontalAlignment="Left" VerticalAlignment="Top"
             Grid.Row="2" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,

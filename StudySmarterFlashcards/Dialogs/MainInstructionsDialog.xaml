@@ -43,6 +43,16 @@
       </TextBlock>
     </StackPanel>
 
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ImportInstructions}">
+      <TextBlock FontWeight="Bold" Text="Importing Sets"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Can currently import Excel files"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Excel file format must match below criteria"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="  - Top cell in first column labeled &quot;Terms&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="  - Top cell in second column labeled &quot;Definition&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="  - Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="    - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
+    </StackPanel>
+
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=SetPage}">
       <TextBlock FontWeight="Bold" Text="Set Page"/>
       <TextBlock TextWrapping="WrapWholeWords" Text="- Displays each card in a given flashcard set"/>

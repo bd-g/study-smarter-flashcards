@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,6 +68,7 @@ namespace StudySmarterFlashcards.Menus
       FileOpenPicker openPicker = new FileOpenPicker();
       openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
       openPicker.FileTypeFilter.Add(".xlsx");
+      openPicker.FileTypeFilter.Add(".xls");
 
       StorageFile file = await openPicker.PickSingleFileAsync();
       if (file != null) {
