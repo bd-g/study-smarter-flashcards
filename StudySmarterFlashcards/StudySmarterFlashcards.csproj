@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="Dialogs\MainInstructionsViewModel.cs" />
     <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
+    <Compile Include="ImportTools\ImportFlashcardService.cs" />
     <Compile Include="Menus\MainMenuViewModel.cs" />
     <Compile Include="Menus\MainMenuPage.xaml.cs">
       <DependentUpon>MainMenuPage.xaml</DependentUpon>
@@ -251,6 +252,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EPPlus">
+      <Version>5.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
@@ -285,9 +289,6 @@
   <ItemGroup>
     <SDKReference Include="Microsoft.Services.Store.Engagement, Version=10.0">
       <Name>Microsoft Engagement Framework</Name>
-    </SDKReference>
-    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
-      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
