@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,14 +78,14 @@ namespace StudySmarterFlashcards.Menus
         try {
           CancellationTokenSource cancelSource = new CancellationTokenSource();
           Task<ContentDialogResult> loadingScreenTask = new LoadingDialog().ShowAsync().AsTask(cancelSource.Token);
-          Task<CardSetModel> importingTask = ImportFlashcardService.ImportFromFile(file, cancelSource.Token);
+          Task<List<CardSetModel>> importingTask = ImportFlashcardService.ImportFromFile(file, cancelSource.Token);
 
           Task firstToFinish = await Task.WhenAny(loadingScreenTask, importingTask);
           cancelSource.Cancel();
           if (firstToFinish == importingTask) {
-            CardSetModel importedCardSetModel = await importingTask;
+            List<CardSetModel> newImportedCardSetModels = await importingTask;
             prNavigationService.NavigateTo("EditSetPage");
-            Messenger.Default.Send(importedCardSetModel, "EditSetView");
+            Messenger.Default.Send(newImportedCardSetModels, "EditSetView");
           }         
         } catch (Exception ex) {
           await new MessageDialog(ex.Message).ShowAsync();

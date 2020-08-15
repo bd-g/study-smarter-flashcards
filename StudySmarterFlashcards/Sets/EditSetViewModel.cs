@@ -8,6 +8,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using System.Collections.Generic;
+using Syncfusion.DocIO.DLS;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -17,9 +19,11 @@ namespace StudySmarterFlashcards.Sets
     public EditSetViewModel(INavigationService navigationService) : base(navigationService)
     {
       Messenger.Default.Register<CardSetModel>(this, "EditSetView", cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<List<CardSetModel>>(this, "EditSetView", cardSetModels => InitializeSetPage(cardSetModels));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       CancelCommand = new RelayCommand(CancelAction);
-      SaveCommand = new RelayCommand(SaveAction);
+      NextImportedSetWithoutSavingCommand = new RelayCommand(NextImportedSetWithoutSavingAction);
+      SaveCommand = new RelayCommand(() => SaveAction());
       AddCardCommand = new RelayCommand(AddCardAction);
       StarCardCommand = new RelayCommand<IndividualCardModel>(StarCardFunction);
       DeleteCardCommand = new RelayCommand<IndividualCardModel>(DeleteCardFunction);
@@ -31,12 +35,27 @@ namespace StudySmarterFlashcards.Sets
     public bool IsCreatingNewSet { get; private set; } = true;
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand CancelCommand { get; private set; }
+    public RelayCommand NextImportedSetWithoutSavingCommand { get; private set; }
     public RelayCommand SaveCommand { get; private set; }
     public RelayCommand AddCardCommand { get; private set; }
     public RelayCommand<IndividualCardModel> StarCardCommand { get; private set; }
     public RelayCommand<IndividualCardModel> DeleteCardCommand { get; private set; }
     public CardSetModel OriginalFlashCardSet { get; private set; } = new CardSetModel();
     public CardSetModel TempFlashCardSet { get; private set; } = new CardSetModel();
+    public List<CardSetModel> ImportedFlashcardSets { get; private set; } = null;
+    public bool HasMultipleSetsToEdit { get; private set; }
+    public int NumImportedSets { 
+      get
+      {
+        return ImportedFlashcardSets == null ? -1 : ImportedFlashcardSets.Count;
+      } 
+    }
+    public int IndexOfImportedSet { get; private set; }
+    public int IndexOfImportedSetDisplay { get
+      {
+        return IndexOfImportedSet + 1;
+      } 
+    }
     public string TempName
     {
       get {
@@ -100,7 +119,7 @@ namespace StudySmarterFlashcards.Sets
       messageDialog.CancelCommandIndex = 2;
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
-        SaveAction();
+        SaveAction(goingHomeAfter:true);
         prNavigationService.NavigateTo("MainMenuPage");
       } else if (cmdResult.Label == "No") {
         prNavigationService.NavigateTo("MainMenuPage");
@@ -119,6 +138,38 @@ namespace StudySmarterFlashcards.Sets
         TempFlashCardSet = new CardSetModel();
         IsCreatingNewSet = true;
       }
+      HasMultipleSetsToEdit = false;
+      ImportedFlashcardSets = null;
+      IndexOfImportedSet = -1;
+      OnPropertyChanged("HasMultipleSetsToEdit");
+      OnPropertyChanged("ImportedFlashcardSets");
+      OnPropertyChanged("IndexOfImportedSet");
+      OnPropertyChanged("IndexOfImportedSetDisplay");
+      OnPropertyChanged("OriginalFlashCardSet");
+      OnPropertyChanged("TempFlashCardSet");
+      OnPropertyChanged("IsCreatingNewSet");
+    }
+    private void InitializeSetPage(List<CardSetModel> cardSetModels)
+    {
+      if (cardSetModels != null && cardSetModels.Count > 0) {
+        OriginalFlashCardSet = null;
+        ImportedFlashcardSets = cardSetModels;
+        TempFlashCardSet = cardSetModels[0];
+        IndexOfImportedSet = 0;
+        IsCreatingNewSet = true;
+        HasMultipleSetsToEdit = true;
+      } else {
+        OriginalFlashCardSet = null;
+        ImportedFlashcardSets = null;
+        TempFlashCardSet = new CardSetModel();
+        IsCreatingNewSet = true;
+        HasMultipleSetsToEdit = false;
+      }
+      OnPropertyChanged("HasMultipleSetsToEdit");
+      OnPropertyChanged("ImportedFlashcardSets");
+      OnPropertyChanged("NumImportedSets");
+      OnPropertyChanged("IndexOfImportedSet");
+      OnPropertyChanged("IndexOfImportedSetDisplay");
       OnPropertyChanged("OriginalFlashCardSet");
       OnPropertyChanged("TempFlashCardSet");
       OnPropertyChanged("IsCreatingNewSet");
@@ -181,7 +232,7 @@ namespace StudySmarterFlashcards.Sets
     {
       TempFlashCardSet.RemoveCardFromSet(cardlToDelete);  
     }
-    private async void SaveAction()
+    private async void SaveAction(bool goingHomeAfter = false)
     {
       if (OriginalFlashCardSet != null) {
         if (!PerformValidation()) {
@@ -221,13 +272,55 @@ namespace StudySmarterFlashcards.Sets
             OriginalFlashCardSet.FlashcardCollection.Move(indexInOriginal, i);
           }
         }
-      } else {
+      } else if (ImportedFlashcardSets == null) {
         OriginalFlashCardSet = TempFlashCardSet;
+      } else {
+        NextImportedSetAction(true, goingHomeAfter);
+        return;        
       }
 
       prNavigationService.NavigateTo("SetPage");
       Messenger.Default.Send(OriginalFlashCardSet, "SetView");
       Messenger.Default.Send(OriginalFlashCardSet, "EditSet");
+    }
+
+    private void NextImportedSetAction(bool saveBeforeProceeding, bool goingHomeAfter)
+    {
+      if (saveBeforeProceeding) {
+        Messenger.Default.Send(TempFlashCardSet, "EditSet");
+      }
+
+      if (goingHomeAfter) {
+        return;
+      }
+
+      if (++IndexOfImportedSet < ImportedFlashcardSets.Count) {
+        TempFlashCardSet = ImportedFlashcardSets[IndexOfImportedSet];
+        OnPropertyChanged("IndexOfImportedSet");
+        OnPropertyChanged("IndexOfImportedSetDisplay");
+        OnPropertyChanged("TempFlashCardSet");
+        return;
+      } else {
+        ImportedFlashcardSets = null;
+        prNavigationService.NavigateTo("SetPage");
+        Messenger.Default.Send(TempFlashCardSet, "SetView");
+      }
+    }
+
+    private async void NextImportedSetWithoutSavingAction()
+    {
+      MessageDialog messageDialog = new MessageDialog("Do you want to save before proceeding?");
+      messageDialog.Commands.Add(new UICommand("Yes", null));
+      messageDialog.Commands.Add(new UICommand("No", null));
+      messageDialog.Commands.Add(new UICommand("Cancel", null));
+      messageDialog.DefaultCommandIndex = 0;
+      messageDialog.CancelCommandIndex = 2;
+      IUICommand cmdResult = await messageDialog.ShowAsync();
+      if (cmdResult.Label == "Yes") {
+        NextImportedSetAction(true);
+      } else if (cmdResult.Label == "No") {
+        NextImportedSetAction(false);
+      }
     }
 
     private bool PerformValidation()

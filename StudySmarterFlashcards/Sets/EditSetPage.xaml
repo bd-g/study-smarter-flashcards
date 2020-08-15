@@ -80,6 +80,13 @@
           <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74E;"/>
         </Viewbox>
       </Button>
+      <Button Command="{Binding NextImportedSetWithoutSavingCommand}" Visibility="{Binding HasMultipleSetsToEdit, Converter={StaticResource boolToVisibilityConverter}}"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Go To Next Imported Set">
+        <Viewbox>
+          <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72A;"/>
+        </Viewbox>
+      </Button>
       <Button Command="{Binding CancelCommand}"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Cancel">
@@ -88,6 +95,14 @@
         </Viewbox>
       </Button>
     </StackPanel>
+
+    <TextBlock Grid.Row="2" Grid.Column="3" Visibility="{Binding HasMultipleSetsToEdit, Converter={StaticResource boolToVisibilityConverter}}">
+      <Run Text="Set "/>
+      <Run Text="{Binding IndexOfImportedSetDisplay}"/>
+      <Run Text=" of "/>
+      <Run Text="{Binding NumImportedSets}"/>
+      <Run Text=" imported sets"/>
+    </TextBlock>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="{ThemeResource SystemAccentColor}"
             BorderThickness="3" CornerRadius="25">
