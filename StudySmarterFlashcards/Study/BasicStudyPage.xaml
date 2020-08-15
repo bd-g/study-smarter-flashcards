@@ -80,7 +80,7 @@
             </interactcore:EventTriggerBehavior>
           </interact:Interaction.Behaviors>
           <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="20"
-                   Text="{Binding CurrentSideShowing}"/>
+                   Text="{Binding CurrentSideShowing}" TextWrapping="WrapWholeWords"/>
         </ScrollViewer>
         <CheckBox VerticalAlignment="Bottom" HorizontalAlignment="Right"
                   Margin="15" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
