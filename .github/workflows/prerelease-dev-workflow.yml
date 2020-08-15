@@ -1,13 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Create new pre-release
 
 on:
   push:
     tags: 'v*'
-    #branches: [ master ]
-  #pull_request:
-    #branches: [ master ]
 
 jobs:
   build-and-test:
@@ -53,28 +48,22 @@ jobs:
         $testManifest.Package.Identity.Version = "${{steps.getVersion.outputs.version}}"
         $testManifest.save(".\$env:UWP_Test_Project_Directory\Package.appxmanifest")
 
-    - name: Decode the PFX Base 64 String
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.SSF_TOKEN }}")
-        $currentDirectory = Get-Location
-        $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:UWP_Project_Directory -AdditionalChildPath $env:SigningCertificate
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte) 
+    # - name: Decode the PFX Base 64 String
+    #   run: |
+    #     $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.SSF_TOKEN }}")
+    #     $currentDirectory = Get-Location
+    #     $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:UWP_Project_Directory -AdditionalChildPath $env:SigningCertificate
+    #     [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte) 
 
     - name: Build the solution
-      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=Always /p:BuildMode=StoreUpload /p:Configuration=Debug /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword="${{ secrets.SSF_TOKEN_PASSWORD }}" /restore
+      run: msbuild $env:Solution_Path /p:Platform=x86 /p:AppxBundle=Always /p:BuildMode=StoreUpload /p:Configuration=Debug /restore ##/p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword="${{ secrets.SSF_TOKEN_PASSWORD }}" /restore
       env:
         AppxBunde: Always
         BuildMode: StoreUpload
         Configuration: Debug
 
-    - name: Remove the .pfx
-      run: Remove-Item -Path $env:UWP_Project_Directory/$env:SigningCertificate
-      
-    - name: Get All Folders To Find Build Objects v2
-      id: getFolders
-      run: |	      
-        Get-ChildItem -Path .\$env:UWP_Project_Directory\ -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
-      shell: pwsh
+    # - name: Remove the .pfx
+    #   run: Remove-Item -Path $env:UWP_Project_Directory/$env:SigningCertificate
 
     - name: VSTest
       run: vstest.console.exe /Platform:x64 .\$env:UWP_Test_Project_Directory\AppPackages\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_Debug_Test\StudySmarterFlashcardsTests_${{steps.getVersion.outputs.version}}_x86_Debug.appxsym
