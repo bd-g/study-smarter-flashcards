@@ -15,6 +15,9 @@ namespace StudySmarterFlashcards.Sets
 {
   public class EditSetViewModel : BaseViewModel
   {
+    #region Fields
+    private int prIndexOfLastImportSaved = -1;
+    #endregion
     #region Constructors
     public EditSetViewModel(INavigationService navigationService) : base(navigationService)
     {
@@ -158,6 +161,7 @@ namespace StudySmarterFlashcards.Sets
         IndexOfImportedSet = 0;
         IsCreatingNewSet = true;
         HasMultipleSetsToEdit = true;
+        prIndexOfLastImportSaved = -1;
       } else {
         OriginalFlashCardSet = null;
         ImportedFlashcardSets = null;
@@ -284,10 +288,11 @@ namespace StudySmarterFlashcards.Sets
       Messenger.Default.Send(OriginalFlashCardSet, "EditSet");
     }
 
-    private void NextImportedSetAction(bool saveBeforeProceeding, bool goingHomeAfter)
+    private void NextImportedSetAction(bool saveBeforeProceeding, bool goingHomeAfter = false)
     {
       if (saveBeforeProceeding) {
         Messenger.Default.Send(TempFlashCardSet, "EditSet");
+        prIndexOfLastImportSaved = ImportedFlashcardSets.IndexOf(TempFlashCardSet);
       }
 
       if (goingHomeAfter) {
@@ -296,14 +301,20 @@ namespace StudySmarterFlashcards.Sets
 
       if (++IndexOfImportedSet < ImportedFlashcardSets.Count) {
         TempFlashCardSet = ImportedFlashcardSets[IndexOfImportedSet];
+        TempName = TempFlashCardSet.Name;
+        TempDescription = TempFlashCardSet.Description;
         OnPropertyChanged("IndexOfImportedSet");
         OnPropertyChanged("IndexOfImportedSetDisplay");
         OnPropertyChanged("TempFlashCardSet");
         return;
       } else {
+        if (prIndexOfLastImportSaved > -1) {
+          prNavigationService.NavigateTo("SetPage");
+          Messenger.Default.Send(ImportedFlashcardSets[prIndexOfLastImportSaved], "SetView");
+        } else {
+          prNavigationService.NavigateTo("MainMenuPage");
+        }
         ImportedFlashcardSets = null;
-        prNavigationService.NavigateTo("SetPage");
-        Messenger.Default.Send(TempFlashCardSet, "SetView");
       }
     }
 

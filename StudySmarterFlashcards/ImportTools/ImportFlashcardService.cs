@@ -36,8 +36,8 @@ namespace StudySmarterFlashcards.ImportTools
             if (cancellationToken.IsCancellationRequested) {
               return null;
             }
-            string cardTerm = usedRange[i, 1].Value;
-            string cardDefinition = usedRange[i, 2].Value;
+            string cardTerm = usedRange[i, 1].Value.Trim();
+            string cardDefinition = usedRange[i, 2].Value.Trim();
             bool overrideStarredValue = bool.TryParse(usedRange[i, (thirdColumnIsStarred ? 3 : 4)].Value, out bool cardIsStarred);
             bool overrideLearnedValue = bool.TryParse(usedRange[i, (thirdColumnIsStarred ? 4 : 3)].Value, out bool cardIsLearned);
 
@@ -57,16 +57,47 @@ namespace StudySmarterFlashcards.ImportTools
         WordDocument wordDocument = new WordDocument(await storageFile.OpenStreamForReadAsync());
 
         VerifyWordFileIsParseable(wordDocument);
-        CardSetModel newCardSetModel = new CardSetModel();
+        List<CardSetModel> newCardSetModels = new List<CardSetModel>();
         foreach (WSection wSection in wordDocument.Sections) {
-          foreach (IWParagraph paragraph in wSection.Paragraphs) {
-
+          int baseListDepth = 0;
+          string tmpTerm = "";
+          string tmpDefinition = "";
+          if (wSection.Paragraphs.Count > 0) {
+            baseListDepth = wSection.Paragraphs[0].ListFormat.ListLevelNumber;
           }
-          foreach (IWTable table in wSection.Tables) {
-
+          for (int i = 0; i < wSection.Paragraphs.Count; i++) {
+            IWParagraph paragraph = wSection.Paragraphs[i];
+            if (string.IsNullOrWhiteSpace(paragraph.Text)) {
+              continue;
+            }
+            if (paragraph.ListFormat.ListLevelNumber == baseListDepth) {
+              newCardSetModels.Add(new CardSetModel(name:paragraph.Text));
+            } else {
+              int peekNextListDepth = (paragraph.NextSibling is IWParagraph) ? (paragraph.NextSibling as IWParagraph).ListFormat.ListLevelNumber : -1;
+              if (paragraph.ListFormat.ListLevelNumber == baseListDepth + 1) {
+                tmpTerm = paragraph.Text;
+                if (peekNextListDepth < baseListDepth + 2) {
+                  int indexOfHyphen = Math.Max(tmpTerm.IndexOf('-'), tmpTerm.IndexOf((char)8211));
+                  if (indexOfHyphen > -1) {
+                    tmpDefinition = (indexOfHyphen > -1 ? tmpTerm.Substring(indexOfHyphen) : "").Substring(1);
+                    tmpTerm = tmpTerm.Substring(0, (indexOfHyphen > -1 ? indexOfHyphen - 1 : tmpTerm.Length));
+                  }
+                  newCardSetModels[newCardSetModels.Count - 1].AddCardToSet(tmpTerm.Trim(), tmpDefinition.Trim());
+                  tmpTerm = "";
+                  tmpDefinition = "";
+                }
+              } else if (paragraph.ListFormat.ListLevelNumber > baseListDepth + 1) {
+                tmpDefinition = tmpDefinition + (string.IsNullOrWhiteSpace(tmpDefinition) ? "" : "\n") + paragraph.Text;
+                if (peekNextListDepth < baseListDepth + 2) {
+                  newCardSetModels[newCardSetModels.Count - 1].AddCardToSet(tmpTerm.Trim(), tmpDefinition.Trim());
+                  tmpTerm = "";
+                  tmpDefinition = "";
+                }
+              }
+            }
           }
-
         }
+        return newCardSetModels;
       }
       return null;
     }
@@ -89,6 +120,17 @@ namespace StudySmarterFlashcards.ImportTools
     {
       if (wordDocument.Sections.Count < 1) {
         throw new NotSupportedException("Word file needs to have content to import");
+      }
+      foreach(WSection wSection in wordDocument.Sections) {
+        int baseListDepth = 0;
+        if (wSection.Paragraphs.Count > 0) {
+          baseListDepth = wSection.Paragraphs[0].ListFormat.ListLevelNumber;
+        }
+        foreach (IWParagraph paragraph in wSection.Paragraphs) {
+          if (paragraph.ListFormat.ListLevelNumber < baseListDepth) {
+            throw new NotSupportedException("Word file is in invalid format. Make sure your topmost line (set name) is all the way to the left and the terms and definitions underneath it are indented properly. See settings page for more details on formatting word documents for import.");
+          }
+        }
       }
     }
     #endregion

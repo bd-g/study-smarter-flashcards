@@ -96,12 +96,12 @@
       </Button>
     </StackPanel>
 
-    <TextBlock Grid.Row="2" Grid.Column="3" Visibility="{Binding HasMultipleSetsToEdit, Converter={StaticResource boolToVisibilityConverter}}">
-      <Run Text="Set "/>
+    <TextBlock Grid.Row="2" Grid.Column="3" FontSize="20" VerticalAlignment="Center" Visibility="{Binding HasMultipleSetsToEdit, Converter={StaticResource boolToVisibilityConverter}}">
+      <Run Text="Set"/>
       <Run Text="{Binding IndexOfImportedSetDisplay}"/>
-      <Run Text=" of "/>
+      <Run Text="out of"/>
       <Run Text="{Binding NumImportedSets}"/>
-      <Run Text=" imported sets"/>
+      <Run Text="imported sets"/>
     </TextBlock>
 
     <Border Grid.Row="1" Grid.Column="3" BorderBrush="{ThemeResource SystemAccentColor}"
