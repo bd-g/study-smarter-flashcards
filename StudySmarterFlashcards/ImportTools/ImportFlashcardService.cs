@@ -63,7 +63,7 @@ namespace StudySmarterFlashcards.ImportTools
       if (workbook.Worksheets.Count > 0) {
         IWorksheet worksheet = workbook.Worksheets[0];
         if (!worksheet.Range["A1"].Value.Contains("Term", StringComparison.CurrentCultureIgnoreCase) || !worksheet.Range["B1"].Value.Contains("Definition", StringComparison.CurrentCultureIgnoreCase)) {
-          throw new NotSupportedException(string.Format("Excel file is not in a supported format. The worksheet \"{0}\" doesn't contain the proper headers.\n\nMake sure the first column's topmost cell is labeled \"Terms\", the second column's topmost cell is labeled \"Definitions\", and the third and fourth columns (if included) are labeled \"Starred\" and \"Learned\" and values are only \"true\" or \"false\".", worksheet.Name));
+          throw new NotSupportedException(string.Format("Excel file is not in a supported format. The worksheet \"{0}\" doesn't contain the proper headers.\n\nMake sure the first column's topmost cell is labeled \"Terms\", the second column's topmost cell is labeled \"Definitions\", and the third and fourth columns (if included) are labeled \"Starred\" and \"Learned\" and values are only \"true\" or \"false\".\n\nSee settings page for more details, including pictures of valid formats.", worksheet.Name));
         }
       } else {
         throw new NotSupportedException("Excel file needs to contain at least one worksheet.");

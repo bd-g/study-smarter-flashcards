@@ -74,6 +74,10 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
+      <Button  Grid.Row="4" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowValidFileFormatsCommand}">
+        <TextBlock Text="Detailed Formatting Instructions For Importing New Sets" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+      </Button>
+
       <TextBlock Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Feedback" FontSize="30"/>
 
       <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="We appreciate any and all feedback you can give so we can improve this app to better

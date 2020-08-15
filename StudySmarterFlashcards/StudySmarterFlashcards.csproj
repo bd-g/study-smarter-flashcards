@@ -136,6 +136,10 @@
     </Compile>
     <Compile Include="Dialogs\MainInstructionsViewModel.cs" />
     <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
+    <Compile Include="Dialogs\ValidFileFormatsDialog.xaml.cs">
+      <DependentUpon>ValidFileFormatsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ValidFileFormatsViewModel.cs" />
     <Compile Include="ImportTools\ImportFlashcardService.cs" />
     <Compile Include="Menus\MainMenuViewModel.cs" />
     <Compile Include="Menus\MainMenuPage.xaml.cs">
@@ -212,6 +216,7 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\ValidExcelFileFormat.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -230,6 +235,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\MainInstructionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ValidFileFormatsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

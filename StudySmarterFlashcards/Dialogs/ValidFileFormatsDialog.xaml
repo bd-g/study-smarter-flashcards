@@ -1,0 +1,51 @@
+﻿<ContentDialog
+    x:Class="StudySmarterFlashcards.Dialogs.ValidFileFormatsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudySmarterFlashcards.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:StudySmarterFlashcards.Converters" 
+  mc:Ignorable="d"
+    Title="Valid Import File Formats"
+    CloseButtonText="Close">
+  <ContentDialog.DataContext>
+    <local:ValidFileFormatsViewModel/>
+  </ContentDialog.DataContext>
+  <ContentDialog.Resources>
+    <converters:BooleanToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+    <converters:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
+  </ContentDialog.Resources>
+
+  <StackPanel>
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ExcelFile}">
+      <TextBlock TextWrapping="WrapWholeWords" FontWeight="Bold" Text="Microsoft Excel Files"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in first column labeled &quot;Terms&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in second column labeled &quot;Definition&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="    - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
+      <Image Margin="0,15,0,0" Source="/Assets/ValidExcelFileFormat.png"/>
+    </StackPanel>
+
+    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=FutureSupportedFormats}">
+      <TextBlock FontWeight="Bold" Text="Future Supported Formats"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="Development is underway to support the following import(s):"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft Word Documents"/>
+      <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="Plans are set to eventually support the following import(s):"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Google Docs"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Google Sheets"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft OneNote files"/>
+    </StackPanel>
+
+    <Grid Margin="0,30,0,15">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" HorizontalAlignment="Left" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
+                Visibility="{Binding HasPreviousContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+      <Button Grid.Column="1" HorizontalAlignment="Right" Content="Next" Command="{Binding GoToNextContentCommand}"
+                Visibility="{Binding HasNextContent, Converter={StaticResource boolToVisiblityConverter}}"/>
+    </Grid>
+  </StackPanel>
+</ContentDialog>
