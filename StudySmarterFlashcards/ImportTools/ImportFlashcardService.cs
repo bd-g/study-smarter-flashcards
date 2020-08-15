@@ -52,6 +52,8 @@ namespace StudySmarterFlashcards.ImportTools
         return newCardSetModel;
       } else if (storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 5)).Equals(".docx") || storageFile.Name.Substring(Math.Max(0, storageFile.Name.Length - 4)).Equals(".doc")) {
         WordDocument wordDocument = new WordDocument(await storageFile.OpenStreamForReadAsync());
+
+        VerifyWordFileIsParseable(wordDocument);
         CardSetModel newCardSetModel = new CardSetModel();
         foreach (WSection wSection in wordDocument.Sections) {
           foreach (IWParagraph paragraph in wSection.Paragraphs) {
@@ -76,6 +78,13 @@ namespace StudySmarterFlashcards.ImportTools
         }
       } else {
         throw new NotSupportedException("Excel file needs to contain at least one worksheet.");
+      }
+    }
+
+    private static void VerifyWordFileIsParseable(WordDocument wordDocument)
+    {
+      if (wordDocument.Sections.Count < 1) {
+        throw new NotSupportedException("Word file needs to have content to import");
       }
     }
     #endregion
