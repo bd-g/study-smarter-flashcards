@@ -17,35 +17,51 @@
     <converters:EqualityToVisibilityConverter x:Key="equalityToVisibilityConverter"/>
   </ContentDialog.Resources>
 
-  <StackPanel>
-    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ExcelFile}">
-      <TextBlock TextWrapping="WrapWholeWords" FontWeight="Bold" Text="Microsoft Excel Files"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in first column labeled &quot;Terms&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in second column labeled &quot;Definition&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="    - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
-      <Image Margin="0,15,0,0" Source="/Assets/ValidExcelFileFormat.png"/>
-    </StackPanel>
+  <ScrollViewer>
+    <StackPanel>
+      <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ExcelFile}">
+        <TextBlock TextWrapping="WrapWholeWords" FontWeight="Bold" Text="Microsoft Excel Files"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Each worksheet is converted into its own set (worksheets are the tabs at the bottom)"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in first column labeled &quot;Terms&quot;"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Top cell in second column labeled &quot;Definition&quot;"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="    - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
+        <Image Margin="0,15,0,0" Source="/Assets/ValidExcelFileFormat.png"/>
+      </StackPanel>
 
-    <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=FutureSupportedFormats}">
-      <TextBlock FontWeight="Bold" Text="Future Supported Formats"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="Development is underway to support the following import(s):"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft Word Documents"/>
-      <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="Plans are set to eventually support the following import(s):"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Google Docs"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Google Sheets"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft OneNote files"/>
-    </StackPanel>
+      <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=WordFile}">
+        <TextBlock TextWrapping="WrapWholeWords" FontWeight="Bold" Text="Microsoft Word Files"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Bulleted list format"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Each bullet that is not indented will be treated as a seperate set"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="    - The text in that bullet point will be the set name"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Bullet points that are indented once will be treated as a single flashcard in the set"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="   - The text in these bullet points will be the text term"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Bullet points that are indented twice or more will be treated as the definition for the bullet point above them"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="   - You can have multiple bullet points indented twice or more, and they will be combined to form one long definition"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="   - Alternatively, if you don't have a definition bullet point for a card, you can include the definition in the term after a hypen (&#8211;)"/>
+        <Image Margin="0,15,0,0" Source="/Assets/ValidWordFileFormat.png"/>
+      </StackPanel>
 
-    <Grid Margin="0,30,0,15">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="1*"/>
-        <ColumnDefinition Width="1*"/>
-      </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" HorizontalAlignment="Left" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
+      <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=FutureSupportedFormats}">
+        <TextBlock FontWeight="Bold" Text="Future Supported Formats"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="Development is underway to support the following import(s):"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft Word Documents"/>
+        <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="Plans are set to eventually support the following import(s):"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Google Docs"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Google Sheets"/>
+        <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft OneNote files"/>
+      </StackPanel>
+
+      <Grid Margin="0,30,0,15">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" HorizontalAlignment="Left" Content="Previous" Command="{Binding GoToPreviousContentCommand}" 
                 Visibility="{Binding HasPreviousContent, Converter={StaticResource boolToVisiblityConverter}}"/>
-      <Button Grid.Column="1" HorizontalAlignment="Right" Content="Next" Command="{Binding GoToNextContentCommand}"
+        <Button Grid.Column="1" HorizontalAlignment="Right" Content="Next" Command="{Binding GoToNextContentCommand}"
                 Visibility="{Binding HasNextContent, Converter={StaticResource boolToVisiblityConverter}}"/>
-    </Grid>
-  </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
 </ContentDialog>

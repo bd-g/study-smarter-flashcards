@@ -122,8 +122,9 @@ namespace StudySmarterFlashcards.Sets
       messageDialog.CancelCommandIndex = 2;
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
-        SaveAction(goingHomeAfter:true);
-        prNavigationService.NavigateTo("MainMenuPage");
+        if(await SaveAction(goingHomeAfter: true)) {
+          prNavigationService.NavigateTo("MainMenuPage");
+        }
       } else if (cmdResult.Label == "No") {
         prNavigationService.NavigateTo("MainMenuPage");
         TempFlashCardSet = null;
@@ -236,12 +237,12 @@ namespace StudySmarterFlashcards.Sets
     {
       TempFlashCardSet.RemoveCardFromSet(cardlToDelete);  
     }
-    private async void SaveAction(bool goingHomeAfter = false)
+    private async Task<bool> SaveAction(bool goingHomeAfter = false)
     {
       if (OriginalFlashCardSet != null) {
         if (!PerformValidation()) {
           await new MessageDialog("Set name and\\or description are too long.").ShowAsync();
-          return;
+          return false;
         }
         OriginalFlashCardSet.Name = TempFlashCardSet.Name;
         OriginalFlashCardSet.Description = TempFlashCardSet.Description;
@@ -277,26 +278,34 @@ namespace StudySmarterFlashcards.Sets
           }
         }
       } else if (ImportedFlashcardSets == null) {
+        if (!PerformValidation()) {
+          await new MessageDialog("Set name and\\or description are too long.").ShowAsync();
+          return false;
+        }
         OriginalFlashCardSet = TempFlashCardSet;
       } else {
-        NextImportedSetAction(true, goingHomeAfter);
-        return;        
+        return await NextImportedSetAction(true, goingHomeAfter); 
       }
 
       prNavigationService.NavigateTo("SetPage");
       Messenger.Default.Send(OriginalFlashCardSet, "SetView");
       Messenger.Default.Send(OriginalFlashCardSet, "EditSet");
+      return true;
     }
 
-    private void NextImportedSetAction(bool saveBeforeProceeding, bool goingHomeAfter = false)
+    private async Task<bool> NextImportedSetAction(bool saveBeforeProceeding, bool goingHomeAfter = false)
     {
       if (saveBeforeProceeding) {
+        if (!PerformValidation()) {
+          await new MessageDialog("Set name and\\or description are too long.").ShowAsync();
+          return false;
+        }
         Messenger.Default.Send(TempFlashCardSet, "EditSet");
         prIndexOfLastImportSaved = ImportedFlashcardSets.IndexOf(TempFlashCardSet);
       }
 
       if (goingHomeAfter) {
-        return;
+        return true;
       }
 
       if (++IndexOfImportedSet < ImportedFlashcardSets.Count) {
@@ -306,7 +315,6 @@ namespace StudySmarterFlashcards.Sets
         OnPropertyChanged("IndexOfImportedSet");
         OnPropertyChanged("IndexOfImportedSetDisplay");
         OnPropertyChanged("TempFlashCardSet");
-        return;
       } else {
         if (prIndexOfLastImportSaved > -1) {
           prNavigationService.NavigateTo("SetPage");
@@ -316,6 +324,7 @@ namespace StudySmarterFlashcards.Sets
         }
         ImportedFlashcardSets = null;
       }
+      return true;
     }
 
     private async void NextImportedSetWithoutSavingAction()
@@ -328,9 +337,9 @@ namespace StudySmarterFlashcards.Sets
       messageDialog.CancelCommandIndex = 2;
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
-        NextImportedSetAction(true);
+        await NextImportedSetAction(true);
       } else if (cmdResult.Label == "No") {
-        NextImportedSetAction(false);
+        await NextImportedSetAction(false);
       }
     }
 
