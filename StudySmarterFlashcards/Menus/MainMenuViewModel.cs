@@ -6,8 +6,11 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
+using StudySmarterFlashcards.ImportTools;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -60,10 +63,22 @@ namespace StudySmarterFlashcards.Menus
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send<CardSetModel>(null, "EditSetView");
     }
-    private void ImportSetFromFileAction()
+    private async void ImportSetFromFileAction()
     {
-      prNavigationService.NavigateTo("EditSetPage");
-      Messenger.Default.Send<CardSetModel>(null, "EditSetView");
+      FileOpenPicker openPicker = new FileOpenPicker();
+      openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+      openPicker.FileTypeFilter.Add(".xlsx");
+
+      StorageFile file = await openPicker.PickSingleFileAsync();
+      if (file != null) {
+        try {
+          CardSetModel importedCardSetModel = await ImportFlashcardService.ImportFromFile(file);
+          prNavigationService.NavigateTo("EditSetPage");
+          Messenger.Default.Send(importedCardSetModel, "EditSetView");
+        } catch (Exception ex) {
+          await new MessageDialog(ex.Message).ShowAsync();
+        }
+      }
     }
 
     private void GoToSetAction(ItemClickEventArgs args)

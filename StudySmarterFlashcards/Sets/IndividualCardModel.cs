@@ -8,12 +8,12 @@ namespace StudySmarterFlashcards.Sets
   public class IndividualCardModel
   {
     #region Constructors
-    public IndividualCardModel(string term = "New Term", string definition = "New Definition", bool isLearned = false, bool isStarred = true)
+    public IndividualCardModel(string term = "New Term", string definition = "New Definition", bool? isLearned = false, bool? isStarred = true)
     {
       Term = term;
       Definition = definition;
-      IsLearned = isLearned;
-      IsStarred = isStarred;
+      IsLearned = isLearned == null ? false : (bool)isLearned;
+      IsStarred = isStarred == null ? true : (bool)isStarred;
     }
     
     [JsonConstructor]
