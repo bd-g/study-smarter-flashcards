@@ -68,7 +68,7 @@ jobs:
     - name: Get All Folders To Find Build Objects 
       id: getFolders	     
       run: |	   
-        Get-ChildItem -Path .\$env:UWP_Project_Directory\AppPackages -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName	  
+        Get-ChildItem -Path .\$env:UWP_Project_Directory\AppPackages -Recurse -Force -ErrorAction SilentlyContinue | Select-Object Name	  
       shell: pwsh
 
     - name: VSTest
