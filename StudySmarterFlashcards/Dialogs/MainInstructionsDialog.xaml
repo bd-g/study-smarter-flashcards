@@ -36,7 +36,7 @@
         <Run Text="each set with respective buttons"/>
       </TextBlock>
       <TextBlock TextWrapping="WrapWholeWords">
-        <Run Text="- Buttons on right side to add a new set"/>
+        <Run Text="- Buttons on right side to add/import a new set"/>
         <Run FontFamily="Segoe MDL2 Assets" Text="&#xECC8;"/>
         <Run Text="or go to the settings page"/>
         <Run FontFamily="Segoe MDL2 Assets" Text="&#xE713;"/>
@@ -45,12 +45,9 @@
 
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=ImportInstructions}">
       <TextBlock FontWeight="Bold" Text="Importing Sets"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Can currently import Excel files"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="- Excel file format must match below criteria"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="    - Top cell in first column labeled &quot;Terms&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="    - Top cell in second column labeled &quot;Definition&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="    - Optional third and fourth columns labeled &quot;Starred&quot; and &quot;Learned&quot;"/>
-      <TextBlock TextWrapping="WrapWholeWords" Text="        - Starred and Learned values must be either &quot;true&quot; or &quot;false&quot;"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- Can currently import Excel and Word files"/>
+      <TextBlock TextWrapping="WrapWholeWords" Text="- When imported, you will be directed to edit each set found in the file and either discard or save the imports"/>
+      <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="- See Settings page for details on required formatting and future supported formats"/>
     </StackPanel>
 
     <StackPanel Visibility="{Binding CurrentContent, Converter={StaticResource equalityToVisibilityConverter}, ConverterParameter=SetPage}">

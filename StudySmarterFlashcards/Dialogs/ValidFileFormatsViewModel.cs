@@ -12,6 +12,7 @@ namespace StudySmarterFlashcards.Dialogs
   public enum ValidFileFormats
   {
     ExcelFile,
+    WordFile,
     FutureSupportedFormats
   }
   #endregion

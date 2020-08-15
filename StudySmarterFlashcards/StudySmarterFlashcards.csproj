@@ -217,6 +217,7 @@
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\ValidExcelFileFormat.png" />
+    <Content Include="Assets\ValidWordFileFormat.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -291,6 +292,9 @@
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.DocIO.UWP">
+      <Version>18.2.0.48</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.XlsIO.UWP">
       <Version>18.2.0.48</Version>
