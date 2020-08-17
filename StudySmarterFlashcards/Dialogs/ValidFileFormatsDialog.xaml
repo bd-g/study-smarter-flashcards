@@ -48,6 +48,7 @@
         <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="Plans are set to eventually support the following import(s):"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="- Google Docs"/>
         <TextBlock TextWrapping="WrapWholeWords" Text="- Microsoft OneNote files"/>
+        <TextBlock Margin="0,15,0,0" TextWrapping="WrapWholeWords" Text="If you would like to see other formats supported, please submit use the feedback button to let us know!"/>
       </StackPanel>
 
       <Grid Margin="0,30,0,15">
