@@ -55,7 +55,7 @@
 
       <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Tutorial Settings" FontSize="30"/>
 
-      <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Show Main Instructions" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Show Main Tutorial" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled">
             <interactcore:InvokeCommandAction Command="{Binding ToggleMainInstructionsCommand}" />
@@ -63,10 +63,10 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
       <Button  Grid.Row="2" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowMainInstructionsCommand}">
-        <TextBlock Text="Main Instructions Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+        <TextBlock Text="Main Tutorial Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
       </Button>
 
-      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Show Study Instructions" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Show Study Tutorial" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleStudyInstructionsCommand}" />
