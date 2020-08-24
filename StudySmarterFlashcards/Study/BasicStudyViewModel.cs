@@ -109,6 +109,7 @@ namespace StudySmarterFlashcards.Study
       if (PreviousFlashcardIndexes.Count > 0) {
         CurrentFlashcardIndex = PreviousFlashcardIndexes.Pop();
       }
+      IsShowingTerm = true;
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
