@@ -18,6 +18,8 @@ namespace StudySmarterFlashcards.Study
   {
     #region Fields
     private static readonly Random prRandom = new Random();
+    private static readonly object myLocker = new object();
+    private static bool prCanUseKeyDown = true;
     #endregion
 
     #region Constructors
@@ -71,7 +73,12 @@ namespace StudySmarterFlashcards.Study
 
     #region Public Methods
     public void KeyDownFunction(object sender, KeyEventArgs args)
-    {      
+    {
+      lock (myLocker) {
+        if (!prCanUseKeyDown) {
+          return;
+        }
+      }
       switch (args.VirtualKey) {
         case Windows.System.VirtualKey.Right:
           GoToNextFlashcard();
@@ -119,7 +126,13 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("CurrentFlashcard");
       OnPropertyChanged("HasPreviousFlashcards");
 
+      lock (myLocker) {
+        prCanUseKeyDown = false;
+      }
       await InstructionsDialogService.ShowAsync(InstructionDialogType.BasicStudyInstructions);
+      lock (myLocker) {
+        prCanUseKeyDown = true;
+      }
     }
 
     private void BackAction()
