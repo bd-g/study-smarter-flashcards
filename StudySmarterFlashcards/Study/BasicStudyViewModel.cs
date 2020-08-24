@@ -9,6 +9,7 @@ using Microsoft.Toolkit.Uwp.UI.Extensions;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
@@ -29,7 +30,6 @@ namespace StudySmarterFlashcards.Study
       GoToPreviousFlashcardCommand = new RelayCommand(GoToPreviousFlashcard);
       FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
       SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
-      KeyDownCommand = new RelayCommand<KeyRoutedEventArgs>(KeyDownFunction);
       MouseDownOnCardCommand = new RelayCommand<TappedRoutedEventArgs>(MouseDownOnCardFunction);
     }
     #endregion
@@ -41,7 +41,6 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
     public RelayCommand FlipFlashcardCommand { get; private set; }
     public RelayCommand SwitchShuffleModeCommand { get; private set; }
-    public RelayCommand<KeyRoutedEventArgs> KeyDownCommand { get; private set; }
     public RelayCommand<TappedRoutedEventArgs> MouseDownOnCardCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
@@ -68,6 +67,30 @@ namespace StudySmarterFlashcards.Study
       } 
     }
     public bool IsShuffleMode { get; set; } = true;
+    #endregion
+
+    #region Public Methods
+    public void KeyDownFunction(object sender, KeyEventArgs args)
+    {      
+      switch (args.VirtualKey) {
+        case Windows.System.VirtualKey.Right:
+          GoToNextFlashcard();
+          break;
+        case Windows.System.VirtualKey.Left:
+          GoToPreviousFlashcard();
+          break;
+        case Windows.System.VirtualKey.Up:
+        case Windows.System.VirtualKey.Down:
+          FlipFlashcardAction();
+          break;
+        case Windows.System.VirtualKey.S:
+          SwitchShuffleModeAction();
+          break;
+        case Windows.System.VirtualKey.L:
+          SwitchCardIsLearned();
+          break;
+      }
+    }
     #endregion
 
     #region Private Methods
@@ -138,29 +161,6 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("HasPreviousFlashcards");
       OnPropertyChanged("CurrentSideShowing");
     }
-
-    private void KeyDownFunction(KeyRoutedEventArgs args)
-    {
-      switch(args.Key) {
-        case Windows.System.VirtualKey.Right:
-          GoToNextFlashcard();
-          break;
-        case Windows.System.VirtualKey.Left:
-          GoToPreviousFlashcard();
-          break;
-        case Windows.System.VirtualKey.Up:
-        case Windows.System.VirtualKey.Down:
-          FlipFlashcardAction();
-          break;
-        case Windows.System.VirtualKey.S:
-          SwitchShuffleModeAction();
-          break;
-        case Windows.System.VirtualKey.L:
-          SwitchCardIsLearned();
-          break;
-      }
-    }
-
     private void FlipFlashcardAction()
     {
       IsShowingTerm = !IsShowingTerm;
@@ -177,6 +177,7 @@ namespace StudySmarterFlashcards.Study
     private void MouseDownOnCardFunction(TappedRoutedEventArgs args)
     {
       FlipFlashcardAction();
+      var tmp = FocusManager.GetFocusedElement();
     }
 
     private void SwitchCardIsLearned()

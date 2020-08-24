@@ -9,17 +9,13 @@
     xmlns:converters="using:StudySmarterFlashcards.Converters"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
+    Loaded="AttachUniversalKeyHandler"
+    Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
-
-  <interact:Interaction.Behaviors>
-    <interactcore:EventTriggerBehavior EventName="KeyUp" >
-      <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
-    </interactcore:EventTriggerBehavior>
-  </interact:Interaction.Behaviors>
 
   <Grid>
     <Grid.RowDefinitions>
@@ -62,7 +58,7 @@
 
     <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="4"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
-            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard" AccessKey="Ri">
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
       <Viewbox>
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE974;"/>
       </Viewbox>
@@ -74,9 +70,6 @@
           <interact:Interaction.Behaviors>
             <interactcore:EventTriggerBehavior EventName="Tapped" >
               <interactcore:InvokeCommandAction Command="{Binding MouseDownOnCardCommand}" />
-            </interactcore:EventTriggerBehavior>
-            <interactcore:EventTriggerBehavior EventName="KeyUp" >
-              <interactcore:InvokeCommandAction Command="{Binding KeyDownCommand}" />
             </interactcore:EventTriggerBehavior>
           </interact:Interaction.Behaviors>
           <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="20"
