@@ -70,11 +70,17 @@
     </Button>
 
     <Viewbox  Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Button Command="{Binding BasicStudyCommand}" BorderThickness="0">
+      <Button BorderThickness="0">
         <TextBlock>
-            <Run Text="Study"/>
-            <Run FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
+          <Run Text="Study"/>
+          <Run FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
         </TextBlock>
+        <Button.Flyout>
+          <MenuFlyout Placement="Top">
+            <MenuFlyoutItem Text="Flashcard Mode" Command="{Binding BasicStudyCommand}"/>
+            <MenuFlyoutItem Text="Fill in the Blank Mode"  Command="{Binding FillBlankStudyCommand}"/>
+          </MenuFlyout>
+        </Button.Flyout>
       </Button>
     </Viewbox>
 

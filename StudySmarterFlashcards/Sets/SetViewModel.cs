@@ -17,6 +17,7 @@ namespace StudySmarterFlashcards.Sets
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
       BasicStudyCommand = new RelayCommand(BasicStudyAction);
+      FillBlankStudyCommand = new RelayCommand(FillBlankStudyAction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
     #endregion
@@ -25,6 +26,7 @@ namespace StudySmarterFlashcards.Sets
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand EditCommand { get; private set; }
     public RelayCommand BasicStudyCommand { get; private set; }
+    public RelayCommand FillBlankStudyCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; } = new CardSetModel();
     public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
     public int SetColumnWidth { get; private set; } = 100;
@@ -84,6 +86,29 @@ namespace StudySmarterFlashcards.Sets
 
       prNavigationService.NavigateTo("BasicStudyPage");
       Messenger.Default.Send(FlashCardSet, "StudyView");
+      FlashCardSet.RegisterNewReviewSession();
+    }
+
+    private async void FillBlankStudyAction()
+    {
+      if (FlashCardSet.FlashcardCollection.Count == 0) {
+        await new MessageDialog("You can't study an empty flashcard set! Add some cards to study.").ShowAsync();
+        return;
+      }
+      bool containsStarredCard = false;
+      foreach (IndividualCardModel individualCard in FlashCardSet.FlashcardCollection) {
+        if (individualCard.IsStarred) {
+          containsStarredCard = true;
+          break;
+        }
+      }
+      if (!containsStarredCard) {
+        await new MessageDialog("There are no starred cards in this set. Star some cards to study them, and leave any cards you don't want to study yet unstarred.").ShowAsync();
+        return;
+      }
+
+      prNavigationService.NavigateTo("FillBlankStudyPage");
+      Messenger.Default.Send(FlashCardSet, "FillBlankStudyView");
       FlashCardSet.RegisterNewReviewSession();
     }
     #endregion

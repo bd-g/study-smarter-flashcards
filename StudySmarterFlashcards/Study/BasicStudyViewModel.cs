@@ -72,7 +72,7 @@ namespace StudySmarterFlashcards.Study
     #endregion
 
     #region Public Methods
-    public void KeyDownFunction(object sender, KeyEventArgs args)
+    public void KeyUpFunction(object sender, KeyEventArgs args)
     {
       lock (myLocker) {
         if (!prCanUseKeyDown) {
@@ -118,9 +118,11 @@ namespace StudySmarterFlashcards.Study
             IndexOfFirstUnstarredCard = i;
           }
         }
+        IsShuffleMode = true;
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
       }
+      OnPropertyChanged("IsShuffleMode");
       OnPropertyChanged("FlashCardSet");
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");

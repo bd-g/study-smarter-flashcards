@@ -173,6 +173,7 @@
     <Compile Include="Converters\BooleanToStarFillConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EqualityToVisibilityConverter.cs" />
+    <Compile Include="Utils\VirtualKeyExtensions.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
     <Compile Include="Dialogs\StudyInstructionsDialog.xaml.cs">
@@ -180,6 +181,7 @@
     </Compile>
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\TaskUtils.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
   </ItemGroup>

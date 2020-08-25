@@ -9,6 +9,8 @@
     xmlns:converters="using:StudySmarterFlashcards.Converters"
     DataContext="{Binding FillBlankStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
+    Loaded="AttachUniversalKeyHandler"
+    Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
@@ -30,6 +32,51 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
-    
+    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
+      </Viewbox>
+    </Button>
+    <Button Command="{Binding BackCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Back">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
+      </Viewbox>
+    </Button>
+
+    <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="4"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE974;"/>
+      </Viewbox>
+    </Button>
+
+    <Grid Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center">
+      <StackPanel x:Name="VisibleGuess" Orientation="Horizontal">
+        <TextBlock x:Name="VisiblePartialWord" xml:space="preserve" FontSize="30" Text="{Binding IncompleteWord}"/>
+        <TextBlock x:Name="VisibleFirstUnderscore" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesOne}"/>
+        <TextBlock x:Name="VisibleExtraUnderscores" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesTwoOrMore}"/>
+      </StackPanel>
+      <StackPanel x:Name="InvisibleGuess" Orientation="Horizontal">
+        <StackPanel.Resources>
+          <Storyboard x:Name="WrongAnswer">
+            <DoubleAnimation Storyboard.TargetName="InvisibleFirstUnderScoreBackground" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" 
+                             Duration="0:0:1" AutoReverse="True"/>
+          </Storyboard>
+        </StackPanel.Resources>
+        <TextBlock x:Name="InvisiblePartialWord" Opacity="0.0" xml:space="preserve" FontSize="30" Text="{Binding IncompleteWord}"/>
+        <Border x:Name="InvisibleFirstUnderScoreBackground" Background="Red" Opacity="0.0">
+          <TextBlock x:Name="InvisibleFirstUnderscore" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesOne}"/>
+        </Border>
+        <TextBlock x:Name="InvisibleExtraUnderscores" Opacity="0.0" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesTwoOrMore}"/>
+      </StackPanel>
+    </Grid>
+
+  <TextBlock x:Name="Definition" Grid.Row="1" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+               Text="{Binding CurrentFlashcard.Definition}"/>
   </Grid>
 </Page>

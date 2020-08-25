@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -8,6 +11,7 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
@@ -16,6 +20,9 @@ namespace StudySmarterFlashcards.Study
   {
     #region Fields
     private static readonly Random prRandom = new Random();
+    private int prNumCharsGuessed = 0;
+    private static readonly object myLocker = new object();
+    private static bool prCanUseKeyDown = true;
     #endregion
 
     #region Constructors
@@ -25,11 +32,6 @@ namespace StudySmarterFlashcards.Study
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
-      GoToPreviousFlashcardCommand = new RelayCommand(GoToPreviousFlashcard);
-      FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
-      SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
-      KeyDownCommand = new RelayCommand<KeyRoutedEventArgs>(KeyDownFunction);
-      MouseDownOnCardCommand = new RelayCommand<TappedRoutedEventArgs>(MouseDownOnCardFunction);
     }
     #endregion
 
@@ -37,23 +39,62 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand BackCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
-    public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
-    public RelayCommand FlipFlashcardCommand { get; private set; }
-    public RelayCommand SwitchShuffleModeCommand { get; private set; }
-    public RelayCommand<KeyRoutedEventArgs> KeyDownCommand { get; private set; }
-    public RelayCommand<TappedRoutedEventArgs> MouseDownOnCardCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
-    private int IndexOfFirstUnstarredCard { get; set; }
-    public bool IsShowingTerm { get; private set; } = true;
-    public string CurrentSideShowing
+    public int NumCharsGuessed
     {
       get
       {
-        return IsShowingTerm ? CurrentFlashcard.Term : CurrentFlashcard.Definition;
+        return prNumCharsGuessed;
+      }
+      private set
+      {
+        if (prNumCharsGuessed != value) {
+          prNumCharsGuessed = value;
+          OnPropertyChanged();
+          OnPropertyChanged("IncompleteWord");
+          OnPropertyChanged("EmptySpacesOne");
+          OnPropertyChanged("EmptySpacesTwoOrMore");
+          OnPropertyChanged("IsWordIncomplete");
+        }
       }
     }
-
+    public string IncompleteWord {
+      get
+      {
+        return CurrentFlashcard.Term.Substring(0, Math.Min(NumCharsGuessed, CurrentFlashcard.Term.Length));
+      } 
+    }
+    public string EmptySpacesOne
+    {
+      get
+      {
+        if (NumCharsGuessed < CurrentFlashcard.Term.Length) {
+          return "_ ";
+        } else {
+          return "";
+        }
+      }
+    }
+     public string EmptySpacesTwoOrMore
+    {
+      get
+      {
+        if (NumCharsGuessed < CurrentFlashcard.Term.Length - 1) {
+          return "_ ".Repeat(CurrentFlashcard.Term.Length - NumCharsGuessed - 1);
+        } else {
+          return "";
+        }
+      }
+    }
+    public bool IsWordIncomplete
+    {
+      get
+      {
+        return NumCharsGuessed < CurrentFlashcard.Term.Length;
+      }
+    }
+    private int IndexOfFirstUnstarredCard { get; set; }
     public IndividualCardModel CurrentFlashcard
     {
       get
@@ -61,15 +102,28 @@ namespace StudySmarterFlashcards.Study
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
-    public Stack<int> PreviousFlashcardIndexes { get; private set; }
-    public bool HasPreviousFlashcards
+    #endregion
+
+    #region Public Methods
+    public void KeyDownFunction(object sender, KeyEventArgs args)
     {
-      get
-      {
-        return PreviousFlashcardIndexes.Count > 0;
+      lock (myLocker) {
+        if (!prCanUseKeyDown) {
+          return;
+        }
+      }
+      switch (args.VirtualKey) {
+        case Windows.System.VirtualKey.Right:
+          GoToNextFlashcard();
+          break;
+        default:
+          string unicode = args.VirtualKey.KeyCodeToUnicode();
+          if (!string.IsNullOrWhiteSpace(unicode)) {
+            AttemptLetterGuess(unicode[0]);
+          }
+          break;
       }
     }
-    public bool IsShuffleMode { get; set; } = true;
     #endregion
 
     #region Private Methods
@@ -83,22 +137,27 @@ namespace StudySmarterFlashcards.Study
       if (cardSetModel != null && cardSetModel.FlashcardCollection.Count > 0) {
         FlashCardSet = cardSetModel;
         CurrentFlashcardIndex = 0;
-        PreviousFlashcardIndexes = new Stack<int>();
         IndexOfFirstUnstarredCard = cardSetModel.FlashcardCollection.Count;
         for (int i = 0; i < cardSetModel.FlashcardCollection.Count; i++) {
           if (!cardSetModel.FlashcardCollection[i].IsStarred) {
             IndexOfFirstUnstarredCard = i;
           }
         }
+        NumCharsGuessed = 0;
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
-      }
+      }      
       OnPropertyChanged("FlashCardSet");
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
-      OnPropertyChanged("HasPreviousFlashcards");
 
+      lock (myLocker) {
+        prCanUseKeyDown = false;
+      }
       await InstructionsDialogService.ShowAsync(InstructionDialogType.BasicStudyInstructions);
+      lock (myLocker) {
+        prCanUseKeyDown = true;
+      }
     }
 
     private void BackAction()
@@ -106,84 +165,36 @@ namespace StudySmarterFlashcards.Study
       prNavigationService.GoBack();
     }
 
-    private void GoToPreviousFlashcard()
-    {
-      if (PreviousFlashcardIndexes.Count > 0) {
-        CurrentFlashcardIndex = PreviousFlashcardIndexes.Pop();
-      }
-      OnPropertyChanged("CurrentFlashcardIndex");
-      OnPropertyChanged("CurrentFlashcard");
-      OnPropertyChanged("HasPreviousFlashcards");
-      OnPropertyChanged("CurrentSideShowing");
-    }
-
     private void GoToNextFlashcard()
     {
       int currentIndex = CurrentFlashcardIndex;
-      if (IsShuffleMode) {
-        int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
-        if (currentIndex != nextIndex) {
-          CurrentFlashcardIndex = nextIndex;
-        } else if (nextIndex > 0) {
-          CurrentFlashcardIndex = nextIndex - 1;
-        } else {
-          CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
-        }
+
+      int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
+      if (currentIndex != nextIndex) {
+        CurrentFlashcardIndex = nextIndex;
+      } else if (nextIndex > 0) {
+        CurrentFlashcardIndex = nextIndex - 1;
       } else {
-        CurrentFlashcardIndex = (currentIndex + 1) % IndexOfFirstUnstarredCard;
+        CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
       }
-      IsShowingTerm = true;
-      PreviousFlashcardIndexes.Push(currentIndex);
+
+      NumCharsGuessed = 0;
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
-      OnPropertyChanged("HasPreviousFlashcards");
-      OnPropertyChanged("CurrentSideShowing");
     }
 
-    private void KeyDownFunction(KeyRoutedEventArgs args)
+    private void AttemptLetterGuess(char charGuessed)
     {
-      switch (args.Key) {
-        case Windows.System.VirtualKey.Right:
-          GoToNextFlashcard();
-          break;
-        case Windows.System.VirtualKey.Left:
-          GoToPreviousFlashcard();
-          break;
-        case Windows.System.VirtualKey.Up:
-        case Windows.System.VirtualKey.Down:
-          FlipFlashcardAction();
-          break;
-        case Windows.System.VirtualKey.S:
-          SwitchShuffleModeAction();
-          break;
-        case Windows.System.VirtualKey.L:
-          SwitchCardIsLearned();
-          break;
+      if (NumCharsGuessed == CurrentFlashcard.Term.Length) {
+        return;
       }
-    }
 
-    private void FlipFlashcardAction()
-    {
-      IsShowingTerm = !IsShowingTerm;
-      OnPropertyChanged("IsShowingTerm");
-      OnPropertyChanged("CurrentSideShowing");
-    }
-
-    private void SwitchShuffleModeAction()
-    {
-      IsShuffleMode = !IsShuffleMode;
-      OnPropertyChanged("IsShuffleMode");
-    }
-
-    private void MouseDownOnCardFunction(TappedRoutedEventArgs args)
-    {
-      FlipFlashcardAction();
-    }
-
-    private void SwitchCardIsLearned()
-    {
-      CurrentFlashcard.IsLearned = !CurrentFlashcard.IsLearned;
-      OnPropertyChanged("CurrentFlashcard");
+      if (char.ToUpperInvariant(charGuessed) == char.ToUpperInvariant(CurrentFlashcard.Term[NumCharsGuessed])) {
+        NumCharsGuessed++;
+        Messenger.Default.Send(true, "CharacterGuess");
+      } else {
+        Messenger.Default.Send(false, "CharacterGuess");
+      }
     }
     #endregion
   }
