@@ -26,7 +26,7 @@ namespace StudySmarterFlashcards.Sets
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       CancelCommand = new RelayCommand(CancelAction);
       NextImportedSetWithoutSavingCommand = new RelayCommand(NextImportedSetWithoutSavingAction);
-      SaveCommand = new RelayCommand(() => SaveAction());
+      SaveCommand = new RelayCommand(async () => await SaveAction());
       AddCardCommand = new RelayCommand(AddCardAction);
       StarCardCommand = new RelayCommand<IndividualCardModel>(StarCardFunction);
       DeleteCardCommand = new RelayCommand<IndividualCardModel>(DeleteCardFunction);
