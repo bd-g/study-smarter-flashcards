@@ -78,8 +78,8 @@
         </TextBlock>
         <Button.Flyout>
           <MenuFlyout Placement="Top">
-            <MenuFlyoutItem Text="Flashcard Mode" Command="{Binding BasicStudyCommand}"/>
-            <MenuFlyoutItem Text="Fill in the Blank Mode"  Command="{Binding FillBlankStudyCommand}"/>
+            <MenuFlyoutItem HorizontalAlignment="Center" Text="Flashcard Mode" Command="{Binding BasicStudyCommand}"/>
+            <MenuFlyoutItem HorizontalAlignment="Center" Text="Fill in the Blank Mode"  Command="{Binding FillBlankStudyCommand}"/>
           </MenuFlyout>
         </Button.Flyout>
       </Button>

@@ -37,17 +37,26 @@ namespace StudySmarterFlashcards.Study
     public FillBlankStudyPage()
     {
       Messenger.Default.Register<bool>(this, "CharacterGuess", async (isGuessCorrect) => await MakeCharacterGuess(isGuessCorrect));
+      Messenger.Default.Register<bool>(this, "FillBlankHint", async (revealedWholeWord) => await AnimateHint(revealedWholeWord));
       this.InitializeComponent();
     }
     #endregion
 
     #region Private Methods
+    private async Task AnimateHint(bool revealedWholeWord)
+    {
+      if (!revealedWholeWord) {
+        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => SingleHintAnimation.BeginAsync());
+      } else {
+        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => RevealWordAnimation.BeginAsync());
+      }
+    }
     private async Task MakeCharacterGuess(bool isGuessCorrect)
     {
       if (!isGuessCorrect) {
-        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => WrongAnswer.BeginAsync());
+        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => WrongGuessAnimation.BeginAsync());
       } else {
-        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompleteAnswer.BeginAsync());
+        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompleteAnswerAnimation.BeginAsync());
       }
     }
     private void AttachUniversalKeyHandler(object sender, RoutedEventArgs e)

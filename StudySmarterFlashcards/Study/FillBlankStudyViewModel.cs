@@ -14,6 +14,7 @@ using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
@@ -25,6 +26,7 @@ namespace StudySmarterFlashcards.Study
     private int prNumCharsGuessed = 0;
     private static readonly object myLocker = new object();
     private static bool prCanUseKeyDown = true;
+    private static bool prUsedHint = false;
     #endregion
 
     #region Constructors
@@ -34,6 +36,9 @@ namespace StudySmarterFlashcards.Study
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
+      UseHintCommand = new RelayCommand(UseHintAction);
+      RevealEntireWordCommand = new RelayCommand(RevealEntireWordAction);
+      AdjustColumnSpanCommand = new RelayCommand<SizeChangedEventArgs>(AdjustColumnSpanAction);
     }
     #endregion
 
@@ -41,6 +46,9 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand BackCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
+    public RelayCommand UseHintCommand { get; private set; }
+    public RelayCommand RevealEntireWordCommand { get; private set; }
+    public RelayCommand<SizeChangedEventArgs> AdjustColumnSpanCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
     public int NumCharsGuessed
@@ -78,7 +86,7 @@ namespace StudySmarterFlashcards.Study
         }
       }
     }
-     public string EmptySpacesTwoOrMore
+    public string EmptySpacesTwoOrMore
     {
       get
       {
@@ -117,6 +125,8 @@ namespace StudySmarterFlashcards.Study
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
+    public int ColumnSpanLength { get; private set; } = 1;
+    public int ColumnNumber { get; private set; } = 5;
     #endregion
 
     #region Public Methods
@@ -130,7 +140,11 @@ namespace StudySmarterFlashcards.Study
       if (args != null) {
         switch (args.VirtualKey) {
           case Windows.System.VirtualKey.Right:
-            GoToNextFlashcard();
+            if (IsWordIncomplete) {
+              UseHintAction();
+            } else {
+              GoToNextFlashcard();
+            }
             break;
           default:
             string unicode = args.VirtualKey.KeyCodeToUnicode();
@@ -143,6 +157,7 @@ namespace StudySmarterFlashcards.Study
         VirtualKey virtualKey = (VirtualKey)sender;
         switch (virtualKey) {
           case Windows.System.VirtualKey.Enter:
+            RevealEntireWordAction();
             break;
           case Windows.System.VirtualKey.Space:
             break;
@@ -192,6 +207,9 @@ namespace StudySmarterFlashcards.Study
 
     private void GoToNextFlashcard()
     {
+      if (IsWordIncomplete) {
+        return;
+      }
       int currentIndex = CurrentFlashcardIndex;
 
       int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
@@ -203,6 +221,7 @@ namespace StudySmarterFlashcards.Study
         CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
       }
 
+      prUsedHint = false;
       NumCharsGuessed = 0;
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
@@ -215,16 +234,53 @@ namespace StudySmarterFlashcards.Study
       }
 
       if (char.ToUpperInvariant(charGuessed) == char.ToUpperInvariant(CurrentFlashcard.Term[NumCharsGuessed])) {
-        NumCharsGuessed++;
-        while (IsWordIncomplete && !char.IsLetterOrDigit(CurrentFlashcard.Term[NumCharsGuessed])) {
-          NumCharsGuessed++;
-        }
-        if (!IsWordIncomplete) {
-          Messenger.Default.Send(true, "CharacterGuess");
-        }
+        RevealNextLetter();
       } else {
         Messenger.Default.Send(false, "CharacterGuess");
       }
+    }
+
+    private void UseHintAction()
+    {
+      prUsedHint = true;
+      RevealNextLetter();
+      Messenger.Default.Send(false, "FillBlankHint");
+    }
+
+    private void RevealEntireWordAction()
+    {
+      if (IsWordIncomplete) {
+        prUsedHint = true;
+        NumCharsGuessed = CurrentFlashcard.Term.Length;
+        Messenger.Default.Send(true, "FillBlankHint");
+      }
+    }
+
+    private void RevealNextLetter()
+    {
+      NumCharsGuessed++;
+      while (IsWordIncomplete && !char.IsLetterOrDigit(CurrentFlashcard.Term[NumCharsGuessed])) {
+        NumCharsGuessed++;
+      }
+      if (!IsWordIncomplete && !prUsedHint) {
+        Messenger.Default.Send(true, "CharacterGuess");
+      }
+    }
+
+    private void AdjustColumnSpanAction(SizeChangedEventArgs args)
+    {
+      if (args.NewSize.Width < 500) {
+        ColumnSpanLength = 3;
+        ColumnNumber = 4;
+      } else if (args.NewSize.Width < 1000) {
+        ColumnSpanLength = 2;
+        ColumnNumber = 4;
+      } else {
+        ColumnSpanLength = 1;
+        ColumnNumber = 5;
+      }
+      OnPropertyChanged("ColumnSpanLength");
+      OnPropertyChanged("ColumnNumber");
     }
     #endregion
   }

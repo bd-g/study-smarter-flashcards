@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
+using StudySmarterFlashcards.Utils;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -98,6 +100,7 @@ namespace StudySmarterFlashcards.Sets
     {
       NumTimesReviewed++;
       WhenLastReviewedUTC = DateTime.UtcNow;
+      Messenger.Default.Send(this, "EditSet");
     }
 
     public override bool Equals(object obj)
