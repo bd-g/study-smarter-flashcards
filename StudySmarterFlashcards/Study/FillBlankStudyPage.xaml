@@ -3,17 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:interact="using:Microsoft.Xaml.Interactivity"
-    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     DataContext="{Binding FillBlankStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
     Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
     <Storyboard x:Name="WrongAnswer">
       <ColorAnimation Storyboard.TargetName="FirstUnderScoreBackground" Storyboard.TargetProperty="(Border.Background).Color"

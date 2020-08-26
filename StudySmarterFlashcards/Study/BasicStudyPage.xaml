@@ -7,13 +7,14 @@
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
     Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
 

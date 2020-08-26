@@ -171,7 +171,6 @@
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Converters\BooleanToBackgroundConverter.cs" />
     <Compile Include="Converters\BooleanToStarFillConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EqualityToVisibilityConverter.cs" />
     <Compile Include="Utils\VirtualKeyExtensions.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />

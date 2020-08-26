@@ -7,13 +7,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding SetInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter"/>
-    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:StringFormatConverter x:Key="DateStringWithTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy h:mm tt\}" Title="Last Reviewed" ConvertToLocalTime="True"/>
     <converters:StringFormatConverter x:Key="DateStringNoTimeConverter" StringFormat="\{0\}: \{1:dd MMMM yyyy\}" Title="Created" ConvertToLocalTime="False"/>
     <converters:StringFormatConverter x:Key="NumTimesReviewdConverter" StringFormat="\{0\}: \{1\}" Title="Number of Times Reviewed"/>
