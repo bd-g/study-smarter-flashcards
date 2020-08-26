@@ -15,6 +15,14 @@
   <Page.Resources>
     <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
+    <Storyboard x:Name="WrongAnswer">
+      <ColorAnimation Storyboard.TargetName="FirstUnderScoreBackground" Storyboard.TargetProperty="(Border.Background).Color"
+                      From="Transparent" To="Red" Duration="0:0:0.5" AutoReverse="True"/>
+    </Storyboard>
+    <Storyboard x:Name="CompleteAnswer">
+      <ColorAnimation Storyboard.TargetName="GuessBackground" Storyboard.TargetProperty="(Border.Background).Color"
+                      From="Transparent" To="LightGreen" Duration="0:0:0.5" AutoReverse="True"/>
+    </Storyboard>
   </Page.Resources>
 
   <Grid>
@@ -56,24 +64,15 @@
     </Button>
 
     <Grid Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center">
-      <StackPanel x:Name="VisibleGuess" Orientation="Horizontal">
-        <TextBlock x:Name="VisiblePartialWord" xml:space="preserve" FontSize="30" Text="{Binding IncompleteWord}"/>
-        <TextBlock x:Name="VisibleFirstUnderscore" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesOne}"/>
-        <TextBlock x:Name="VisibleExtraUnderscores" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesTwoOrMore}"/>
-      </StackPanel>
-      <StackPanel x:Name="InvisibleGuess" Orientation="Horizontal">
-        <StackPanel.Resources>
-          <Storyboard x:Name="WrongAnswer">
-            <DoubleAnimation Storyboard.TargetName="InvisibleFirstUnderScoreBackground" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" 
-                             Duration="0:0:1" AutoReverse="True"/>
-          </Storyboard>
-        </StackPanel.Resources>
-        <TextBlock x:Name="InvisiblePartialWord" Opacity="0.0" xml:space="preserve" FontSize="30" Text="{Binding IncompleteWord}"/>
-        <Border x:Name="InvisibleFirstUnderScoreBackground" Background="Red" Opacity="0.0">
-          <TextBlock x:Name="InvisibleFirstUnderscore" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesOne}"/>
-        </Border>
-        <TextBlock x:Name="InvisibleExtraUnderscores" Opacity="0.0" xml:space="preserve" FontSize="30" Text="{Binding EmptySpacesTwoOrMore}"/>
-      </StackPanel>
+      <Border x:Name="GuessBackground" Background="Transparent">
+        <StackPanel Orientation="Horizontal">
+          <TextBlock FontSize="30" Text="{Binding IncompleteWord}"/>
+          <Border x:Name="FirstUnderScoreBackground" Background="Transparent">
+            <TextBlock FontSize="30"><Run Text="{Binding EmptySpacesOne}"/></TextBlock>
+          </Border>
+          <TextBlock FontSize="30" Text="{Binding EmptySpacesTwoOrMore}"/>
+        </StackPanel>
+      </Border>
     </Grid>
 
   <TextBlock x:Name="Definition" Grid.Row="1" Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" 

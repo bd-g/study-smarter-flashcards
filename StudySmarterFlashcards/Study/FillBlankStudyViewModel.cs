@@ -70,7 +70,7 @@ namespace StudySmarterFlashcards.Study
       get
       {
         if (NumCharsGuessed < CurrentFlashcard.Term.Length) {
-          return "_ ";
+          return "_";
         } else {
           return "";
         }
@@ -81,7 +81,7 @@ namespace StudySmarterFlashcards.Study
       get
       {
         if (NumCharsGuessed < CurrentFlashcard.Term.Length - 1) {
-          return "_ ".Repeat(CurrentFlashcard.Term.Length - NumCharsGuessed - 1);
+          return (char)160 + ("_" + (char)160).Repeat(CurrentFlashcard.Term.Length - NumCharsGuessed - 1);
         } else {
           return "";
         }
@@ -191,7 +191,9 @@ namespace StudySmarterFlashcards.Study
 
       if (char.ToUpperInvariant(charGuessed) == char.ToUpperInvariant(CurrentFlashcard.Term[NumCharsGuessed])) {
         NumCharsGuessed++;
-        Messenger.Default.Send(true, "CharacterGuess");
+        if (!IsWordIncomplete) {
+          Messenger.Default.Send(true, "CharacterGuess");
+        }
       } else {
         Messenger.Default.Send(false, "CharacterGuess");
       }

@@ -44,6 +44,8 @@ namespace StudySmarterFlashcards.Study
     {
       if (!isGuessCorrect) {
         await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => WrongAnswer.BeginAsync());
+      } else {
+        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => CompleteAnswer.BeginAsync());
       }
     }
     private void AttachUniversalKeyHandler(object sender, RoutedEventArgs e)
