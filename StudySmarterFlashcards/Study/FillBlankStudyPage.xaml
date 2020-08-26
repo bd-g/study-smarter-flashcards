@@ -10,6 +10,7 @@
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
     Unloaded="DetachUniversalKeyHandler"
+    PreviewKeyDown="HandleSpaceBarPress"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>

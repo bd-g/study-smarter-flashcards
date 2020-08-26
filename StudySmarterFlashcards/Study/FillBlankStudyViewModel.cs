@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -11,6 +12,7 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Input;
 
@@ -69,8 +71,8 @@ namespace StudySmarterFlashcards.Study
     {
       get
       {
-        if (NumCharsGuessed < CurrentFlashcard.Term.Length) {
-          return "_";
+        if (NumCharsGuessed < CurrentFlashcard.Term.Length) { 
+          return " _";
         } else {
           return "";
         }
@@ -81,7 +83,20 @@ namespace StudySmarterFlashcards.Study
       get
       {
         if (NumCharsGuessed < CurrentFlashcard.Term.Length - 1) {
-          return (char)160 + ("_" + (char)160).Repeat(CurrentFlashcard.Term.Length - NumCharsGuessed - 1);
+          StringBuilder sb = new StringBuilder();
+          for (int i = NumCharsGuessed + 1; i < CurrentFlashcard.Term.Length; i++) {
+            if (char.IsLetterOrDigit(CurrentFlashcard.Term[i])) {
+              sb.Append((char)160);
+              sb.Append('_');
+            } else if (char.IsWhiteSpace(CurrentFlashcard.Term[i])) {
+              sb.Append((char)160); 
+              sb.Append(CurrentFlashcard.Term[i]);
+              sb.Append((char)160);
+            } else {
+              sb.Append(CurrentFlashcard.Term[i]);
+            }
+          }
+          return sb.ToString();
         } else {
           return "";
         }
@@ -112,16 +127,26 @@ namespace StudySmarterFlashcards.Study
           return;
         }
       }
-      switch (args.VirtualKey) {
-        case Windows.System.VirtualKey.Right:
-          GoToNextFlashcard();
-          break;
-        default:
-          string unicode = args.VirtualKey.KeyCodeToUnicode();
-          if (!string.IsNullOrWhiteSpace(unicode)) {
-            AttemptLetterGuess(unicode[0]);
-          }
-          break;
+      if (args != null) {
+        switch (args.VirtualKey) {
+          case Windows.System.VirtualKey.Right:
+            GoToNextFlashcard();
+            break;
+          default:
+            string unicode = args.VirtualKey.KeyCodeToUnicode();
+            if (!string.IsNullOrWhiteSpace(unicode)) {
+              AttemptLetterGuess(unicode[0]);
+            }
+            break;
+        }
+      } else if (sender is VirtualKey) {
+        VirtualKey virtualKey = (VirtualKey)sender;
+        switch (virtualKey) {
+          case Windows.System.VirtualKey.Enter:
+            break;
+          case Windows.System.VirtualKey.Space:
+            break;
+        }
       }
     }
     #endregion
@@ -191,6 +216,9 @@ namespace StudySmarterFlashcards.Study
 
       if (char.ToUpperInvariant(charGuessed) == char.ToUpperInvariant(CurrentFlashcard.Term[NumCharsGuessed])) {
         NumCharsGuessed++;
+        while (IsWordIncomplete && !char.IsLetterOrDigit(CurrentFlashcard.Term[NumCharsGuessed])) {
+          NumCharsGuessed++;
+        }
         if (!IsWordIncomplete) {
           Messenger.Default.Send(true, "CharacterGuess");
         }

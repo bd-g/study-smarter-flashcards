@@ -9,7 +9,9 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -58,6 +60,20 @@ namespace StudySmarterFlashcards.Study
     {
       if (this.DataContext is FillBlankStudyViewModel) {
         Window.Current.CoreWindow.KeyDown -= (this.DataContext as FillBlankStudyViewModel).KeyDownFunction;
+      }
+    }
+    private void HandleSpaceBarPress(object sender, KeyRoutedEventArgs e)
+    {
+      if (e.Key == VirtualKey.Space) {
+        if (this.DataContext is FillBlankStudyViewModel) {
+          (this.DataContext as FillBlankStudyViewModel).KeyDownFunction(e.Key, null);
+        }
+        e.Handled = true;
+      } else if (e.Key == VirtualKey.Enter) {
+        if (this.DataContext is FillBlankStudyViewModel) {
+          (this.DataContext as FillBlankStudyViewModel).KeyDownFunction(e.Key, null);
+        }
+        e.Handled = true;
       }
     }
     #endregion
