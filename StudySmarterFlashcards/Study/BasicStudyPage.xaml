@@ -7,13 +7,14 @@
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
     Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <converters:BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
     <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
   </Page.Resources>
 
@@ -44,6 +45,13 @@
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Back">
       <Viewbox>
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
+      </Viewbox>
+    </Button>
+    <Button Command="{Binding ShowInstructionsCommand}" Grid.Row="0" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Help">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE897;"/>
       </Viewbox>
     </Button>
 

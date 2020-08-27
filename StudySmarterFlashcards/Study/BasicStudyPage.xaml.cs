@@ -29,13 +29,13 @@ namespace StudySmarterFlashcards.Study
     private void AttachUniversalKeyHandler(object sender, RoutedEventArgs e)
     {
       if (this.DataContext is BasicStudyViewModel) {
-        Window.Current.CoreWindow.KeyDown += (this.DataContext as BasicStudyViewModel).KeyDownFunction;
+        Window.Current.CoreWindow.KeyUp += (this.DataContext as BasicStudyViewModel).KeyUpFunction;
       }
     }
     private void DetachUniversalKeyHandler(object sender, RoutedEventArgs e)
     {
       if (this.DataContext is BasicStudyViewModel) {
-        Window.Current.CoreWindow.KeyDown -= (this.DataContext as BasicStudyViewModel).KeyDownFunction;
+        Window.Current.CoreWindow.KeyUp -= (this.DataContext as BasicStudyViewModel).KeyUpFunction;
       }
     }
   }

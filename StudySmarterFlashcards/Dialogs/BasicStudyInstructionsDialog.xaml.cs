@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace StudySmarterFlashcards.Dialogs
 {
-  public sealed partial class StudyInstructionsDialog : ContentDialog
+  public sealed partial class BasicStudyInstructionsDialog : ContentDialog
   {
-    public StudyInstructionsDialog()
+    public BasicStudyInstructionsDialog()
     {
       this.InitializeComponent();
     }
