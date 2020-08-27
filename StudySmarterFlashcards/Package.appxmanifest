@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="35103EnterprisingApps.StudySmarterAutomaticFlashca" Publisher="CN=7E63D5C6-5000-4548-BE46-87144E85CA3E" Version="0.4.0.0" />
+  <Identity Name="35103EnterprisingApps.StudySmarterAutomaticFlashca" Publisher="CN=7E63D5C6-5000-4548-BE46-87144E85CA3E" Version="0.4.1.0" />
   <mp:PhoneIdentity PhoneProductId="26ebbf93-1c3c-4b23-9e70-a567a69a961b" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Study Smarter: Automatic Flashcards from Office Files</DisplayName>

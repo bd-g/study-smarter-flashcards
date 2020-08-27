@@ -63,13 +63,15 @@ namespace StudySmarterFlashcards.Study
     {
       if (this.DataContext is FillBlankStudyViewModel) {
         Window.Current.CoreWindow.KeyDown += (this.DataContext as FillBlankStudyViewModel).KeyDownFunction;
+        Window.Current.CoreWindow.CharacterReceived += (this.DataContext as FillBlankStudyViewModel).CharacterReceivedFunction;
       }
     }
     private void DetachUniversalKeyHandler(object sender, RoutedEventArgs e)
     {
       if (this.DataContext is FillBlankStudyViewModel) {
         Window.Current.CoreWindow.KeyDown -= (this.DataContext as FillBlankStudyViewModel).KeyDownFunction;
-      }
+          Window.Current.CoreWindow.CharacterReceived -= (this.DataContext as FillBlankStudyViewModel).CharacterReceivedFunction;
+        }
     }
     private void HandleSpaceBarPress(object sender, KeyRoutedEventArgs e)
     {

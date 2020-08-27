@@ -7,7 +7,7 @@
 
   <Identity Name="17ea7b80-12c1-4e73-b982-b1125b88994c"
             Publisher="CN=brent"
-            Version="0.4.0.0" />
+            Version="0.4.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="17ea7b80-12c1-4e73-b982-b1125b88994c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
