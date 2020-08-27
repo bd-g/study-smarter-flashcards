@@ -132,6 +132,16 @@ namespace StudySmarterFlashcards.Study
     #endregion
 
     #region Public Methods
+    public void CharacterReceivedFunction(object sender, CharacterReceivedEventArgs args)
+    {
+      lock (myLocker) {
+        if (!prCanUseKeyDown) {
+          return;
+        }
+      }
+
+      AttemptLetterGuess((char)args.KeyCode);
+    }
     public void KeyDownFunction(object sender, KeyEventArgs args)
     {
       lock (myLocker) {
@@ -146,12 +156,6 @@ namespace StudySmarterFlashcards.Study
               UseHintAction();
             } else {
               GoToNextFlashcard();
-            }
-            break;
-          default:
-            string unicode = args.VirtualKey.KeyCodeToUnicode();
-            if (!string.IsNullOrWhiteSpace(unicode)) {
-              AttemptLetterGuess(unicode[0]);
             }
             break;
         }
