@@ -311,16 +311,16 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.3</Version>
+      <Version>4.7.4</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3">
       <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.DocIO.UWP">
-      <Version>18.2.0.48</Version>
+      <Version>18.2.0.55</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.XlsIO.UWP">
-      <Version>18.2.0.48</Version>
+      <Version>18.2.0.55</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
