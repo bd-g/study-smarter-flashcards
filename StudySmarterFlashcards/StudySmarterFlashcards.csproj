@@ -286,6 +286,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core">
+      <Version>3.1.7</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
@@ -309,6 +312,9 @@
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3">
+      <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.DocIO.UWP">
       <Version>18.2.0.48</Version>
