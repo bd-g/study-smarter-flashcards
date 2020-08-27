@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudySmarterFlashcards", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudySmarterFlashcardsTests", "StudySmarterFlashcardsTests\StudySmarterFlashcardsTests.csproj", "{7B8F64E6-A7C0-43B9-AF70-DB226660DCBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{21EC2CFA-415E-4932-87EB-14B2395234A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,26 @@ Global
 		{7B8F64E6-A7C0-43B9-AF70-DB226660DCBA}.Release|x86.ActiveCfg = Release|x86
 		{7B8F64E6-A7C0-43B9-AF70-DB226660DCBA}.Release|x86.Build.0 = Release|x86
 		{7B8F64E6-A7C0-43B9-AF70-DB226660DCBA}.Release|x86.Deploy.0 = Release|x86
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|ARM.Build.0 = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|x64.Build.0 = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Debug|x86.Build.0 = Debug|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|ARM.Build.0 = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|ARM64.Build.0 = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|x64.ActiveCfg = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|x64.Build.0 = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|x86.ActiveCfg = Release|Any CPU
+		{21EC2CFA-415E-4932-87EB-14B2395234A6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
