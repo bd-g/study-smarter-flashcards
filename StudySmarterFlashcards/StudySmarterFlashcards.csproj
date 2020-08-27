@@ -127,6 +127,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\FillBlankStudyInstructionsDialog.xaml.cs">
+      <DependentUpon>FillBlankStudyInstructionsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FillBlankStudyInstructionsViewModel.cs" />
     <Compile Include="Dialogs\LoadingDialog.xaml.cs">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
@@ -135,7 +139,7 @@
       <DependentUpon>MainInstructionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\MainInstructionsViewModel.cs" />
-    <Compile Include="Dialogs\StudyInstructionsViewModel.cs" />
+    <Compile Include="Dialogs\BasicStudyInstructionsViewModel.cs" />
     <Compile Include="Dialogs\ValidFileFormatsDialog.xaml.cs">
       <DependentUpon>ValidFileFormatsDialog.xaml</DependentUpon>
     </Compile>
@@ -175,8 +179,8 @@
     <Compile Include="Utils\VirtualKeyExtensions.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
     <Compile Include="Utils\LocalDataHandler.cs" />
-    <Compile Include="Dialogs\StudyInstructionsDialog.xaml.cs">
-      <DependentUpon>StudyInstructionsDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\BasicStudyInstructionsDialog.xaml.cs">
+      <DependentUpon>BasicStudyInstructionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
@@ -237,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\FillBlankStudyInstructionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\LoadingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,7 +277,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\StudyInstructionsDialog.xaml">
+    <Page Include="Dialogs\BasicStudyInstructionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

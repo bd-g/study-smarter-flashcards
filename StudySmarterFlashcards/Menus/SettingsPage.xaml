@@ -47,6 +47,7 @@
         <RowDefinition Height="1*"/>
         <RowDefinition Height="1*"/>
         <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*"/>
@@ -55,7 +56,7 @@
 
       <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Tutorial Settings" FontSize="30"/>
 
-      <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Show Main Tutorial" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Main Tutorial" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled">
             <interactcore:InvokeCommandAction Command="{Binding ToggleMainInstructionsCommand}" />
@@ -66,7 +67,7 @@
         <TextBlock Text="Main Tutorial Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
       </Button>
 
-      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Show Study Tutorial" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Flashcard Mode Tutorial" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleStudyInstructionsCommand}" />
@@ -74,7 +75,15 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
-      <Button  Grid.Row="4" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowValidFileFormatsCommand}">
+      <ToggleSwitch Grid.Row="4"  VerticalAlignment="Top" Header="Fill in the Blank Mode Tutorial" IsOn="{Binding ShowFillBlankInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <interact:Interaction.Behaviors>
+        <interactcore:EventTriggerBehavior EventName="Toggled" >
+          <interactcore:InvokeCommandAction Command="{Binding ToggleFillBlankStudyInstructionsCommand}" />
+        </interactcore:EventTriggerBehavior>
+      </interact:Interaction.Behaviors>
+      </ToggleSwitch>
+
+      <Button  Grid.Row="5" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowValidFileFormatsCommand}">
         <TextBlock Text="Detailed Instructions For Importing New Sets" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
       </Button>
 

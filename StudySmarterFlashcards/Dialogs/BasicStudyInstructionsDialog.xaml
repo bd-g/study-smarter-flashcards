@@ -1,5 +1,5 @@
 ﻿<ContentDialog
-    x:Class="StudySmarterFlashcards.Dialogs.StudyInstructionsDialog"
+    x:Class="StudySmarterFlashcards.Dialogs.BasicStudyInstructionsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:StudySmarterFlashcards.Dialogs"
@@ -7,11 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     mc:Ignorable="d"
-    Title="Basic Study Mode Tutorial"
+    Title="Flashcard Mode Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
     CloseButtonText="Close">
    <ContentDialog.DataContext>
-      <local:StudyInstructionsViewModel/>
+      <local:BasicStudyInstructionsViewModel/>
   </ContentDialog.DataContext>
   <ContentDialog.Resources>
     <msconverters:BoolToVisibilityConverter x:Key="boolToVisiblityConverter"/>

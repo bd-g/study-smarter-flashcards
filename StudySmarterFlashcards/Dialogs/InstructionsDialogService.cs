@@ -11,6 +11,7 @@ namespace StudySmarterFlashcards.Dialogs
   public enum InstructionDialogType
   {
     BasicStudyInstructions,
+    FillBlankStudyInstructions,
     MainInstructions,
     ValidFileFormats
   }
@@ -21,9 +22,16 @@ namespace StudySmarterFlashcards.Dialogs
     {
       switch (dialogType) {
         case InstructionDialogType.BasicStudyInstructions:
-          bool? showStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] as bool?;
+          bool? showStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowBasicStudyInstructionsDialog"] as bool?;
           if (showStudyInstructions != false || overrideSettings) {
-            return await new StudyInstructionsDialog().ShowAsync();
+            return await new BasicStudyInstructionsDialog().ShowAsync();
+          } else {
+            return ContentDialogResult.None;
+          }
+        case InstructionDialogType.FillBlankStudyInstructions:
+          bool? showFillBlankInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] as bool?;
+          if (showFillBlankInstructions != false || overrideSettings) {
+            return await new FillBlankStudyInstructionsDialog().ShowAsync();
           } else {
             return ContentDialogResult.None;
           }

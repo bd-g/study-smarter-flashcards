@@ -33,12 +33,14 @@ namespace StudySmarterFlashcards.Study
       FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
       SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
       MouseDownOnCardCommand = new RelayCommand<TappedRoutedEventArgs>(MouseDownOnCardFunction);
+      ShowInstructionsCommand = new RelayCommand(ShowInstructionsAction);
     }
     #endregion
 
     #region Properties
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand BackCommand { get; private set; }
+    public RelayCommand ShowInstructionsCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
     public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
     public RelayCommand FlipFlashcardCommand { get; private set; }
@@ -116,6 +118,7 @@ namespace StudySmarterFlashcards.Study
         for (int i = 0; i < cardSetModel.FlashcardCollection.Count; i++) {
           if (!cardSetModel.FlashcardCollection[i].IsStarred) {
             IndexOfFirstUnstarredCard = i;
+            break;
           }
         }
         IsShuffleMode = true;
@@ -140,6 +143,11 @@ namespace StudySmarterFlashcards.Study
     private void BackAction()
     {
       prNavigationService.GoBack();
+    }
+
+    private async void ShowInstructionsAction()
+    {
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.BasicStudyInstructions, true);
     }
 
     private void GoToPreviousFlashcard()

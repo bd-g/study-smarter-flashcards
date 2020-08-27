@@ -1,0 +1,32 @@
+﻿<ContentDialog
+    x:Class="StudySmarterFlashcards.Dialogs.FillBlankStudyInstructionsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudySmarterFlashcards.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    mc:Ignorable="d"
+    Title="Fill in the Blank Mode Tutorial"
+    CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
+    CloseButtonText="Close">
+  <ContentDialog.DataContext>
+    <local:FillBlankStudyInstructionsViewModel/>
+  </ContentDialog.DataContext>
+  <ContentDialog.Resources>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+  </ContentDialog.Resources>
+
+  <StackPanel>
+    <TextBlock FontWeight="Bold" Text="Fill in the Blank Study Controls"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="- Shows a card definition and allows you to type out the term"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="- You can ask for a hint, or reveal the entire word if you don't know it"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="- IMPORTANT: You cannot proceed to the next word until the current word is revealed"/>
+    <TextBlock Margin="0,10,0,0" FontWeight="Bold" Text="Keyboard Shortcuts"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="Hint - Right Arrow Key"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="Reveal Entire Word - Enter Key"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="Next Flashcard - Right Arrow Key (When word is complete)"/>
+    <CheckBox  Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="You can configure this message to show again in the settings" Visibility="{Binding DontShowAgain, Converter={StaticResource boolToVisiblityConverter}}"/>
+  </StackPanel>
+</ContentDialog>

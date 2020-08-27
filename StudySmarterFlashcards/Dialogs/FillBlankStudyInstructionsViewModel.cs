@@ -8,30 +8,33 @@ using StudySmarterFlashcards.Utils;
 
 namespace StudySmarterFlashcards.Dialogs
 {
-  class StudyInstructionsViewModel : BaseViewModel
+  class FillBlankStudyInstructionsViewModel : BaseViewModel
   {
     #region Fields
     private bool dontShowAgain = false;
     #endregion
 
     #region Constructors
-    public StudyInstructionsViewModel() : base(null)
+    public FillBlankStudyInstructionsViewModel() : base(null)
     {
       SaveSettingsAndCloseCommand = new RelayCommand(SaveSettingsAndCloseAction);
+      bool? showFillBlankInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] as bool?;
+      dontShowAgain = showFillBlankInstructions == false ? true : false;
     }
     #endregion
 
     #region Properties
     public RelayCommand SaveSettingsAndCloseCommand { get; private set; }
-    public bool DontShowAgain { 
-      get 
-      { 
+    public bool DontShowAgain
+    {
+      get
+      {
         return dontShowAgain;
-      } 
-      set 
+      }
+      set
       {
         dontShowAgain = value;
-        OnPropertyChanged(); 
+        OnPropertyChanged();
       }
     }
     #endregion
@@ -39,7 +42,7 @@ namespace StudySmarterFlashcards.Dialogs
     #region Private Methods
     private void SaveSettingsAndCloseAction()
     {
-      Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowStudyInstructionsDialog"] = !DontShowAgain;
+      Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] = !DontShowAgain;
     }
     #endregion
   }

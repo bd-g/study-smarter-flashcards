@@ -39,6 +39,7 @@ namespace StudySmarterFlashcards.Study
       UseHintCommand = new RelayCommand(UseHintAction);
       RevealEntireWordCommand = new RelayCommand(RevealEntireWordAction);
       AdjustColumnSpanCommand = new RelayCommand<SizeChangedEventArgs>(AdjustColumnSpanAction);
+      ShowFillBlankInstructionsCommand = new RelayCommand(ShowFillBlankInstructionsAction);
     }
     #endregion
 
@@ -48,6 +49,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
     public RelayCommand UseHintCommand { get; private set; }
     public RelayCommand RevealEntireWordCommand { get; private set; }
+    public RelayCommand ShowFillBlankInstructionsCommand { get; private set; }
     public RelayCommand<SizeChangedEventArgs> AdjustColumnSpanCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
@@ -181,6 +183,7 @@ namespace StudySmarterFlashcards.Study
         for (int i = 0; i < cardSetModel.FlashcardCollection.Count; i++) {
           if (!cardSetModel.FlashcardCollection[i].IsStarred) {
             IndexOfFirstUnstarredCard = i;
+            break;
           }
         }
         NumCharsGuessed = 0;
@@ -194,7 +197,7 @@ namespace StudySmarterFlashcards.Study
       lock (myLocker) {
         prCanUseKeyDown = false;
       }
-      await InstructionsDialogService.ShowAsync(InstructionDialogType.BasicStudyInstructions);
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.FillBlankStudyInstructions);
       lock (myLocker) {
         prCanUseKeyDown = true;
       }
@@ -281,6 +284,11 @@ namespace StudySmarterFlashcards.Study
       }
       OnPropertyChanged("ColumnSpanLength");
       OnPropertyChanged("ColumnNumber");
+    }
+
+    private async void ShowFillBlankInstructionsAction()
+    {
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.FillBlankStudyInstructions, true);
     }
     #endregion
   }

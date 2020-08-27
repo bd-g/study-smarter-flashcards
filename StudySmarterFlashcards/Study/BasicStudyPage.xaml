@@ -47,6 +47,13 @@
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
       </Viewbox>
     </Button>
+    <Button Command="{Binding ShowInstructionsCommand}" Grid.Row="0" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Help">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE897;"/>
+      </Viewbox>
+    </Button>
 
     <Button Command="{Binding GoToPreviousFlashcardCommand}" Grid.Row="1" Grid.Column="2"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
