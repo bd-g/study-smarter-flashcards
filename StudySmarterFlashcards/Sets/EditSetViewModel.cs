@@ -9,7 +9,7 @@ using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using System.Collections.Generic;
-using Syncfusion.DocIO.DLS;
+using DataAccessLibrary.DataModels;
 
 namespace StudySmarterFlashcards.Sets
 {

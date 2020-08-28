@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using DataAccessLibrary.DataModels;
 using Newtonsoft.Json;
 using StudySmarterFlashcards.Sets;
 using Windows.Storage;

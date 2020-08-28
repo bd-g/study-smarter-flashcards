@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using StudySmarterFlashcards.Utils;
 
-namespace StudySmarterFlashcards.Sets
+namespace DataAccessLibrary.DataModels
 {
   public class IndividualCardModel
   {
@@ -15,8 +13,6 @@ namespace StudySmarterFlashcards.Sets
       IsLearned = isLearned == null ? false : (bool)isLearned;
       IsStarred = isStarred == null ? true : (bool)isStarred;
     }
-    
-    [JsonConstructor]
     public IndividualCardModel(string term, string definition, Guid cardID, bool isLearned, bool isStarred)
     {
       Term = term;

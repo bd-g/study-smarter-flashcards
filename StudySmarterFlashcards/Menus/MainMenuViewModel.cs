@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using DataAccessLibrary;
+using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.ImportTools;
-using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -55,7 +56,7 @@ namespace StudySmarterFlashcards.Menus
     #region Private Methods
     private async Task<string> LoadStartingData()
     {
-      CardSets = await LocalDataHandler.LoadAllSetsFromLocalMemory();
+      CardSets = await Task.Run(() => DataAccess.ReadAllExistingData_UWP());
       OnPropertyChanged("CardSets");
       return CardSets.Count + " set(s) loaded successfully";
     }

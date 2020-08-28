@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using System.IO;
 using System;
-using StudySmarterFlashcards.Sets;
 using System.Collections.ObjectModel;
+using DataAccessLibrary.DataModels;
 
 namespace DataAccessLibrary
 {
@@ -143,7 +143,7 @@ namespace DataAccessLibrary
         insertSetCommand.ExecuteReader();
 
         foreach(IndividualCardModel individualCard in newCardSet.FlashcardCollection) {
-          AddNewCard(individualCard, newCardSet.SetID, db);
+          AddNewCard_UWP(individualCard, newCardSet.SetID, db);
         }
 
         db.Close();

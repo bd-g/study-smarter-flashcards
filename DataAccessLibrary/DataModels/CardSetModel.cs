@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight.Messaging;
-using Newtonsoft.Json;
-using StudySmarterFlashcards.Utils;
 
-namespace StudySmarterFlashcards.Sets
+namespace DataAccessLibrary.DataModels
 {
   public class CardSetModel 
   {
-    #region Fields
-    protected static readonly NLog.Logger prNLogLogger = NLog.LogManager.GetCurrentClassLogger();
-    #endregion
-
     #region Constructors
     public CardSetModel(string name = "New Flashcard Set", string description = "New Description")
     {
@@ -33,8 +26,6 @@ namespace StudySmarterFlashcards.Sets
       WhenLastReviewedUTC = whenLastReviewedUTC;
       IsStarred = isStarred;
     }
-
-    [JsonConstructor]
     public CardSetModel(string name, string description, Guid setID, ObservableCollection<IndividualCardModel> flashcardCollection, int numTimesReviewed, DateTime whenCreated, DateTime whenLastReviewedUTC, bool isStarred) : this(name, description)
     {
       SetID = setID;
@@ -100,7 +91,6 @@ namespace StudySmarterFlashcards.Sets
     {
       NumTimesReviewed++;
       WhenLastReviewedUTC = DateTime.UtcNow;
-      Messenger.Default.Send(this, "EditSet");
     }
 
     public override bool Equals(object obj)
