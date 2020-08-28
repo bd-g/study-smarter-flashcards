@@ -15,6 +15,10 @@ namespace StudySmarterFlashcards.Sets
 {
   public class EditSetViewModel : BaseViewModel
   {
+    #region Constants
+    private readonly int prMaxTermLength = 30;
+    private readonly int prMaxDescriptionLength = 150;
+    #endregion
     #region Fields
     private int prIndexOfLastImportSaved = -1;
     #endregion
@@ -74,13 +78,13 @@ namespace StudySmarterFlashcards.Sets
     public string TempNameLength
     {
       get {
-        return TempName.Length + "/30";
+        return TempName.Length + "/" + prMaxTermLength;
       }
     }
     public Brush TempNameLengthColor
     {
       get {
-        return TempName.Length <= 30 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
+        return TempName.Length <= prMaxTermLength ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
       }
     }
     public string TempDescription
@@ -98,13 +102,13 @@ namespace StudySmarterFlashcards.Sets
     public string TempDescriptionLength
     {
       get {
-        return TempFlashCardSet.Description.Length + "/150";
+        return TempFlashCardSet.Description.Length + "/" + prMaxDescriptionLength;
       }
     }
     public Brush TempDescriptionLengthColor
     {
       get {
-        return TempFlashCardSet.Description.Length <= 150 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
+        return TempFlashCardSet.Description.Length <= prMaxDescriptionLength ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
       }
     }
     public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
@@ -345,7 +349,7 @@ namespace StudySmarterFlashcards.Sets
 
     private bool PerformValidation()
     {
-      if (TempFlashCardSet.Name.Length > 30 || TempFlashCardSet.Description.Length > 150) {
+      if (TempFlashCardSet.Name.Length > prMaxTermLength || TempFlashCardSet.Description.Length > prMaxDescriptionLength) {
         return false;
       }
       return true;
