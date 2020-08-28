@@ -10,7 +10,11 @@ namespace DataAccessLibrary
 {
   public static class DataAccess
   {
+    #region Fields
     private static readonly string prDBName = "localCardSets.db";
+    #endregion
+
+    #region Public Methods
     public async static Task InitializeDatabase_UWP()
     {
       await ApplicationData.Current.LocalFolder.CreateFileAsync(prDBName, CreationCollisionOption.OpenIfExists);
@@ -67,7 +71,10 @@ namespace DataAccessLibrary
             "WhenLastReviewedUTC, " +
             "IsStarred" +
           "FROM" +
-            "FlashCardSet";
+            "FlashCardSet " +
+          "ORDER BY " +
+            "(CASE WHEN IsStarred THEN 1 ELSE 2 END) ASC, " +
+            "WhenLastReviewedUTC DESC";
         SqliteCommand selectAllSetsCommand = new SqliteCommand(selectAllSets, db);
 
         SqliteDataReader selectAllSetsReader = selectAllSetsCommand.ExecuteReader();
@@ -91,7 +98,10 @@ namespace DataAccessLibrary
             "FROM" +
               "IndividualFlashcard" +
             "WHERE" +
-              "ParentSetID = @ParentSetID";
+              "ParentSetID = @ParentSetID " +
+            "ORDER BY" +
+              "(CASE WHEN IsStarred THEN 1 ELSE 2 END) ASC, " +
+              "RowID ASC";
           SqliteCommand selectAllAssociatedCardsCommand = new SqliteCommand(selectAllAssociatedCards, db);
           selectAllAssociatedCardsCommand.Parameters.AddWithValue("@ParentSetID", setID);
 
@@ -149,7 +159,104 @@ namespace DataAccessLibrary
       }
 
     }
-    public static void AddNewCard_UWP(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
+    public static void EditCardSet_UWP(CardSetModel editedCardSet)
+    {
+      string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
+      using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}")) {
+        db.Open();
+        SqliteCommand updateSetCommand = new SqliteCommand();
+        updateSetCommand.Connection = db;
+
+        updateSetCommand.CommandText =
+          "UPDATE FlashCardSet " +
+          "SET " +
+            "Name = @Name, " +
+            "Description = @Description, " +
+            "NumTimesReviewed = @NumTimesReviewed, " +
+            "WhenCreated = @WhenCreated, " +
+            "WhenLastReviewedUTC = @WhenLastReviewedUTC, " +
+            "IsStarred = @IsStarred " +
+          "WHERE " +
+            "SetID = @SetID;";
+          
+        updateSetCommand.Parameters.AddWithValue("@Name", editedCardSet.Name);
+        updateSetCommand.Parameters.AddWithValue("@Description", editedCardSet.Description);
+        updateSetCommand.Parameters.AddWithValue("@NumTimesReviewed", editedCardSet.NumTimesReviewed);
+        updateSetCommand.Parameters.AddWithValue("@WhenCreated", editedCardSet.WhenCreated);
+        updateSetCommand.Parameters.AddWithValue("@WhenLastReviewedUTC", editedCardSet.WhenLastReviewedUTC);
+        updateSetCommand.Parameters.AddWithValue("@IsStarred", editedCardSet.IsStarred);
+
+        updateSetCommand.Parameters.AddWithValue("@SetID", editedCardSet.SetID);
+        updateSetCommand.ExecuteReader();
+
+        foreach (IndividualCardModel individualCard in editedCardSet.FlashcardCollection) {
+          EditFlashcard_UWP(individualCard, db);
+        }
+
+        db.Close();
+      }
+
+    }
+    public static void ArchiveCardSet_UWP(Guid setID, bool newArchiveStatus)
+    {
+      string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
+      using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}")) {
+        db.Open();
+        SqliteCommand archiveSetCommand = new SqliteCommand();
+        archiveSetCommand.Connection = db;
+
+        archiveSetCommand.CommandText =
+          "UPDATE FlashCardSet " +
+          "SET " +
+            "IsStarred = @IsStarred " +
+          "WHERE " +
+            "SetID = @SetID;";
+
+        archiveSetCommand.Parameters.AddWithValue("@IsStarred", newArchiveStatus);
+        archiveSetCommand.Parameters.AddWithValue("@SetID", setID);
+        archiveSetCommand.ExecuteReader();
+
+        db.Close();
+      }
+
+    }
+    public static void DeleteCardSet_UWP(CardSetModel deletedCardSet)
+    {
+      string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
+      using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}")) {
+        db.Open();
+        SqliteCommand deleteAssociatedCardsCommand = new SqliteCommand();
+        deleteAssociatedCardsCommand.Connection = db;
+
+        deleteAssociatedCardsCommand.CommandText =
+          "DELETE FROM " +
+            "IndividualFlashcard " +
+          "WHERE " +
+            "ParentSetID = @SetID;";
+
+        deleteAssociatedCardsCommand.Parameters.AddWithValue("@SetID", deletedCardSet.SetID);
+        deleteAssociatedCardsCommand.ExecuteReader();
+
+        SqliteCommand deleteSetCommand = new SqliteCommand();
+        deleteSetCommand.Connection = db;
+
+        deleteSetCommand.CommandText =
+          "DELETE FROM " +
+            "FlashCardSet " +
+          "WHERE " +
+            "SetID = @SetID;";
+
+        deleteSetCommand.Parameters.AddWithValue("@SetID", deletedCardSet.SetID);
+        deleteSetCommand.ExecuteReader();
+
+        db.Close();
+      }
+
+    }
+    #endregion
+
+    #region Private Methods
+    private static void AddNewCard_UWP(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
     {
       SqliteCommand insertCardCommand = new SqliteCommand();
       insertCardCommand.Connection = db;
@@ -173,5 +280,28 @@ namespace DataAccessLibrary
       insertCardCommand.Parameters.AddWithValue("@IsStarred", newCard.IsStarred);
       insertCardCommand.ExecuteReader();
     }
+    private static void EditFlashcard_UWP(IndividualCardModel editedCard, SqliteConnection db)
+    {
+      SqliteCommand editCardCommand = new SqliteCommand();
+      editCardCommand.Connection = db;
+
+      editCardCommand.CommandText =
+        "UPDATE IndividualFlashcard " +
+        "SET " +
+          "Term = @Term, " +
+          "Definition = @Definition, " +
+          "IsLearned = @IsLearned, " +
+          "IsStarred = @IsStarred " +
+        "WHERE " +
+          "CardID = @CardID;";
+
+      editCardCommand.Parameters.AddWithValue("@Term", editedCard.Term);
+      editCardCommand.Parameters.AddWithValue("@Definition", editedCard.Definition);
+      editCardCommand.Parameters.AddWithValue("@CardID", editedCard.CardID);
+      editCardCommand.Parameters.AddWithValue("@IsLearned", editedCard.IsLearned);
+      editCardCommand.Parameters.AddWithValue("@IsStarred", editedCard.IsStarred);
+      editCardCommand.ExecuteReader();
+    }
+    #endregion
   }
 }

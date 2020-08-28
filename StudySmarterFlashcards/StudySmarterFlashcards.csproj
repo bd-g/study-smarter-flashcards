@@ -175,7 +175,6 @@
     <Compile Include="Converters\BooleanToStarFillConverter.cs" />
     <Compile Include="Converters\EqualityToVisibilityConverter.cs" />
     <Compile Include="Utils\IErrorHandler.cs" />
-    <Compile Include="Utils\LocalDataHandler.cs" />
     <Compile Include="Dialogs\BasicStudyInstructionsDialog.xaml.cs">
       <DependentUpon>BasicStudyInstructionsDialog.xaml</DependentUpon>
     </Compile>

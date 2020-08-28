@@ -138,9 +138,8 @@ namespace StudySmarterFlashcards.Menus
         CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), CardSets.Count - 1);
         cardSetModelToArchive.IsStarred = true;
       }
-      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+      await Task.Run(() => DataAccess.ArchiveCardSet_UWP(cardSetModelToArchive.SetID, cardSetModelToArchive.IsStarred));
     }
-
 
     private async void DeleteSetAction(CardSetModel cardSetModelToDelete)
     {
@@ -152,7 +151,7 @@ namespace StudySmarterFlashcards.Menus
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
         if (CardSets.Remove(cardSetModelToDelete)) {
-          await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+          await Task.Run(() => DataAccess.DeleteCardSet_UWP(cardSetModelToDelete));
         }
       }
     }
@@ -161,9 +160,10 @@ namespace StudySmarterFlashcards.Menus
     {
       if (!CardSets.Contains(editedSet)) {
         CardSets.Add(editedSet);
+        await Task.Run(() => DataAccess.AddNewCardSet_UWP(editedSet));
+      } else {
+        await Task.Run(() => DataAccess.EditCardSet_UWP(editedSet));
       }
-
-      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }
     #endregion
   }

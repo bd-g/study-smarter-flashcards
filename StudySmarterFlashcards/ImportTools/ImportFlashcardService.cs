@@ -134,7 +134,5 @@ namespace StudySmarterFlashcards.ImportTools
       }
     }
     #endregion
-
-
   }
 }

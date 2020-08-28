@@ -99,6 +99,17 @@ namespace DataAccessLibrary.DataModels
              SetID == model.SetID;
     }
 
+    public bool MetadataIsEqual(object obj)
+    {
+      return obj is CardSetModel model &&
+             Name == model.Name &&
+             Description == model.Description &&
+             NumTimesReviewed == model.NumTimesReviewed &&
+             WhenCreated == model.WhenCreated &&
+             WhenLastReviewedUTC == model.WhenLastReviewedUTC &&
+             IsStarred == model.IsStarred;
+    }
+
     public override int GetHashCode()
     {
       int hashCode = 2146425462;
