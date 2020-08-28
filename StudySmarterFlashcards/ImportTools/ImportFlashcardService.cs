@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DataAccessLibrary.DataModels;
+using Syncfusion.DocIO.DLS;
+using Syncfusion.XlsIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLibrary.DataModels;
-using Syncfusion.DocIO.DLS;
-using Syncfusion.XlsIO;
 using Windows.Storage;
 
 namespace StudySmarterFlashcards.ImportTools
@@ -24,7 +24,7 @@ namespace StudySmarterFlashcards.ImportTools
 
         VerifyExcelFileIsParseable(workbook);
         List<CardSetModel> newCardSetModels = new List<CardSetModel>();
-        foreach(IWorksheet worksheet in workbook.Worksheets) {
+        foreach (IWorksheet worksheet in workbook.Worksheets) {
           CardSetModel newCardSetModel = new CardSetModel();
           worksheet.UsedRangeIncludesFormatting = false;
           IRange usedRange = worksheet.UsedRange;
@@ -71,7 +71,7 @@ namespace StudySmarterFlashcards.ImportTools
               continue;
             }
             if (paragraph.ListFormat.ListLevelNumber == baseListDepth) {
-              newCardSetModels.Add(new CardSetModel(name:paragraph.Text));
+              newCardSetModels.Add(new CardSetModel(name: paragraph.Text));
             } else {
               int peekNextListDepth = (paragraph.NextSibling is IWParagraph) ? (paragraph.NextSibling as IWParagraph).ListFormat.ListLevelNumber : -1;
               if (paragraph.ListFormat.ListLevelNumber == baseListDepth + 1) {
@@ -121,7 +121,7 @@ namespace StudySmarterFlashcards.ImportTools
       if (wordDocument.Sections.Count < 1) {
         throw new NotSupportedException("Word file needs to have content to import");
       }
-      foreach(WSection wSection in wordDocument.Sections) {
+      foreach (WSection wSection in wordDocument.Sections) {
         int baseListDepth = 0;
         if (wSection.Paragraphs.Count > 0) {
           baseListDepth = wSection.Paragraphs[0].ListFormat.ListLevelNumber;

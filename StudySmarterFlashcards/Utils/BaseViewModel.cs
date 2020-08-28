@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using GalaSoft.MvvmLight.Views;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using GalaSoft.MvvmLight.Views;
 
 namespace StudySmarterFlashcards.Utils
 {

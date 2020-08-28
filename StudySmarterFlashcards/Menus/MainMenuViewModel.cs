@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
-using DataAccessLibrary;
+﻿using DataAccessLibrary;
 using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,6 +6,11 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.ImportTools;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
@@ -87,7 +87,7 @@ namespace StudySmarterFlashcards.Menus
             List<CardSetModel> newImportedCardSetModels = await importingTask;
             prNavigationService.NavigateTo("EditSetPage");
             Messenger.Default.Send(newImportedCardSetModels, "EditSetView");
-          }         
+          }
         } catch (Exception ex) {
           await new MessageDialog(ex.Message).ShowAsync();
         }
@@ -107,9 +107,9 @@ namespace StudySmarterFlashcards.Menus
         SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 75) / 3));
       } else if (args.NewSize.Width - 50 > 400) {
         SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 50) / 2));
-      } else { 
+      } else {
         SetColumnWidth = (int)Math.Floor(args.NewSize.Width - 25);
-      } 
+      }
       OnPropertyChanged("SetColumnWidth");
     }
 
@@ -123,7 +123,7 @@ namespace StudySmarterFlashcards.Menus
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send(cardSetModelToEdit, "EditSetView");
     }
-    
+
     private async void ArchiveSetFunction(CardSetModel cardSetModelToArchive)
     {
       if (cardSetModelToArchive.IsStarred) {
@@ -154,7 +154,7 @@ namespace StudySmarterFlashcards.Menus
         if (CardSets.Remove(cardSetModelToDelete)) {
           await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
         }
-      }       
+      }
     }
 
     private async Task ReceiveEditSetMessage(CardSetModel editedSet)

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Utils;
-using Windows.UI.Xaml.Media;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using System.Collections.Generic;
-using DataAccessLibrary.DataModels;
+using Windows.UI.Xaml.Media;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -51,24 +51,29 @@ namespace StudySmarterFlashcards.Sets
     public CardSetModel TempFlashCardSet { get; private set; } = new CardSetModel();
     public List<CardSetModel> ImportedFlashcardSets { get; private set; } = null;
     public bool HasMultipleSetsToEdit { get; private set; }
-    public int NumImportedSets { 
+    public int NumImportedSets
+    {
       get
       {
         return ImportedFlashcardSets == null ? -1 : ImportedFlashcardSets.Count;
-      } 
+      }
     }
     public int IndexOfImportedSet { get; private set; }
-    public int IndexOfImportedSetDisplay { get
+    public int IndexOfImportedSetDisplay
+    {
+      get
       {
         return IndexOfImportedSet + 1;
-      } 
+      }
     }
     public string TempName
     {
-      get {
+      get
+      {
         return TempFlashCardSet.Name;
       }
-      set {
+      set
+      {
         TempFlashCardSet.Name = value;
         OnPropertyChanged("TempName");
         OnPropertyChanged("TempNameLength");
@@ -77,22 +82,26 @@ namespace StudySmarterFlashcards.Sets
     }
     public string TempNameLength
     {
-      get {
+      get
+      {
         return TempName.Length + "/" + prMaxTermLength;
       }
     }
     public Brush TempNameLengthColor
     {
-      get {
+      get
+      {
         return TempName.Length <= prMaxTermLength ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
       }
     }
     public string TempDescription
     {
-      get {
+      get
+      {
         return TempFlashCardSet.Description;
       }
-      set {
+      set
+      {
         TempFlashCardSet.Description = value;
         OnPropertyChanged("TempDescription");
         OnPropertyChanged("TempDescriptionLength");
@@ -101,13 +110,15 @@ namespace StudySmarterFlashcards.Sets
     }
     public string TempDescriptionLength
     {
-      get {
+      get
+      {
         return TempFlashCardSet.Description.Length + "/" + prMaxDescriptionLength;
       }
     }
     public Brush TempDescriptionLengthColor
     {
-      get {
+      get
+      {
         return TempFlashCardSet.Description.Length <= prMaxDescriptionLength ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.Red);
       }
     }
@@ -126,7 +137,7 @@ namespace StudySmarterFlashcards.Sets
       messageDialog.CancelCommandIndex = 2;
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
-        if(await SaveAction(goingHomeAfter: true)) {
+        if (await SaveAction(goingHomeAfter: true)) {
           prNavigationService.NavigateTo("MainMenuPage");
         }
       } else if (cmdResult.Label == "No") {
@@ -207,7 +218,7 @@ namespace StudySmarterFlashcards.Sets
       if (cmdResult.Label == "Yes") {
         prNavigationService.GoBack();
         TempFlashCardSet = null;
-      } 
+      }
     }
 
     private void AddCardAction()
@@ -219,7 +230,7 @@ namespace StudySmarterFlashcards.Sets
           break;
         }
       }
-      TempFlashCardSet.AddCardToSet(indexToAddAt:indexOfFirstUnstarredCard);
+      TempFlashCardSet.AddCardToSet(indexToAddAt: indexOfFirstUnstarredCard);
     }
     private void StarCardFunction(IndividualCardModel cardToStar)
     {
@@ -234,12 +245,12 @@ namespace StudySmarterFlashcards.Sets
       } else {
         TempFlashCardSet.FlashcardCollection.Move(TempFlashCardSet.FlashcardCollection.IndexOf(cardToStar), TempFlashCardSet.FlashcardCollection.Count - 1);
         cardToStar.IsStarred = false;
-      }      
+      }
     }
 
     private void DeleteCardFunction(IndividualCardModel cardlToDelete)
     {
-      TempFlashCardSet.RemoveCardFromSet(cardlToDelete);  
+      TempFlashCardSet.RemoveCardFromSet(cardlToDelete);
     }
     private async Task<bool> SaveAction(bool goingHomeAfter = false)
     {
@@ -288,7 +299,7 @@ namespace StudySmarterFlashcards.Sets
         }
         OriginalFlashCardSet = TempFlashCardSet;
       } else {
-        return await NextImportedSetAction(true, goingHomeAfter); 
+        return await NextImportedSetAction(true, goingHomeAfter);
       }
 
       prNavigationService.NavigateTo("SetPage");

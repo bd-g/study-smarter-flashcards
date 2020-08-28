@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using DataAccessLibrary.DataModels;
+﻿using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using StudySmarterFlashcards.Dialogs;
-using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Input;
 
@@ -59,17 +56,20 @@ namespace StudySmarterFlashcards.Study
       }
     }
 
-    public IndividualCardModel CurrentFlashcard {
-      get {
+    public IndividualCardModel CurrentFlashcard
+    {
+      get
+      {
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
     public Stack<int> PreviousFlashcardIndexes { get; private set; }
-    public bool HasPreviousFlashcards {
+    public bool HasPreviousFlashcards
+    {
       get
       {
         return PreviousFlashcardIndexes.Count > 0;
-      } 
+      }
     }
     public bool IsShuffleMode { get; set; } = true;
     #endregion
@@ -165,7 +165,7 @@ namespace StudySmarterFlashcards.Study
 
     private void GoToNextFlashcard()
     {
-      int currentIndex = CurrentFlashcardIndex; 
+      int currentIndex = CurrentFlashcardIndex;
       if (IsShuffleMode) {
         int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
         if (currentIndex != nextIndex) {
@@ -174,7 +174,7 @@ namespace StudySmarterFlashcards.Study
           CurrentFlashcardIndex = nextIndex - 1;
         } else {
           CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
-        }      
+        }
       } else {
         CurrentFlashcardIndex = (currentIndex + 1) % IndexOfFirstUnstarredCard;
       }

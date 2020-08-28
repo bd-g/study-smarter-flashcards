@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Linq;
 
 namespace StudySmarterFlashcards.Dialogs
 {
@@ -69,8 +66,8 @@ namespace StudySmarterFlashcards.Dialogs
         HasPreviousContent = true;
         HasNextContent = ((int)CurrentContent) < Enum.GetValues(typeof(MainInstructionsContent)).Cast<int>().Max();
 
-        OnPropertyChanged("CurrentContent"); 
-        OnPropertyChanged("HasPreviousContent"); 
+        OnPropertyChanged("CurrentContent");
+        OnPropertyChanged("HasPreviousContent");
         OnPropertyChanged("HasNextContent");
       }
     }

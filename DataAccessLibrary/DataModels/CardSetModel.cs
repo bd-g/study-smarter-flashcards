@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace DataAccessLibrary.DataModels
 {
-  public class CardSetModel 
+  public class CardSetModel
   {
     #region Constructors
     public CardSetModel(string name = "New Flashcard Set", string description = "New Description")
@@ -41,7 +41,7 @@ namespace DataAccessLibrary.DataModels
     public string Name { get; set; }
     public string Description { get; set; }
     public Guid SetID { get; } = Guid.NewGuid();
-    public ObservableCollection<IndividualCardModel> FlashcardCollection { get; private set; } 
+    public ObservableCollection<IndividualCardModel> FlashcardCollection { get; private set; }
     public double LearningProgress
     {
       get
@@ -52,7 +52,7 @@ namespace DataAccessLibrary.DataModels
             numLearned++;
           }
         }
-        return (double)numLearned/FlashcardCollection.Count * 100;
+        return (double)numLearned / FlashcardCollection.Count * 100;
       }
     }
     public int NumTimesReviewed { get; private set; } = 0;
@@ -66,7 +66,7 @@ namespace DataAccessLibrary.DataModels
     public CardSetModel Clone()
     {
       ObservableCollection<IndividualCardModel> clonedCards = new ObservableCollection<IndividualCardModel>();
-      foreach(IndividualCardModel originalCard in FlashcardCollection) {
+      foreach (IndividualCardModel originalCard in FlashcardCollection) {
         clonedCards.Add(originalCard.Clone());
       }
       return new CardSetModel(this.Name, this.Description, clonedCards, this.NumTimesReviewed, this.WhenCreated,
