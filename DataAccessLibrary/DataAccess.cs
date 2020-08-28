@@ -24,7 +24,7 @@ namespace DataAccessLibrary
         string createFlashCardSetTableCommand =
           "CREATE TABLE IF NOT EXISTS FlashCardSet " +
           "(" +
-            "RowID INT PRIMARY KEY, " +
+            "RowID INTEGER PRIMARY KEY, " +
             "Name NVARCHAR(30) NOT NULL, " +
             "Description NVARCHAR(150) NOT NULL, " +
             "SetID UNIQUEIDENTIFIER NOT NULL UNIQUE, " +
@@ -36,7 +36,7 @@ namespace DataAccessLibrary
         string createIndividualFlashcardTableCommand =
           "CREATE TABLE IF NOT EXISTS IndividualFlashcard " +
           "(" +
-            "RowID INT PRIMARY KEY, " +
+            "RowID INTEGER PRIMARY KEY, " +
             "Term NVARCHAR(200) NOT NULL, " +
             "Definition NVARCHAR(2000) NOT NULL, " +
             "CardID UNIQUEIDENTIFIER NOT NULL UNIQUE, " +
@@ -62,15 +62,15 @@ namespace DataAccessLibrary
         db.Open();
 
         string selectAllSets =
-          "SELECT" +
+          "SELECT " +
             "Name, " +
             "Description, " +
             "SetID, " +
             "NumTimesReviewed, " +
             "WhenCreated, " +
             "WhenLastReviewedUTC, " +
-            "IsStarred" +
-          "FROM" +
+            "IsStarred " +
+          "FROM " +
             "FlashCardSet " +
           "ORDER BY " +
             "(CASE WHEN IsStarred THEN 1 ELSE 2 END) ASC, " +
@@ -89,17 +89,17 @@ namespace DataAccessLibrary
 
           ObservableCollection<IndividualCardModel> flashcardCollection = new ObservableCollection<IndividualCardModel>();
           string selectAllAssociatedCards =
-            "SELECT" +
+            "SELECT " +
               "Term, " +
               "Definition, " +
               "CardID, " +
               "IsLearned, " +
-              "IsStarred, " +
-            "FROM" +
-              "IndividualFlashcard" +
-            "WHERE" +
+              "IsStarred " +
+            "FROM " +
+              "IndividualFlashcard " +
+            "WHERE " +
               "ParentSetID = @ParentSetID " +
-            "ORDER BY" +
+            "ORDER BY " +
               "(CASE WHEN IsStarred THEN 1 ELSE 2 END) ASC, " +
               "RowID ASC";
           SqliteCommand selectAllAssociatedCardsCommand = new SqliteCommand(selectAllAssociatedCards, db);
@@ -112,10 +112,10 @@ namespace DataAccessLibrary
             Guid cardID = allAssociatedCardsReader.GetGuid(2);
             bool isLearned = allAssociatedCardsReader.GetBoolean(3);
             bool isCardStarred = allAssociatedCardsReader.GetBoolean(4);
-            flashcardCollection.Add(new IndividualCardModel(term, definition, cardID, isLearned, isStarred));
+            flashcardCollection.Add(new IndividualCardModel(term, definition, cardID, isLearned, isCardStarred));
           }
 
-          allCardSets.Add(new CardSetModel(name, description, flashcardCollection, numTimesReviewed, whenCreated, whenLastReviewedUTC, isStarred));
+          allCardSets.Add(new CardSetModel(name, description, setID, flashcardCollection, numTimesReviewed, whenCreated, whenLastReviewedUTC, isStarred));
         }
 
         db.Close();
@@ -134,6 +134,7 @@ namespace DataAccessLibrary
         insertSetCommand.CommandText =
           "INSERT INTO FlashCardSet VALUES " +
           "(" +
+            "NULL," +
             "@Name, " +
             "@Description, " +
             "@SetID, " +
@@ -264,12 +265,13 @@ namespace DataAccessLibrary
       insertCardCommand.CommandText =
         "INSERT INTO IndividualFlashcard VALUES " +
         "(" +
+          "NULL," +
           "@Term, " +
           "@Definition, " +
           "@CardID, " +
           "@ParentSetID, " +
           "@IsLearned, " +
-          "@IsStarred, " +
+          "@IsStarred" +
         ");";
 
       insertCardCommand.Parameters.AddWithValue("@Term", newCard.Term);
