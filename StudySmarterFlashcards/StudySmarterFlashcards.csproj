@@ -180,7 +180,6 @@
     </Compile>
     <Compile Include="Utils\NotifyTaskCompletion.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
-    <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\TaskUtils.cs" />
     <Compile Include="Utils\ViewModelLocator.cs" />
   </ItemGroup>

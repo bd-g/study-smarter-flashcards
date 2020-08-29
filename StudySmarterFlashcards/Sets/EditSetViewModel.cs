@@ -19,9 +19,11 @@ namespace StudySmarterFlashcards.Sets
     private readonly int prMaxTermLength = 30;
     private readonly int prMaxDescriptionLength = 150;
     #endregion
+
     #region Fields
     private int prIndexOfLastImportSaved = -1;
     #endregion
+
     #region Constructors
     public EditSetViewModel(INavigationService navigationService) : base(navigationService)
     {

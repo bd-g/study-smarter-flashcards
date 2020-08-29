@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace StudySmarterFlashcards.Utils
+namespace DataAccessLibrary.Utils
 {
   public static class StringExtensions
   {

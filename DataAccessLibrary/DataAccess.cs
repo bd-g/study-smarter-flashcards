@@ -1,8 +1,11 @@
 ﻿using DataAccessLibrary.DataModels;
+using DataAccessLibrary.Utils;
 using Microsoft.Data.Sqlite;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -190,9 +193,42 @@ namespace DataAccessLibrary
         updateSetCommand.Parameters.AddWithValue("@SetID", editedCardSet.SetID);
         updateSetCommand.ExecuteReader();
 
+        List<Guid> allCardIDs = new List<Guid>();
         foreach (IndividualCardModel individualCard in editedCardSet.FlashcardCollection) {
-          EditFlashcard_UWP(individualCard, db);
+          allCardIDs.Add(individualCard.CardID);
+
+          SqliteCommand queryCardCommand = new SqliteCommand();
+          queryCardCommand.Connection = db;
+          queryCardCommand.CommandText = "SELECT COUNT(*) FROM IndividualFlashcard WHERE CardID = @CardID;";
+          queryCardCommand.Parameters.AddWithValue("@CardID", individualCard.CardID);
+          int count = Convert.ToInt32(queryCardCommand.ExecuteScalar());
+          if (count == 0) {
+            AddNewCard_UWP(individualCard, editedCardSet.SetID, db);
+          } else {
+            EditFlashcard_UWP(individualCard, db);
+          }
         }
+
+        SqliteCommand deleteOldCardsCommand = new SqliteCommand();
+        deleteOldCardsCommand.Connection = db;
+        deleteOldCardsCommand.CommandText =
+          "DELETE FROM " +
+            "IndividualFlashcard " +
+          "WHERE " +
+            "ParentSetID = @ParentSetID AND " +
+            "CardID NOT IN (";
+        for (int i = 0; i < allCardIDs.Count; i++) {
+          deleteOldCardsCommand.CommandText += "@CardID" + i + ",";
+        }
+        deleteOldCardsCommand.CommandText = deleteOldCardsCommand.CommandText.TrimEnd(',');
+        deleteOldCardsCommand.CommandText += ");";
+
+        deleteOldCardsCommand.Parameters.AddWithValue("@ParentSetID", editedCardSet.SetID);
+        for(int i = 0; i < allCardIDs.Count; i++) {
+          deleteOldCardsCommand.Parameters.AddWithValue("@CardID" + i, allCardIDs[i]).SqliteType = SqliteType.Text;
+        }
+
+        deleteOldCardsCommand.ExecuteReader();
 
         db.Close();
       }
