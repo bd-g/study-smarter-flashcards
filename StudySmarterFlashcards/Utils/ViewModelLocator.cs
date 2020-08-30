@@ -1,6 +1,6 @@
-﻿using GalaSoft.MvvmLight.Ioc;
+﻿using CommonServiceLocator;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Views;
-using CommonServiceLocator;
 using StudySmarterFlashcards.Menus;
 using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Study;
@@ -21,12 +21,12 @@ namespace StudySmarterFlashcards.Utils
     {
       ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
       var nav = new NavigationService();
-      nav.Configure(MainMenuPageKey,   typeof(MainMenuPage));
-      nav.Configure(SetPageKey,        typeof(SetPage));
-      nav.Configure(EditSetPageKey,    typeof(EditSetPage));
+      nav.Configure(MainMenuPageKey, typeof(MainMenuPage));
+      nav.Configure(SetPageKey, typeof(SetPage));
+      nav.Configure(EditSetPageKey, typeof(EditSetPage));
       nav.Configure(BasicStudyPageKey, typeof(BasicStudyPage));
       nav.Configure(FillBlankStudyPageKey, typeof(FillBlankStudyPage));
-      nav.Configure(SettingsPageKey,   typeof(SettingsPage));
+      nav.Configure(SettingsPageKey, typeof(SettingsPage));
 
       SimpleIoc.Default.Register<INavigationService>(() => nav);
       SimpleIoc.Default.Register<MainMenuViewModel>();

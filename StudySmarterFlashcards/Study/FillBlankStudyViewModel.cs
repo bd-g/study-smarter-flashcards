@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
-using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
 {
@@ -71,17 +65,18 @@ namespace StudySmarterFlashcards.Study
         }
       }
     }
-    public string IncompleteWord {
+    public string IncompleteWord
+    {
       get
       {
         return CurrentFlashcard.Term.Substring(0, Math.Min(NumCharsGuessed, CurrentFlashcard.Term.Length));
-      } 
+      }
     }
     public string EmptySpacesOne
     {
       get
       {
-        if (NumCharsGuessed < CurrentFlashcard.Term.Length) { 
+        if (NumCharsGuessed < CurrentFlashcard.Term.Length) {
           return " _";
         } else {
           return "";
@@ -99,7 +94,7 @@ namespace StudySmarterFlashcards.Study
               sb.Append((char)160);
               sb.Append('_');
             } else if (char.IsWhiteSpace(CurrentFlashcard.Term[i])) {
-              sb.Append((char)160); 
+              sb.Append((char)160);
               sb.Append(CurrentFlashcard.Term[i]);
               sb.Append((char)160);
             } else {
@@ -193,7 +188,7 @@ namespace StudySmarterFlashcards.Study
         NumCharsGuessed = 0;
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
-      }      
+      }
       OnPropertyChanged("FlashCardSet");
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");

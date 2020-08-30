@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using StudySmarterFlashcards.Dialogs;
-using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
@@ -32,6 +33,7 @@ namespace StudySmarterFlashcards.Study
       GoToPreviousFlashcardCommand = new RelayCommand(GoToPreviousFlashcard);
       FlipFlashcardCommand = new RelayCommand(FlipFlashcardAction);
       SwitchShuffleModeCommand = new RelayCommand(SwitchShuffleModeAction);
+      IsLearnedChangedCommand = new RelayCommand<RoutedEventArgs>(IsLearnedChangedAction);
       MouseDownOnCardCommand = new RelayCommand<TappedRoutedEventArgs>(MouseDownOnCardFunction);
       ShowInstructionsCommand = new RelayCommand(ShowInstructionsAction);
     }
@@ -45,11 +47,20 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand GoToPreviousFlashcardCommand { get; private set; }
     public RelayCommand FlipFlashcardCommand { get; private set; }
     public RelayCommand SwitchShuffleModeCommand { get; private set; }
+    public RelayCommand<RoutedEventArgs> IsLearnedChangedCommand { get; private set; }
     public RelayCommand<TappedRoutedEventArgs> MouseDownOnCardCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
     private int IndexOfFirstUnstarredCard { get; set; }
     public bool IsShowingTerm { get; private set; } = true;
+    public bool IsCurrentFlashcardLearned
+    {
+      get
+      {
+        return CurrentFlashcard.IsLearned;
+      }
+      set { }
+    }
     public string CurrentSideShowing
     {
       get
@@ -57,18 +68,20 @@ namespace StudySmarterFlashcards.Study
         return IsShowingTerm ? CurrentFlashcard.Term : CurrentFlashcard.Definition;
       }
     }
-
-    public IndividualCardModel CurrentFlashcard {
-      get {
+    public IndividualCardModel CurrentFlashcard
+    {
+      get
+      {
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
     public Stack<int> PreviousFlashcardIndexes { get; private set; }
-    public bool HasPreviousFlashcards {
+    public bool HasPreviousFlashcards
+    {
       get
       {
         return PreviousFlashcardIndexes.Count > 0;
-      } 
+      }
     }
     public bool IsShuffleMode { get; set; } = true;
     #endregion
@@ -96,7 +109,7 @@ namespace StudySmarterFlashcards.Study
           SwitchShuffleModeAction();
           break;
         case Windows.System.VirtualKey.L:
-          SwitchCardIsLearned();
+          IsLearnedChangedAction(null);
           break;
       }
     }
@@ -164,7 +177,7 @@ namespace StudySmarterFlashcards.Study
 
     private void GoToNextFlashcard()
     {
-      int currentIndex = CurrentFlashcardIndex; 
+      int currentIndex = CurrentFlashcardIndex;
       if (IsShuffleMode) {
         int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
         if (currentIndex != nextIndex) {
@@ -173,7 +186,7 @@ namespace StudySmarterFlashcards.Study
           CurrentFlashcardIndex = nextIndex - 1;
         } else {
           CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
-        }      
+        }
       } else {
         CurrentFlashcardIndex = (currentIndex + 1) % IndexOfFirstUnstarredCard;
       }
@@ -197,16 +210,23 @@ namespace StudySmarterFlashcards.Study
       OnPropertyChanged("IsShuffleMode");
     }
 
+    private void IsLearnedChangedAction(RoutedEventArgs args)
+    {
+      if (args != null) {
+        if (args.OriginalSource is CheckBox checkbox) {
+          CurrentFlashcard.IsLearned = checkbox.IsChecked == true ? true : false;
+        }
+      } else {
+        CurrentFlashcard.IsLearned = !CurrentFlashcard.IsLearned;
+      }
+      OnPropertyChanged("IsCurrentFlashcardLearned");
+      DataAccess.EditFlashcardIsLearned_UWP(CurrentFlashcard.CardID, CurrentFlashcard.IsLearned);
+    }
+
     private void MouseDownOnCardFunction(TappedRoutedEventArgs args)
     {
       FlipFlashcardAction();
       var tmp = FocusManager.GetFocusedElement();
-    }
-
-    private void SwitchCardIsLearned()
-    {
-      CurrentFlashcard.IsLearned = !CurrentFlashcard.IsLearned;
-      OnPropertyChanged("CurrentFlashcard");
     }
     #endregion
   }

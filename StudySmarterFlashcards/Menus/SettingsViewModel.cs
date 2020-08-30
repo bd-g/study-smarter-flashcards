@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Utils;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace StudySmarterFlashcards.Menus
 {
@@ -42,10 +38,12 @@ namespace StudySmarterFlashcards.Menus
     public RelayCommand<RoutedEventArgs> ToggleStudyInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleMainInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleFillBlankStudyInstructionsCommand { get; private set; }
-    public bool IsFeedbackHubSupported {
-      get {
+    public bool IsFeedbackHubSupported
+    {
+      get
+      {
         return Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
-      } 
+      }
     }
     public bool ShowStudyInstructions
     {

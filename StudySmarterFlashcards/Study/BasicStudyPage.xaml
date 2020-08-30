@@ -83,8 +83,17 @@
           <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="20"
                    Text="{Binding CurrentSideShowing}" TextWrapping="WrapWholeWords"/>
         </ScrollViewer>
-        <CheckBox VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                  Margin="15" Content="Learned" IsChecked="{Binding CurrentFlashcard.IsLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+          Margin="15" Content="Learned" IsChecked="{Binding IsCurrentFlashcardLearned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+          <interact:Interaction.Behaviors>
+            <interactcore:EventTriggerBehavior EventName="Checked" >
+              <interactcore:InvokeCommandAction Command="{Binding IsLearnedChangedCommand}" />
+            </interactcore:EventTriggerBehavior>
+            <interactcore:EventTriggerBehavior EventName="Unchecked" >
+              <interactcore:InvokeCommandAction Command="{Binding IsLearnedChangedCommand}" />
+            </interactcore:EventTriggerBehavior>
+          </interact:Interaction.Behaviors>
+        </CheckBox>
       </Grid>
     </Border>
 

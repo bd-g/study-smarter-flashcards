@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.ImportTools;
-using StudySmarterFlashcards.Sets;
 using StudySmarterFlashcards.Utils;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
@@ -55,7 +56,7 @@ namespace StudySmarterFlashcards.Menus
     #region Private Methods
     private async Task<string> LoadStartingData()
     {
-      CardSets = await LocalDataHandler.LoadAllSetsFromLocalMemory();
+      CardSets = await Task.Run(() => DataAccess.ReadAllExistingData_UWP());
       OnPropertyChanged("CardSets");
       return CardSets.Count + " set(s) loaded successfully";
     }
@@ -86,7 +87,7 @@ namespace StudySmarterFlashcards.Menus
             List<CardSetModel> newImportedCardSetModels = await importingTask;
             prNavigationService.NavigateTo("EditSetPage");
             Messenger.Default.Send(newImportedCardSetModels, "EditSetView");
-          }         
+          }
         } catch (Exception ex) {
           await new MessageDialog(ex.Message).ShowAsync();
         }
@@ -106,9 +107,9 @@ namespace StudySmarterFlashcards.Menus
         SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 75) / 3));
       } else if (args.NewSize.Width - 50 > 400) {
         SetColumnWidth = (int)Math.Floor(((args.NewSize.Width - 50) / 2));
-      } else { 
+      } else {
         SetColumnWidth = (int)Math.Floor(args.NewSize.Width - 25);
-      } 
+      }
       OnPropertyChanged("SetColumnWidth");
     }
 
@@ -122,7 +123,7 @@ namespace StudySmarterFlashcards.Menus
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send(cardSetModelToEdit, "EditSetView");
     }
-    
+
     private async void ArchiveSetFunction(CardSetModel cardSetModelToArchive)
     {
       if (cardSetModelToArchive.IsStarred) {
@@ -137,9 +138,8 @@ namespace StudySmarterFlashcards.Menus
         CardSets.Move(CardSets.IndexOf(cardSetModelToArchive), CardSets.Count - 1);
         cardSetModelToArchive.IsStarred = true;
       }
-      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+      await Task.Run(() => DataAccess.ArchiveCardSet_UWP(cardSetModelToArchive.SetID, cardSetModelToArchive.IsStarred));
     }
-
 
     private async void DeleteSetAction(CardSetModel cardSetModelToDelete)
     {
@@ -151,18 +151,19 @@ namespace StudySmarterFlashcards.Menus
       IUICommand cmdResult = await messageDialog.ShowAsync();
       if (cmdResult.Label == "Yes") {
         if (CardSets.Remove(cardSetModelToDelete)) {
-          await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
+          await Task.Run(() => DataAccess.DeleteCardSet_UWP(cardSetModelToDelete));
         }
-      }       
+      }
     }
 
     private async Task ReceiveEditSetMessage(CardSetModel editedSet)
     {
       if (!CardSets.Contains(editedSet)) {
         CardSets.Add(editedSet);
+        await Task.Run(() => DataAccess.AddNewCardSet_UWP(editedSet));
+      } else {
+        await Task.Run(() => DataAccess.EditCardSet_UWP(editedSet));
       }
-
-      await LocalDataHandler.SaveAllSetsToLocalMemory(CardSets);
     }
     #endregion
   }

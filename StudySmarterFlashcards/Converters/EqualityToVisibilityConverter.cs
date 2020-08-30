@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using StudySmarterFlashcards.Dialogs;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 

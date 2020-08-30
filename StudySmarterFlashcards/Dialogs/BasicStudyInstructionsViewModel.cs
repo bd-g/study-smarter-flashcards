@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using StudySmarterFlashcards.Utils;
 
 namespace StudySmarterFlashcards.Dialogs
@@ -25,15 +20,16 @@ namespace StudySmarterFlashcards.Dialogs
 
     #region Properties
     public RelayCommand SaveSettingsAndCloseCommand { get; private set; }
-    public bool DontShowAgain { 
-      get 
-      { 
+    public bool DontShowAgain
+    {
+      get
+      {
         return dontShowAgain;
-      } 
-      set 
+      }
+      set
       {
         dontShowAgain = value;
-        OnPropertyChanged(); 
+        OnPropertyChanged();
       }
     }
     #endregion
