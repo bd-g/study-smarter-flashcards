@@ -15,6 +15,7 @@ namespace StudySmarterFlashcards.Utils
     public const string EditSetPageKey = "EditSetPage";
     public const string BasicStudyPageKey = "BasicStudyPage";
     public const string FillBlankStudyPageKey = "FillBlankStudyPage";
+    public const string MultipleChoiceStudyPageKey = "MultipleChoiceStudyPage";
     public const string SettingsPageKey = "SettingsPage";
 
     public ViewModelLocator()
@@ -26,6 +27,7 @@ namespace StudySmarterFlashcards.Utils
       nav.Configure(EditSetPageKey, typeof(EditSetPage));
       nav.Configure(BasicStudyPageKey, typeof(BasicStudyPage));
       nav.Configure(FillBlankStudyPageKey, typeof(FillBlankStudyPage));
+      nav.Configure(MultipleChoiceStudyPageKey, typeof(MultipleChoiceStudyPage));
       nav.Configure(SettingsPageKey, typeof(SettingsPage));
 
       SimpleIoc.Default.Register<INavigationService>(() => nav);
@@ -34,6 +36,7 @@ namespace StudySmarterFlashcards.Utils
       SimpleIoc.Default.Register<EditSetViewModel>();
       SimpleIoc.Default.Register<BasicStudyViewModel>();
       SimpleIoc.Default.Register<FillBlankStudyViewModel>();
+      SimpleIoc.Default.Register<MultipleChoiceStudyViewModel>();
       SimpleIoc.Default.Register<SettingsViewModel>();
     }
 
@@ -73,6 +76,13 @@ namespace StudySmarterFlashcards.Utils
       get
       {
         return ServiceLocator.Current.GetInstance<FillBlankStudyViewModel>();
+      }
+    }
+    public MultipleChoiceStudyViewModel MultipleChoiceStudyInstance
+    {
+      get
+      {
+        return ServiceLocator.Current.GetInstance<MultipleChoiceStudyViewModel>();
       }
     }
     public SettingsViewModel SettingsInstance

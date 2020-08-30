@@ -166,9 +166,13 @@
       <DependentUpon>BasicStudyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Study\BasicStudyViewModel.cs" />
+    <Compile Include="Study\MultipleChoiceStudyPage.xaml.cs">
+      <DependentUpon>MultipleChoiceStudyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Study\FillBlankStudyPage.xaml.cs">
       <DependentUpon>FillBlankStudyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Study\MultipleChoiceStudyViewModel.cs" />
     <Compile Include="Study\FillBlankStudyViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Converters\BooleanToBackgroundConverter.cs" />
@@ -275,6 +279,10 @@
     <Page Include="Dialogs\BasicStudyInstructionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Study\MultipleChoiceStudyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Study\FillBlankStudyPage.xaml">
       <SubType>Designer</SubType>

@@ -312,6 +312,30 @@ namespace DataAccessLibrary
         db.Close();
       }
     }
+    public static void EditCardSetRegisterNewReviewSession_UWP(CardSetModel reviewedCardSet)
+    {
+      string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
+      using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}")) {
+        db.Open();
+        SqliteCommand editCardCommand = new SqliteCommand();
+        editCardCommand.Connection = db;
+
+        editCardCommand.CommandText =
+          "UPDATE FlashCardSet " +
+          "SET " +
+            "NumTimesReviewed = @NumTimesReviewed, " +
+            "WhenLastReviewedUTC = @WhenLastReviewedUTC " +
+          "WHERE " +
+            "SetID = @SetID;";
+
+        editCardCommand.Parameters.AddWithValue("@NumTimesReviewed", reviewedCardSet.NumTimesReviewed);
+        editCardCommand.Parameters.AddWithValue("@WhenLastReviewedUTC", reviewedCardSet.WhenLastReviewedUTC);
+        editCardCommand.Parameters.AddWithValue("@SetID", reviewedCardSet.SetID);
+        editCardCommand.ExecuteReader();
+
+        db.Close();
+      }
+    }
     #endregion
 
     #region Private Methods

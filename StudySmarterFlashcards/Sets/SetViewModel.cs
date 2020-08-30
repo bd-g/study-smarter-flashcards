@@ -1,4 +1,5 @@
-﻿using DataAccessLibrary.DataModels;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
@@ -88,6 +89,7 @@ namespace StudySmarterFlashcards.Sets
       prNavigationService.NavigateTo("BasicStudyPage");
       Messenger.Default.Send(FlashCardSet, "StudyView");
       FlashCardSet.RegisterNewReviewSession();
+      DataAccess.EditCardSetRegisterNewReviewSession_UWP(FlashCardSet);
     }
 
     private async void FillBlankStudyAction()
@@ -111,6 +113,7 @@ namespace StudySmarterFlashcards.Sets
       prNavigationService.NavigateTo("FillBlankStudyPage");
       Messenger.Default.Send(FlashCardSet, "FillBlankStudyView");
       FlashCardSet.RegisterNewReviewSession();
+      DataAccess.EditCardSetRegisterNewReviewSession_UWP(FlashCardSet);
     }
     #endregion
   }
