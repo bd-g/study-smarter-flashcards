@@ -47,7 +47,7 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="18*"/>
       <ColumnDefinition Width="1*"/>
-      <ColumnDefinition x:Name="RightMiddleColumn" Width="1*"/>
+      <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
     <interact:Interaction.Behaviors>

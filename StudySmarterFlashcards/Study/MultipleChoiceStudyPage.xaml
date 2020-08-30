@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
     xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters" 
-    xmlns:interact="using:Microsoft.Xaml.Interactivity" 
-    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     DataContext="{Binding MultipleChoiceStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -28,14 +26,9 @@
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="18*"/>
       <ColumnDefinition Width="1*"/>
-      <ColumnDefinition x:Name="RightMiddleColumn" Width="1*"/>
+      <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
-    <interact:Interaction.Behaviors>
-      <interactcore:EventTriggerBehavior EventName="SizeChanged">
-        <interactcore:InvokeCommandAction Command="{Binding AdjustColumnSpanCommand}"/>
-      </interactcore:EventTriggerBehavior>
-    </interact:Interaction.Behaviors>
     <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
@@ -50,7 +43,7 @@
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
       </Viewbox>
     </Button>
-    <Button Command="{Binding ShowFillBlankInstructionsCommand}" Grid.Row="0" Grid.Column="5"
+    <Button Command="{Binding ShowMultipleChoiceInstructionsCommand}" Grid.Row="0" Grid.Column="5"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Help">
       <Viewbox>
@@ -75,34 +68,7 @@
         <RowDefinition Height="1*"/>
         <RowDefinition Height="6*"/>
       </Grid.RowDefinitions>
-
-      <Border x:Name="GuessBackground" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent">
-        <StackPanel Orientation="Horizontal">
-          <TextBlock FontSize="30" FontWeight="Bold" Text="{Binding IncompleteWord}"/>
-          <Border x:Name="FirstUnderScoreBackground" Background="Transparent">
-            <TextBlock FontSize="30" FontWeight="Bold"><Run Text="{Binding EmptySpacesOne}"/></TextBlock>
-          </Border>
-          <TextBlock FontSize="30" FontWeight="Bold" Text="{Binding EmptySpacesTwoOrMore}"/>
-        </StackPanel>
-      </Border>
-
-      <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Command="{Binding UseHintCommand}" Margin="0,0,5,0"
-              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-          <TextBlock>
-            <Run Text="Hint"/>
-            <Run FontFamily="Segoe MDL2 Assets" Text="&#xE82F;"/>
-            <Run Text="(Right Arrow)"/>
-          </TextBlock>
-        </Button>
-        <Button Command="{Binding RevealEntireWordCommand}" Margin="5,0,0,0"
-              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-          <TextBlock TextAlignment="Center"  Text="Reveal Word (Enter)"/>
-        </Button>
-      </StackPanel>
-
-      <TextBlock x:Name="Definition" FontSize="20" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"
-                 Text="{Binding CurrentFlashcard.Definition}" TextWrapping="WrapWholeWords"/>
+ 
     </Grid>
   </Grid>
 </Page>

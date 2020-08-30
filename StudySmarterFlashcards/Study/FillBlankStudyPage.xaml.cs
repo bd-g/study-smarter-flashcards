@@ -16,10 +16,6 @@ namespace StudySmarterFlashcards.Study
   /// </summary>
   public sealed partial class FillBlankStudyPage : Page
   {
-    #region Fields
-    private static readonly object prLocker = new object();
-    #endregion
-
     #region Constructors
     public FillBlankStudyPage()
     {

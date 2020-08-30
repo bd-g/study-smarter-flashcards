@@ -17,23 +17,18 @@ namespace StudySmarterFlashcards.Study
   {
     #region Fields
     private static readonly Random prRandom = new Random();
-    private int prNumCharsGuessed = 0;
     private static readonly object myLocker = new object();
     private static bool prCanUseKeyDown = true;
-    private static bool prUsedHint = false;
     #endregion
 
     #region Constructors
     public MultipleChoiceStudyViewModel(INavigationService navigationService) : base(navigationService)
     {
-      Messenger.Default.Register<CardSetModel>(this, "FillBlankStudyView", async (cardSetModel) => await InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<CardSetModel>(this, "MultipleChoiceStudyView", async (cardSetModel) => await InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
-      UseHintCommand = new RelayCommand(UseHintAction);
-      RevealEntireWordCommand = new RelayCommand(RevealEntireWordAction);
-      AdjustColumnSpanCommand = new RelayCommand<SizeChangedEventArgs>(AdjustColumnSpanAction);
-      ShowFillBlankInstructionsCommand = new RelayCommand(ShowFillBlankInstructionsAction);
+      ShowMultipleChoiceInstructionsCommand = new RelayCommand(ShowMultipleChoiceInstructionsAction);
     }
     #endregion
 
@@ -41,79 +36,9 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand BackCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
-    public RelayCommand UseHintCommand { get; private set; }
-    public RelayCommand RevealEntireWordCommand { get; private set; }
-    public RelayCommand ShowFillBlankInstructionsCommand { get; private set; }
-    public RelayCommand<SizeChangedEventArgs> AdjustColumnSpanCommand { get; private set; }
+    public RelayCommand ShowMultipleChoiceInstructionsCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     public int CurrentFlashcardIndex { get; private set; }
-    public int NumCharsGuessed
-    {
-      get
-      {
-        return prNumCharsGuessed;
-      }
-      private set
-      {
-        if (prNumCharsGuessed != value) {
-          prNumCharsGuessed = value;
-          OnPropertyChanged();
-          OnPropertyChanged("IncompleteWord");
-          OnPropertyChanged("EmptySpacesOne");
-          OnPropertyChanged("EmptySpacesTwoOrMore");
-          OnPropertyChanged("IsWordIncomplete");
-        }
-      }
-    }
-    public string IncompleteWord
-    {
-      get
-      {
-        return CurrentFlashcard.Term.Substring(0, Math.Min(NumCharsGuessed, CurrentFlashcard.Term.Length));
-      }
-    }
-    public string EmptySpacesOne
-    {
-      get
-      {
-        if (NumCharsGuessed < CurrentFlashcard.Term.Length) {
-          return " _";
-        } else {
-          return "";
-        }
-      }
-    }
-    public string EmptySpacesTwoOrMore
-    {
-      get
-      {
-        if (NumCharsGuessed < CurrentFlashcard.Term.Length - 1) {
-          StringBuilder sb = new StringBuilder();
-          for (int i = NumCharsGuessed + 1; i < CurrentFlashcard.Term.Length; i++) {
-            if (char.IsLetterOrDigit(CurrentFlashcard.Term[i])) {
-              sb.Append((char)160);
-              sb.Append('_');
-            } else if (char.IsWhiteSpace(CurrentFlashcard.Term[i])) {
-              sb.Append((char)160);
-              sb.Append(CurrentFlashcard.Term[i]);
-              sb.Append((char)160);
-            } else {
-              sb.Append(CurrentFlashcard.Term[i]);
-            }
-          }
-          return sb.ToString();
-        } else {
-          return "";
-        }
-      }
-    }
-    public bool IsWordIncomplete
-    {
-      get
-      {
-        return NumCharsGuessed < CurrentFlashcard.Term.Length;
-      }
-    }
     private int IndexOfFirstUnstarredCard { get; set; }
     public IndividualCardModel CurrentFlashcard
     {
@@ -122,21 +47,9 @@ namespace StudySmarterFlashcards.Study
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
-    public int ColumnSpanLength { get; private set; } = 1;
-    public int ColumnNumber { get; private set; } = 5;
     #endregion
 
     #region Public Methods
-    public void CharacterReceivedFunction(object sender, CharacterReceivedEventArgs args)
-    {
-      lock (myLocker) {
-        if (!prCanUseKeyDown) {
-          return;
-        }
-      }
-
-      AttemptLetterGuess((char)args.KeyCode);
-    }
     public void KeyDownFunction(object sender, KeyEventArgs args)
     {
       lock (myLocker) {
@@ -147,18 +60,13 @@ namespace StudySmarterFlashcards.Study
       if (args != null) {
         switch (args.VirtualKey) {
           case Windows.System.VirtualKey.Right:
-            if (IsWordIncomplete) {
-              UseHintAction();
-            } else {
-              GoToNextFlashcard();
-            }
+           
             break;
         }
       } else if (sender is VirtualKey) {
         VirtualKey virtualKey = (VirtualKey)sender;
         switch (virtualKey) {
           case Windows.System.VirtualKey.Enter:
-            RevealEntireWordAction();
             break;
           case Windows.System.VirtualKey.Space:
             break;
@@ -185,7 +93,6 @@ namespace StudySmarterFlashcards.Study
             break;
           }
         }
-        NumCharsGuessed = 0;
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
       }
@@ -196,7 +103,7 @@ namespace StudySmarterFlashcards.Study
       lock (myLocker) {
         prCanUseKeyDown = false;
       }
-      await InstructionsDialogService.ShowAsync(InstructionDialogType.FillBlankStudyInstructions);
+      //await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions);
       lock (myLocker) {
         prCanUseKeyDown = true;
       }
@@ -209,9 +116,9 @@ namespace StudySmarterFlashcards.Study
 
     private void GoToNextFlashcard()
     {
-      if (IsWordIncomplete) {
-        return;
-      }
+      //if (IsWordIncomplete) {
+      //  return;
+      //}
       int currentIndex = CurrentFlashcardIndex;
 
       int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
@@ -223,71 +130,13 @@ namespace StudySmarterFlashcards.Study
         CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
       }
 
-      prUsedHint = false;
-      NumCharsGuessed = 0;
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
     }
 
-    private void AttemptLetterGuess(char charGuessed)
+    private async void ShowMultipleChoiceInstructionsAction()
     {
-      if (NumCharsGuessed == CurrentFlashcard.Term.Length) {
-        return;
-      }
-
-      if (char.ToUpperInvariant(charGuessed) == char.ToUpperInvariant(CurrentFlashcard.Term[NumCharsGuessed])) {
-        RevealNextLetter();
-      } else {
-        Messenger.Default.Send(false, "CharacterGuess");
-      }
-    }
-
-    private void UseHintAction()
-    {
-      prUsedHint = true;
-      RevealNextLetter();
-      Messenger.Default.Send(false, "FillBlankHint");
-    }
-
-    private void RevealEntireWordAction()
-    {
-      if (IsWordIncomplete) {
-        prUsedHint = true;
-        NumCharsGuessed = CurrentFlashcard.Term.Length;
-        Messenger.Default.Send(true, "FillBlankHint");
-      }
-    }
-
-    private void RevealNextLetter()
-    {
-      NumCharsGuessed++;
-      while (IsWordIncomplete && !char.IsLetterOrDigit(CurrentFlashcard.Term[NumCharsGuessed])) {
-        NumCharsGuessed++;
-      }
-      if (!IsWordIncomplete && !prUsedHint) {
-        Messenger.Default.Send(true, "CharacterGuess");
-      }
-    }
-
-    private void AdjustColumnSpanAction(SizeChangedEventArgs args)
-    {
-      if (args.NewSize.Width < 500) {
-        ColumnSpanLength = 3;
-        ColumnNumber = 4;
-      } else if (args.NewSize.Width < 1000) {
-        ColumnSpanLength = 2;
-        ColumnNumber = 4;
-      } else {
-        ColumnSpanLength = 1;
-        ColumnNumber = 5;
-      }
-      OnPropertyChanged("ColumnSpanLength");
-      OnPropertyChanged("ColumnNumber");
-    }
-
-    private async void ShowFillBlankInstructionsAction()
-    {
-      await InstructionsDialogService.ShowAsync(InstructionDialogType.FillBlankStudyInstructions, true);
+      //await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions, true);
     }
     #endregion
   }
