@@ -156,7 +156,7 @@ namespace DataAccessLibrary
         insertSetCommand.ExecuteReader();
 
         foreach (IndividualCardModel individualCard in newCardSet.FlashcardCollection) {
-          AddNewCard_UWP(individualCard, newCardSet.SetID, db);
+          AddNewCard(individualCard, newCardSet.SetID, db);
         }
 
         db.Close();
@@ -203,9 +203,9 @@ namespace DataAccessLibrary
           queryCardCommand.Parameters.AddWithValue("@CardID", individualCard.CardID);
           int count = Convert.ToInt32(queryCardCommand.ExecuteScalar());
           if (count == 0) {
-            AddNewCard_UWP(individualCard, editedCardSet.SetID, db);
+            AddNewCard(individualCard, editedCardSet.SetID, db);
           } else {
-            EditFlashcard_UWP(individualCard, db);
+            EditFlashcard(individualCard, db);
           }
         }
 
@@ -290,10 +290,32 @@ namespace DataAccessLibrary
       }
 
     }
+    public static void EditFlashcardIsLearned_UWP(Guid cardID, bool isLearned)
+    {
+      string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
+      using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}")) {
+        db.Open();
+        SqliteCommand editCardCommand = new SqliteCommand();
+        editCardCommand.Connection = db;
+
+        editCardCommand.CommandText =
+          "UPDATE IndividualFlashcard " +
+          "SET " +
+            "IsLearned = @IsLearned " +
+          "WHERE " +
+            "CardID = @CardID;";
+
+        editCardCommand.Parameters.AddWithValue("@CardID", cardID);
+        editCardCommand.Parameters.AddWithValue("@IsLearned", isLearned);
+        editCardCommand.ExecuteReader();
+
+        db.Close();
+      }
+    }
     #endregion
 
     #region Private Methods
-    private static void AddNewCard_UWP(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
+    private static void AddNewCard(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
     {
       SqliteCommand insertCardCommand = new SqliteCommand();
       insertCardCommand.Connection = db;
@@ -318,7 +340,7 @@ namespace DataAccessLibrary
       insertCardCommand.Parameters.AddWithValue("@IsStarred", newCard.IsStarred);
       insertCardCommand.ExecuteReader();
     }
-    private static void EditFlashcard_UWP(IndividualCardModel editedCard, SqliteConnection db)
+    private static void EditFlashcard(IndividualCardModel editedCard, SqliteConnection db)
     {
       SqliteCommand editCardCommand = new SqliteCommand();
       editCardCommand.Connection = db;
