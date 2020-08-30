@@ -134,8 +134,10 @@ namespace StudySmarterFlashcards.Study
           return;
         }
       }
-
-      AttemptLetterGuess((char)args.KeyCode);
+      char guess = (char)args.KeyCode;
+      if (!char.IsWhiteSpace(guess)) {
+        AttemptLetterGuess((char)args.KeyCode);
+      }
     }
     public void KeyDownFunction(object sender, KeyEventArgs args)
     {
@@ -158,7 +160,11 @@ namespace StudySmarterFlashcards.Study
         VirtualKey virtualKey = (VirtualKey)sender;
         switch (virtualKey) {
           case Windows.System.VirtualKey.Enter:
-            RevealEntireWordAction();
+            if (IsWordIncomplete) {
+              RevealEntireWordAction();
+            } else {
+              GoToNextFlashcard();
+            }
             break;
           case Windows.System.VirtualKey.Space:
             break;
