@@ -46,7 +46,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand ShowFillBlankInstructionsCommand { get; private set; }
     public RelayCommand<SizeChangedEventArgs> AdjustColumnSpanCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
-    public int CurrentFlashcardIndex { get; private set; }
+    private int CurrentFlashcardIndex { get; set; }
     public int NumCharsGuessed
     {
       get

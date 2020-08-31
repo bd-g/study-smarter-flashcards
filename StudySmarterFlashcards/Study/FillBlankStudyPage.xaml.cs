@@ -44,28 +44,28 @@ namespace StudySmarterFlashcards.Study
     }
     private void AttachUniversalKeyHandler(object sender, RoutedEventArgs e)
     {
-      if (this.DataContext is FillBlankStudyViewModel) {
-        Window.Current.CoreWindow.KeyDown += (this.DataContext as FillBlankStudyViewModel).KeyDownFunction;
-        Window.Current.CoreWindow.CharacterReceived += (this.DataContext as FillBlankStudyViewModel).CharacterReceivedFunction;
+      if (this.DataContext is FillBlankStudyViewModel viewModel) {
+        Window.Current.CoreWindow.KeyDown += viewModel.KeyDownFunction;
+        Window.Current.CoreWindow.CharacterReceived += viewModel.CharacterReceivedFunction;
       }
     }
     private void DetachUniversalKeyHandler(object sender, RoutedEventArgs e)
     {
-      if (this.DataContext is FillBlankStudyViewModel) {
-        Window.Current.CoreWindow.KeyDown -= (this.DataContext as FillBlankStudyViewModel).KeyDownFunction;
-        Window.Current.CoreWindow.CharacterReceived -= (this.DataContext as FillBlankStudyViewModel).CharacterReceivedFunction;
+      if (this.DataContext is FillBlankStudyViewModel viewModel) {
+        Window.Current.CoreWindow.KeyDown -= viewModel.KeyDownFunction;
+        Window.Current.CoreWindow.CharacterReceived -= viewModel.CharacterReceivedFunction;
       }
     }
     private void HandleSpaceBarPress(object sender, KeyRoutedEventArgs e)
     {
       if (e.Key == VirtualKey.Space) {
-        if (this.DataContext is FillBlankStudyViewModel) {
-          (this.DataContext as FillBlankStudyViewModel).KeyDownFunction(e.Key, null);
+        if (this.DataContext is FillBlankStudyViewModel viewModel) {
+          viewModel.KeyDownFunction(e.Key, null);
         }
         e.Handled = true;
       } else if (e.Key == VirtualKey.Enter) {
-        if (this.DataContext is FillBlankStudyViewModel) {
-          (this.DataContext as FillBlankStudyViewModel).KeyDownFunction(e.Key, null);
+        if (this.DataContext is FillBlankStudyViewModel viewModel) {
+          viewModel.KeyDownFunction(e.Key, null);
         }
         e.Handled = true;
       }

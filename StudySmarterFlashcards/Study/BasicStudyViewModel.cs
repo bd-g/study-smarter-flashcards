@@ -50,7 +50,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand<RoutedEventArgs> IsLearnedChangedCommand { get; private set; }
     public RelayCommand<TappedRoutedEventArgs> MouseDownOnCardCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
-    public int CurrentFlashcardIndex { get; private set; }
+    private int CurrentFlashcardIndex { get; set; }
     private int IndexOfFirstUnstarredCard { get; set; }
     public bool IsShowingTerm { get; private set; } = true;
     public bool IsCurrentFlashcardLearned
