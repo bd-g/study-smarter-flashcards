@@ -2,9 +2,13 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarSymbols;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Utils;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
@@ -38,7 +42,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
     public RelayCommand ShowMultipleChoiceInstructionsCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
-    public int CurrentFlashcardIndex { get; private set; }
+    private int CurrentFlashcardIndex { get; set; }
     private int IndexOfFirstUnstarredCard { get; set; }
     public IndividualCardModel CurrentFlashcard
     {
@@ -47,6 +51,8 @@ namespace StudySmarterFlashcards.Study
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
+    public ObservableCollection<string> MultipleChoiceAnswers { get; private set; } = new ObservableCollection<string>();
+    public int NumAvailableAnswers { get; private set; } = 0;
     #endregion
 
     #region Public Methods
@@ -60,7 +66,7 @@ namespace StudySmarterFlashcards.Study
       if (args != null) {
         switch (args.VirtualKey) {
           case Windows.System.VirtualKey.Right:
-           
+            GoToNextFlashcard();
             break;
         }
       } else if (sender is VirtualKey) {
@@ -93,6 +99,8 @@ namespace StudySmarterFlashcards.Study
             break;
           }
         }
+
+        PopulateQuizOptions();
       } else {
         throw new ArgumentNullException("Can't send null set to study page");
       }
@@ -114,6 +122,28 @@ namespace StudySmarterFlashcards.Study
       prNavigationService.GoBack();
     }
 
+    private void PopulateQuizOptions()
+    {
+      MultipleChoiceAnswers.Clear();
+      var values = Enumerable.Range(0, IndexOfFirstUnstarredCard).OrderBy(x => prRandom.Next()).ToList();
+      values.Remove(CurrentFlashcardIndex);
+
+      if (values.Count > 0) {
+        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[0]].Definition);
+      }
+      if (values.Count > 1) {
+        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[1]].Definition);
+      }
+      if (values.Count > 2) {
+        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[2]].Definition);
+      }
+
+      NumAvailableAnswers = 1 + Math.Min(3, values.Count);
+      MultipleChoiceAnswers.Insert(prRandom.Next(0, NumAvailableAnswers), CurrentFlashcard.Definition);
+
+      OnPropertyChanged("NumAvailableAnswers");
+    }
+
     private void GoToNextFlashcard()
     {
       //if (IsWordIncomplete) {
@@ -129,6 +159,8 @@ namespace StudySmarterFlashcards.Study
       } else {
         CurrentFlashcardIndex = IndexOfFirstUnstarredCard - 1;
       }
+
+      PopulateQuizOptions();
 
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");

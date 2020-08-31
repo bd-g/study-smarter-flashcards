@@ -8,6 +8,8 @@
     xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters" 
     DataContext="{Binding MultipleChoiceStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
+    Loaded="AttachUniversalKeyHandler"
+    Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
     <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
@@ -51,8 +53,7 @@
       </Viewbox>
     </Button>
 
-    <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1"
-            Grid.Column="{Binding ColumnNumber}" Grid.ColumnSpan="{Binding ColumnSpanLength}" VerticalAlignment="Center"
+    <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center"
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
       <Viewbox>
@@ -64,11 +65,23 @@
     
     <Grid Grid.Row="1" Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
       <Grid.RowDefinitions>
-        <RowDefinition Height="2*"/>
         <RowDefinition Height="1*"/>
-        <RowDefinition Height="6*"/>
+        <RowDefinition Height="4*"/>
       </Grid.RowDefinitions>
- 
+      
+      <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding CurrentFlashcard.Term}"/>
+      <ListView Grid.Row="1" x:Name="multipleChoiceSelectionOptions"
+          ItemsSource="{Binding MultipleChoiceAnswers}">
+        <!--SelectionChanged="ItemListView_SelectionChanged">-->
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="-"/>
+              <TextBlock Text="{Binding}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
     </Grid>
   </Grid>
 </Page>

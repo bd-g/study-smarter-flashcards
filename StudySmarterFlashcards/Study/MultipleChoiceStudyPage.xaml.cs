@@ -21,6 +21,19 @@ namespace StudySmarterFlashcards.Study
     {
       this.InitializeComponent();
     }
+
+    private void AttachUniversalKeyHandler(object sender, RoutedEventArgs e)
+    {
+      if (this.DataContext is MultipleChoiceStudyViewModel viewModel) {
+        Window.Current.CoreWindow.KeyDown += viewModel.KeyDownFunction;
+      }
+    }
+    private void DetachUniversalKeyHandler(object sender, RoutedEventArgs e)
+    {
+      if (this.DataContext is MultipleChoiceStudyViewModel viewModel) {
+        Window.Current.CoreWindow.KeyDown -= viewModel.KeyDownFunction;
+      }
+    }
     #endregion
   }
 }
