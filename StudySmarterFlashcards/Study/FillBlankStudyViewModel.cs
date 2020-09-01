@@ -46,7 +46,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand ShowFillBlankInstructionsCommand { get; private set; }
     public RelayCommand<SizeChangedEventArgs> AdjustColumnSpanCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
-    public int CurrentFlashcardIndex { get; private set; }
+    private int CurrentFlashcardIndex { get; set; }
     public int NumCharsGuessed
     {
       get
@@ -134,8 +134,10 @@ namespace StudySmarterFlashcards.Study
           return;
         }
       }
-
-      AttemptLetterGuess((char)args.KeyCode);
+      char guess = (char)args.KeyCode;
+      if (!char.IsWhiteSpace(guess)) {
+        AttemptLetterGuess((char)args.KeyCode);
+      }
     }
     public void KeyDownFunction(object sender, KeyEventArgs args)
     {
@@ -158,7 +160,11 @@ namespace StudySmarterFlashcards.Study
         VirtualKey virtualKey = (VirtualKey)sender;
         switch (virtualKey) {
           case Windows.System.VirtualKey.Enter:
-            RevealEntireWordAction();
+            if (IsWordIncomplete) {
+              RevealEntireWordAction();
+            } else {
+              GoToNextFlashcard();
+            }
             break;
           case Windows.System.VirtualKey.Space:
             break;

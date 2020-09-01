@@ -14,6 +14,7 @@ namespace StudySmarterFlashcards.Menus
     private bool prShowFillBlankStudyInstructions;
     private bool prShowBasicStudyInstructions;
     private bool prShowMainInstructions;
+    private bool prShowMultipleChoiceInstructions;
     #endregion
 
     #region Constructors
@@ -26,6 +27,7 @@ namespace StudySmarterFlashcards.Menus
       ToggleStudyInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleStudyInstructionsFunction);
       ToggleMainInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleMainInstructionsFunction);
       ToggleFillBlankStudyInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleFillBlankInstructionsFunction);
+      ToggleMultipleChoiceStudyInstructionsCommand = new RelayCommand<RoutedEventArgs>(ToggleMultipleChoiceStudyInstructionsFunction);
       UpdateSettings();
     }
     #endregion
@@ -38,6 +40,7 @@ namespace StudySmarterFlashcards.Menus
     public RelayCommand<RoutedEventArgs> ToggleStudyInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleMainInstructionsCommand { get; private set; }
     public RelayCommand<RoutedEventArgs> ToggleFillBlankStudyInstructionsCommand { get; private set; }
+    public RelayCommand<RoutedEventArgs> ToggleMultipleChoiceStudyInstructionsCommand { get; private set; }
     public bool IsFeedbackHubSupported
     {
       get
@@ -73,6 +76,20 @@ namespace StudySmarterFlashcards.Menus
         }
       }
     }
+    public bool ShowMultipleChoiceInstructions
+    {
+      get
+      {
+        return prShowMultipleChoiceInstructions;
+      }
+      private set
+      {
+        if (value != prShowMultipleChoiceInstructions) {
+          prShowMultipleChoiceInstructions = value;
+          OnPropertyChanged();
+        }
+      }
+    }
     public bool ShowMainInstructions
     {
       get
@@ -98,6 +115,8 @@ namespace StudySmarterFlashcards.Menus
       ShowMainInstructions = showMainInstructions == false ? false : true;
       bool? showFillBlankStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] as bool?;
       ShowFillBlankInstructions = showFillBlankStudyInstructions == false ? false : true;
+      bool? showMultipleChoiceStudyInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMultipleChoiceStudyInstructionsDialog"] as bool?;
+      ShowMultipleChoiceInstructions = showMultipleChoiceStudyInstructions == false ? false : true;
     }
     #endregion
 
@@ -131,7 +150,12 @@ namespace StudySmarterFlashcards.Menus
       Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] = toggleSwitch.IsOn;
       ShowFillBlankInstructions = toggleSwitch.IsOn;
     }
-
+    private void ToggleMultipleChoiceStudyInstructionsFunction(RoutedEventArgs args)
+    {
+      ToggleSwitch toggleSwitch = args.OriginalSource as ToggleSwitch;
+      Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMultipleChoiceStudyInstructionsDialog"] = toggleSwitch.IsOn;
+      ShowMultipleChoiceInstructions = toggleSwitch.IsOn;
+    }
     private async void ShowMainInstructionsAction()
     {
       await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions, true);

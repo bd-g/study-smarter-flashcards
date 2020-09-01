@@ -1,0 +1,102 @@
+﻿<Page
+    x:Class="StudySmarterFlashcards.Study.MultipleChoiceStudyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:StudySmarterFlashcards.Converters"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity" 
+    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
+    DataContext="{Binding MultipleChoiceStudyInstance, Source={StaticResource Locator}}"
+    mc:Ignorable="d"
+    Loaded="AttachUniversalKeyHandler"
+    Unloaded="DetachUniversalKeyHandler"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Page.Resources>
+    <converters:GuessStatusToObjectConverter x:Key="guessStatusToObjectConverter"/>
+  </Page.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="5*"/>
+      <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="18*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+    <Button Command="{Binding NavigateHomeCommand}" Grid.Row="0" Grid.Column="0"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Home">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;"/>
+      </Viewbox>
+    </Button>
+    <Button Command="{Binding BackCommand}" Grid.Row="0" Grid.Column="1"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Back">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
+      </Viewbox>
+    </Button>
+    <Button Command="{Binding ShowMultipleChoiceInstructionsCommand}" Grid.Row="0" Grid.Column="5"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Help">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE897;"/>
+      </Viewbox>
+    </Button>
+
+    <Button Command="{Binding GoToNextFlashcardCommand}" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center"
+            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center"
+            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Next Flashcard">
+      <Viewbox>
+        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE974;"/>
+      </Viewbox>
+    </Button>
+      
+
+    
+    <Grid Grid.Row="1" Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="4*"/>
+      </Grid.RowDefinitions>
+      
+      <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Text="{Binding CurrentFlashcard.Term}"/>
+      <ScrollViewer Grid.Row="1" >
+        <ListView x:Name="multipleChoiceSelectionOptions" HorizontalAlignment="Center" VerticalAlignment="Center"
+                  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                  ItemsSource="{Binding MultipleChoiceAnswers}">
+          <interact:Interaction.Behaviors>
+            <interactcore:EventTriggerBehavior EventName="Tapped">
+              <interactcore:InvokeCommandAction Command="{Binding MultipleChoiceItemClickedCommand}"/>
+            </interactcore:EventTriggerBehavior>
+          </interact:Interaction.Behaviors>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock FontSize="20" Margin="0,10,0,10" TextWrapping="WrapWholeWords" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Run FontSize="14" FontFamily="Segoe MDL2 Assets" 
+                     Text="{Binding Item2, Converter={StaticResource guessStatusToObjectConverter}, ConverterParameter='string'}"
+                     Foreground="{Binding Item2, Converter={StaticResource guessStatusToObjectConverter}, ConverterParameter='foreground'}"/>
+                <Run Text="{Binding Item1}"/>
+              </TextBlock>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+          <ListView.Resources>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{ThemeResource SystemAltHighColor}"/>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{ThemeResource SystemListLowColor}"/>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="{ThemeResource SystemListLowColor}"/>
+          </ListView.Resources>
+        </ListView>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</Page>

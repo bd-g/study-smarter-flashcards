@@ -1,4 +1,5 @@
-﻿using DataAccessLibrary.DataModels;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
@@ -17,8 +18,7 @@ namespace StudySmarterFlashcards.Sets
       Messenger.Default.Register<CardSetModel>(this, "SetView", cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
-      BasicStudyCommand = new RelayCommand(BasicStudyAction);
-      FillBlankStudyCommand = new RelayCommand(FillBlankStudyAction);
+      StudyCommand = new RelayCommand<string>(StudyAction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
     #endregion
@@ -26,8 +26,7 @@ namespace StudySmarterFlashcards.Sets
     #region Properties
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand EditCommand { get; private set; }
-    public RelayCommand BasicStudyCommand { get; private set; }
-    public RelayCommand FillBlankStudyCommand { get; private set; }
+    public RelayCommand<string> StudyCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; } = new CardSetModel();
     public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
     public int SetColumnWidth { get; private set; } = 100;
@@ -67,7 +66,7 @@ namespace StudySmarterFlashcards.Sets
       Messenger.Default.Send(FlashCardSet, "EditSetView");
     }
 
-    private async void BasicStudyAction()
+    private async void StudyAction(string studyMode)
     {
       if (FlashCardSet.FlashcardCollection.Count == 0) {
         await new MessageDialog("You can't study an empty flashcard set! Add some cards to study.").ShowAsync();
@@ -85,32 +84,25 @@ namespace StudySmarterFlashcards.Sets
         return;
       }
 
-      prNavigationService.NavigateTo("BasicStudyPage");
-      Messenger.Default.Send(FlashCardSet, "StudyView");
-      FlashCardSet.RegisterNewReviewSession();
-    }
-
-    private async void FillBlankStudyAction()
-    {
-      if (FlashCardSet.FlashcardCollection.Count == 0) {
-        await new MessageDialog("You can't study an empty flashcard set! Add some cards to study.").ShowAsync();
-        return;
-      }
-      bool containsStarredCard = false;
-      foreach (IndividualCardModel individualCard in FlashCardSet.FlashcardCollection) {
-        if (individualCard.IsStarred) {
-          containsStarredCard = true;
-          break;
-        }
-      }
-      if (!containsStarredCard) {
-        await new MessageDialog("There are no starred cards in this set. Star some cards to study them, and leave any cards you don't want to study yet unstarred.").ShowAsync();
+      string studyPage = null;
+      string studyView = null;
+      if (studyMode == "BasicStudyMode") {
+        studyPage = "BasicStudyPage";
+        studyView = "StudyView";
+      } else if (studyMode == "FillBlankStudyMode") {
+        studyPage = "FillBlankStudyPage";
+        studyView = "FillBlankStudyView";
+      } else if (studyMode == "MultipleChoiceStudyMode") {
+        studyPage = "MultipleChoiceStudyPage";
+        studyView = "MultipleChoiceStudyView";
+      } else {
         return;
       }
 
-      prNavigationService.NavigateTo("FillBlankStudyPage");
-      Messenger.Default.Send(FlashCardSet, "FillBlankStudyView");
+      prNavigationService.NavigateTo(studyPage);
+      Messenger.Default.Send(FlashCardSet, studyView);
       FlashCardSet.RegisterNewReviewSession();
+      DataAccess.EditCardSetRegisterNewReviewSession_UWP(FlashCardSet);
     }
     #endregion
   }

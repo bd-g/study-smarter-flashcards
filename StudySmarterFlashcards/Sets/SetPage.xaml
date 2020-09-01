@@ -78,8 +78,9 @@
         </TextBlock>
         <Button.Flyout>
           <MenuFlyout Placement="Top">
-            <MenuFlyoutItem HorizontalAlignment="Center" Text="Flashcard Mode" Command="{Binding BasicStudyCommand}"/>
-            <MenuFlyoutItem HorizontalAlignment="Center" Text="Fill in the Blank Mode"  Command="{Binding FillBlankStudyCommand}"/>
+            <MenuFlyoutItem HorizontalAlignment="Center" Text="Flashcard Mode" Command="{Binding StudyCommand}" CommandParameter="BasicStudyMode"/>
+            <MenuFlyoutItem HorizontalAlignment="Center" Text="Fill in the Blank Mode"  Command="{Binding StudyCommand}" CommandParameter="FillBlankStudyMode"/>
+            <MenuFlyoutItem HorizontalAlignment="Center" Text="Multiple Choice Quiz Mode"  Command="{Binding StudyCommand}" CommandParameter="MultipleChoiceStudyMode"/>
           </MenuFlyout>
         </Button.Flyout>
       </Button>
