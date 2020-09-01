@@ -127,7 +127,7 @@ namespace StudySmarterFlashcards.ImportTools
           baseListDepth = wSection.Paragraphs[0].ListFormat.ListLevelNumber;
         }
         foreach (IWParagraph paragraph in wSection.Paragraphs) {
-          if (paragraph.ListFormat.ListLevelNumber < baseListDepth) {
+          if (paragraph.ListFormat.ListLevelNumber < baseListDepth && !string.IsNullOrWhiteSpace(paragraph.Text)) {
             throw new NotSupportedException("Word file is in invalid format. Make sure your topmost line (set name) is all the way to the left and the terms and definitions underneath it are indented properly. See settings page for more details on formatting word documents for import.");
           }
         }
