@@ -14,9 +14,17 @@ using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 
 namespace StudySmarterFlashcards.Study
-{
+{  public enum GuessStatus
+  {
+    Unaffected,
+    ShowAsCorrect,
+    ShowAsFalse
+  }
   public class MultipleChoiceStudyViewModel : BaseViewModel
   {
     #region Fields
@@ -33,6 +41,7 @@ namespace StudySmarterFlashcards.Study
       BackCommand = new RelayCommand(BackAction);
       GoToNextFlashcardCommand = new RelayCommand(GoToNextFlashcard);
       ShowMultipleChoiceInstructionsCommand = new RelayCommand(ShowMultipleChoiceInstructionsAction);
+      MultipleChoiceItemClickedCommand = new RelayCommand<TappedRoutedEventArgs>(MultipleChoiceItemClickedAction);
     }
     #endregion
 
@@ -41,6 +50,7 @@ namespace StudySmarterFlashcards.Study
     public RelayCommand BackCommand { get; private set; }
     public RelayCommand GoToNextFlashcardCommand { get; private set; }
     public RelayCommand ShowMultipleChoiceInstructionsCommand { get; private set; }
+    public RelayCommand<TappedRoutedEventArgs> MultipleChoiceItemClickedCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; }
     private int CurrentFlashcardIndex { get; set; }
     private int IndexOfFirstUnstarredCard { get; set; }
@@ -51,8 +61,20 @@ namespace StudySmarterFlashcards.Study
         return FlashCardSet.FlashcardCollection[CurrentFlashcardIndex];
       }
     }
-    public ObservableCollection<string> MultipleChoiceAnswers { get; private set; } = new ObservableCollection<string>();
+    public ObservableCollection<Tuple<string, GuessStatus>> MultipleChoiceAnswers { get; private set; } = new ObservableCollection<Tuple<string, GuessStatus>>();
     public int NumAvailableAnswers { get; private set; } = 0;
+    public bool IsGuessMade { 
+      get
+      {
+        foreach (Tuple<string, GuessStatus> choicePair in MultipleChoiceAnswers) {
+          if (choicePair.Item2 != GuessStatus.Unaffected) {
+            return true;
+          }
+        }
+        return false;
+      } 
+    }
+//public bool 
     #endregion
 
     #region Public Methods
@@ -62,22 +84,30 @@ namespace StudySmarterFlashcards.Study
         if (!prCanUseKeyDown) {
           return;
         }
+      }      
+      switch (args.VirtualKey) {
+        case Windows.System.VirtualKey.Right:
+          GoToNextFlashcard();
+          break;
+        case Windows.System.VirtualKey.Number1:
+        case Windows.System.VirtualKey.NumberPad1:
+          MakeGuessAction(MultipleChoiceAnswers.Count > 0 ? MultipleChoiceAnswers[0] : null);
+          break;
+        case Windows.System.VirtualKey.Number2:
+        case Windows.System.VirtualKey.NumberPad2:
+          MakeGuessAction(MultipleChoiceAnswers.Count > 1 ? MultipleChoiceAnswers[1] : null);
+          break;
+        case Windows.System.VirtualKey.Number3:
+        case Windows.System.VirtualKey.NumberPad3:
+          MakeGuessAction(MultipleChoiceAnswers.Count > 2 ? MultipleChoiceAnswers[2] : null);
+          break;
+        case Windows.System.VirtualKey.Number4:
+        case Windows.System.VirtualKey.NumberPad4:
+          MakeGuessAction(MultipleChoiceAnswers.Count > 3 ? MultipleChoiceAnswers[3] : null);
+          break;
+
       }
-      if (args != null) {
-        switch (args.VirtualKey) {
-          case Windows.System.VirtualKey.Right:
-            GoToNextFlashcard();
-            break;
-        }
-      } else if (sender is VirtualKey) {
-        VirtualKey virtualKey = (VirtualKey)sender;
-        switch (virtualKey) {
-          case Windows.System.VirtualKey.Enter:
-            break;
-          case Windows.System.VirtualKey.Space:
-            break;
-        }
-      }
+      
     }
     #endregion
 
@@ -129,26 +159,26 @@ namespace StudySmarterFlashcards.Study
       values.Remove(CurrentFlashcardIndex);
 
       if (values.Count > 0) {
-        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[0]].Definition);
+        MultipleChoiceAnswers.Add(new Tuple<string, GuessStatus>(FlashCardSet.FlashcardCollection[values[0]].Definition, GuessStatus.Unaffected));
       }
       if (values.Count > 1) {
-        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[1]].Definition);
+        MultipleChoiceAnswers.Add(new Tuple<string, GuessStatus>(FlashCardSet.FlashcardCollection[values[1]].Definition, GuessStatus.Unaffected));
       }
       if (values.Count > 2) {
-        MultipleChoiceAnswers.Add(FlashCardSet.FlashcardCollection[values[2]].Definition);
+        MultipleChoiceAnswers.Add(new Tuple<string, GuessStatus>(FlashCardSet.FlashcardCollection[values[2]].Definition, GuessStatus.Unaffected));
       }
 
       NumAvailableAnswers = 1 + Math.Min(3, values.Count);
-      MultipleChoiceAnswers.Insert(prRandom.Next(0, NumAvailableAnswers), CurrentFlashcard.Definition);
+      MultipleChoiceAnswers.Insert(prRandom.Next(0, NumAvailableAnswers), new Tuple<string, GuessStatus>(CurrentFlashcard.Definition, GuessStatus.Unaffected));
 
       OnPropertyChanged("NumAvailableAnswers");
     }
 
     private void GoToNextFlashcard()
     {
-      //if (IsWordIncomplete) {
-      //  return;
-      //}
+      if (!IsGuessMade) {
+        return;
+      }
       int currentIndex = CurrentFlashcardIndex;
 
       int nextIndex = prRandom.Next(0, IndexOfFirstUnstarredCard);
@@ -164,6 +194,33 @@ namespace StudySmarterFlashcards.Study
 
       OnPropertyChanged("CurrentFlashcardIndex");
       OnPropertyChanged("CurrentFlashcard");
+    }
+
+    private void MultipleChoiceItemClickedAction(TappedRoutedEventArgs args)
+    {
+      if (IsGuessMade) {
+        return;
+      }
+      Tuple<string, GuessStatus> clickedItem = null;
+      if (args.OriginalSource is TextBlock textBlock) {
+        clickedItem = textBlock.DataContext as Tuple<string, GuessStatus>;
+      } else if (args.OriginalSource is ListViewItemPresenter itemPresenter) {
+        clickedItem = itemPresenter.Content as Tuple<string, GuessStatus>;
+      }
+      MakeGuessAction(clickedItem);
+    }
+
+    private void MakeGuessAction(Tuple<string, GuessStatus> choicePair)
+    {
+      if (choicePair != null) {
+        for (int i = 0; i < NumAvailableAnswers; i++) {
+          if (MultipleChoiceAnswers[i].Item1 == CurrentFlashcard.Definition) {
+            MultipleChoiceAnswers[i] = new Tuple<string, GuessStatus>(CurrentFlashcard.Definition, GuessStatus.ShowAsCorrect);
+          } else if (MultipleChoiceAnswers[i].Item1 == choicePair.Item1) {
+            MultipleChoiceAnswers[i] = new Tuple<string, GuessStatus>(choicePair.Item1, GuessStatus.ShowAsFalse);
+          }
+        }
+      }
     }
 
     private async void ShowMultipleChoiceInstructionsAction()

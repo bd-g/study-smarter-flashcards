@@ -5,15 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
-    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters" 
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:interact="using:Microsoft.Xaml.Interactivity" 
+    xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     DataContext="{Binding MultipleChoiceStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
     Unloaded="DetachUniversalKeyHandler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-    <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
+    <converters:GuessStatusToObjectConverter x:Key="guessStatusToObjectConverter"/>
   </Page.Resources>
 
   <Grid>
@@ -69,19 +70,33 @@
         <RowDefinition Height="4*"/>
       </Grid.RowDefinitions>
       
-      <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding CurrentFlashcard.Term}"/>
-      <ListView Grid.Row="1" x:Name="multipleChoiceSelectionOptions"
-          ItemsSource="{Binding MultipleChoiceAnswers}">
-        <!--SelectionChanged="ItemListView_SelectionChanged">-->
-        <ListView.ItemTemplate>
-          <DataTemplate>
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="-"/>
-              <TextBlock Text="{Binding}"/>
-            </StackPanel>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
+      <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Text="{Binding CurrentFlashcard.Term}"/>
+      <ScrollViewer Grid.Row="1" >
+        <ListView x:Name="multipleChoiceSelectionOptions" HorizontalAlignment="Center" VerticalAlignment="Center"
+                  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                  ItemsSource="{Binding MultipleChoiceAnswers}">
+          <interact:Interaction.Behaviors>
+            <interactcore:EventTriggerBehavior EventName="Tapped">
+              <interactcore:InvokeCommandAction Command="{Binding MultipleChoiceItemClickedCommand}"/>
+            </interactcore:EventTriggerBehavior>
+          </interact:Interaction.Behaviors>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock FontSize="20" Margin="0,10,0,10" TextWrapping="WrapWholeWords" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Run FontSize="14" FontFamily="Segoe MDL2 Assets" 
+                     Text="{Binding Item2, Converter={StaticResource guessStatusToObjectConverter}, ConverterParameter='string'}"
+                     Foreground="{Binding Item2, Converter={StaticResource guessStatusToObjectConverter}, ConverterParameter='foreground'}"/>
+                <Run Text="{Binding Item1}"/>
+              </TextBlock>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+          <ListView.Resources>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{ThemeResource SystemAltHighColor}"/>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{ThemeResource SystemListLowColor}"/>
+            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="{ThemeResource SystemListLowColor}"/>
+          </ListView.Resources>
+        </ListView>
+      </ScrollViewer>
     </Grid>
   </Grid>
 </Page>

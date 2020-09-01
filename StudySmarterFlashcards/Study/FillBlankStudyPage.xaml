@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:StudySmarterFlashcards.Converters"
-    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters" 
     xmlns:interact="using:Microsoft.Xaml.Interactivity" 
     xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
     DataContext="{Binding FillBlankStudyInstance, Source={StaticResource Locator}}"
@@ -15,8 +13,6 @@
     PreviewKeyDown="HandleSpaceBarPress"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
-    <msconverters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-    <converters:BooleanToBackgroundConverter x:Key="boolToBackgroundConverter" AccentColor="True"/>
     <Storyboard x:Name="WrongGuessAnimation">
       <ColorAnimation Storyboard.TargetName="FirstUnderScoreBackground" Storyboard.TargetProperty="(Border.Background).Color"
                       From="Transparent" To="Red" Duration="0:0:0.5" AutoReverse="True"/>
