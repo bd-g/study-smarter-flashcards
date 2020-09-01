@@ -1,0 +1,29 @@
+﻿<ContentDialog
+    x:Class="StudySmarterFlashcards.Dialogs.MultipleChoiceStudyInstructionsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudySmarterFlashcards.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    mc:Ignorable="d"
+    Title="Fill in the Blank Mode Tutorial"
+    CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
+    CloseButtonText="Close">
+  <ContentDialog.DataContext>
+    <local:MultipleChoiceStudyInstructionsViewModel/>
+  </ContentDialog.DataContext>
+  <ContentDialog.Resources>
+    <msconverters:BoolToVisibilityConverter x:Key="boolToVisiblityConverter"/>
+  </ContentDialog.Resources>
+
+  <StackPanel>
+    <TextBlock FontWeight="Bold" Text="Multiple Choice Quiz Study Controls"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="- Shows a card term with multiple choice answers for its definition"/>
+    <TextBlock Margin="0,10,0,0" FontWeight="Bold" Text="Keyboard Shortcuts"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="Select an answer - Number keys: 1 selects first answer choice, 2 selects second answer choice, etc."/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="Next Flashcard - Right Arrow Key (When question is answered)"/>
+    <CheckBox  Margin="0,10,0,0" Content="Don't show this message again" IsChecked="{Binding DontShowAgain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock TextWrapping="WrapWholeWords" Text="You can configure this message to show again in the settings" Visibility="{Binding DontShowAgain, Converter={StaticResource boolToVisiblityConverter}}"/>
+  </StackPanel>
+</ContentDialog>

@@ -74,7 +74,6 @@ namespace StudySmarterFlashcards.Study
         return false;
       } 
     }
-//public bool 
     #endregion
 
     #region Public Methods
@@ -141,7 +140,7 @@ namespace StudySmarterFlashcards.Study
       lock (myLocker) {
         prCanUseKeyDown = false;
       }
-      //await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions);
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.MultipleChoiceStudyInstructions);
       lock (myLocker) {
         prCanUseKeyDown = true;
       }
@@ -225,7 +224,7 @@ namespace StudySmarterFlashcards.Study
 
     private async void ShowMultipleChoiceInstructionsAction()
     {
-      //await InstructionsDialogService.ShowAsync(InstructionDialogType.MainInstructions, true);
+      await InstructionsDialogService.ShowAsync(InstructionDialogType.MultipleChoiceStudyInstructions, true);
     }
     #endregion
   }

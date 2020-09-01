@@ -127,9 +127,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\MultipleChoiceStudyInstructionsDialog.xaml.cs">
+      <DependentUpon>MultipleChoiceStudyInstructionsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\FillBlankStudyInstructionsDialog.xaml.cs">
       <DependentUpon>FillBlankStudyInstructionsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\MultipleChoiceStudyInstructionsViewModel.cs" />
     <Compile Include="Dialogs\FillBlankStudyInstructionsViewModel.cs" />
     <Compile Include="Dialogs\LoadingDialog.xaml.cs">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
@@ -241,6 +245,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\MultipleChoiceStudyInstructionsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\FillBlankStudyInstructionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

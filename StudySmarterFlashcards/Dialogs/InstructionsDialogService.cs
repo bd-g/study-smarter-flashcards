@@ -9,6 +9,7 @@ namespace StudySmarterFlashcards.Dialogs
   {
     BasicStudyInstructions,
     FillBlankStudyInstructions,
+    MultipleChoiceStudyInstructions,
     MainInstructions,
     ValidFileFormats
   }
@@ -29,6 +30,13 @@ namespace StudySmarterFlashcards.Dialogs
           bool? showFillBlankInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowFillBlankStudyInstructionsDialog"] as bool?;
           if (showFillBlankInstructions != false || overrideSettings) {
             return await new FillBlankStudyInstructionsDialog().ShowAsync();
+          } else {
+            return ContentDialogResult.None;
+          }
+        case InstructionDialogType.MultipleChoiceStudyInstructions:
+          bool? showMultipleChoiceInstructions = Windows.Storage.ApplicationData.Current.LocalSettings.Values["ShowMultipleChoiceStudyInstructionsDialog"] as bool?;
+          if (showMultipleChoiceInstructions != false || overrideSettings) {
+            return await new MultipleChoiceStudyInstructionsDialog().ShowAsync();
           } else {
             return ContentDialogResult.None;
           }
