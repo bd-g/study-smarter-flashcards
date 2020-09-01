@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     mc:Ignorable="d"
-    Title="Fill in the Blank Mode Tutorial"
+    Title="Multiple Choice Study Mode Tutorial"
     CloseButtonCommand="{Binding SaveSettingsAndCloseCommand}"
     CloseButtonText="Close">
   <ContentDialog.DataContext>

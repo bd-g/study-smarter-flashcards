@@ -4,8 +4,10 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:interact="using:Microsoft.Xaml.Interactivity" xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
-      DataContext="{Binding SettingsInstance, Source={StaticResource Locator}}"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:interact="using:Microsoft.Xaml.Interactivity"
+  xmlns:interactcore="using:Microsoft.Xaml.Interactions.Core"
+  DataContext="{Binding SettingsInstance, Source={StaticResource Locator}}"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
   <Page.Resources>
@@ -99,6 +101,7 @@
       </Button>
 
       <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Top"  HorizontalAlignment="Left" Text="We Love Feedback!" FontSize="30"/>
+      
       <ScrollViewer  Grid.Row="4" Grid.Column="1" >
         <TextBlock VerticalAlignment="Top" Text="We appreciate any and all feedback you can give so we can improve this app to better
 meet your needs. To submit feedback, click the button below and fill out the form in the window that appears." TextWrapping="WrapWholeWords"/>
