@@ -38,12 +38,14 @@
       </Viewbox>
     </Button>
 
-    <Viewbox Margin="5" Grid.Row="0" Grid.Column="3">
+    <Viewbox Margin="10" Grid.Row="0" Grid.Column="3">
       <TextBlock Text="Settings"/>
     </Viewbox>
 
     <Grid Grid.Row="1" Grid.Column="3">
       <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
         <RowDefinition Height="1*"/>
         <RowDefinition Height="1*"/>
         <RowDefinition Height="1*"/>
@@ -56,7 +58,7 @@
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Tutorial Settings" FontSize="30"/>
+      <TextBlock Grid.Row="0" Grid.Column="0"  VerticalAlignment="Top"  HorizontalAlignment="Left" Text="Tutorial Settings" FontSize="30"/>
 
       <ToggleSwitch Grid.Row="1" VerticalAlignment="Top" Header="Main Tutorial" IsOn="{Binding ShowMainInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
@@ -65,12 +67,8 @@
           </interactcore:EventTriggerBehavior>
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
-      
-      <Button  Grid.Row="2" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowMainInstructionsCommand}">
-        <TextBlock Text="Main Tutorial Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
-      </Button>
 
-      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Flashcard Mode Tutorial" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="2"  VerticalAlignment="Top" Header="Flashcard Mode Tutorial" IsOn="{Binding ShowStudyInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleStudyInstructionsCommand}" />
@@ -78,7 +76,7 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
-      <ToggleSwitch Grid.Row="4"  VerticalAlignment="Top" Header="Fill in the Blank Mode Tutorial" IsOn="{Binding ShowFillBlankInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="3"  VerticalAlignment="Top" Header="Fill in the Blank Mode Tutorial" IsOn="{Binding ShowFillBlankInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleFillBlankStudyInstructionsCommand}" />
@@ -86,7 +84,7 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
       
-      <ToggleSwitch Grid.Row="5"  VerticalAlignment="Top" Header="Multiple Choice Quiz Mode Tutorial" IsOn="{Binding ShowMultipleChoiceInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+      <ToggleSwitch Grid.Row="4"  VerticalAlignment="Top" Header="Multiple Choice Quiz Mode Tutorial" IsOn="{Binding ShowMultipleChoiceInstructions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         <interact:Interaction.Behaviors>
           <interactcore:EventTriggerBehavior EventName="Toggled" >
             <interactcore:InvokeCommandAction Command="{Binding ToggleMultipleChoiceStudyInstructionsCommand}" />
@@ -94,21 +92,24 @@
         </interact:Interaction.Behaviors>
       </ToggleSwitch>
 
-      <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"  HorizontalAlignment="Left" Text="Import Instructions" FontSize="30"/>
+      <TextBlock Grid.Row="5" Grid.Column="0"  VerticalAlignment="Top"  HorizontalAlignment="Left" Text="Tutorial Shortcuts" FontSize="30"/>
 
-      <Button  Grid.Row="1" Grid.Column="1"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowValidFileFormatsCommand}">
+      <Button  Grid.Row="6" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowMainInstructionsCommand}">
+        <TextBlock Text="Main Tutorial Shortcut" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+      </Button>
+
+      <Button  Grid.Row="7" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ShowValidFileFormatsCommand}">
         <TextBlock Text="Detailed Instructions For Importing New Sets" FontSize="16" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
       </Button>
 
-      <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Top"  HorizontalAlignment="Left" Text="We Love Feedback!" FontSize="30"/>
-      
-      <ScrollViewer  Grid.Row="4" Grid.Column="1" >
-        <TextBlock VerticalAlignment="Top" Text="We appreciate any and all feedback you can give so we can improve this app to better
-meet your needs. To submit feedback, click the button below and fill out the form in the window that appears." TextWrapping="WrapWholeWords"/>
+      <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  HorizontalAlignment="Left" TextWrapping="WrapWholeWords" Text="Feedback and Privacy Policy" FontSize="30"/>
+
+      <ScrollViewer  Grid.Row="2" Grid.Column="1" >
+        <TextBlock VerticalAlignment="Top" Text="We appreciate any feedback you can give so we can better meet your needs. Click the button below and fill out the form in the window that appears." TextWrapping="WrapWholeWords"/>
       </ScrollViewer>
 
       <Button x:Name="feedbackButton"  HorizontalAlignment="Left" VerticalAlignment="Top"
-            Grid.Row="5" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
+            Grid.Row="3" Grid.Column="1" Command="{Binding LaunchFeedbackHubCommand}"
             Visibility="{Binding IsFeedbackHubSupported,
             Converter={StaticResource boolToVisibilityConverter}}">
         <TextBlock>
@@ -116,6 +117,12 @@ meet your needs. To submit feedback, click the button below and fill out the for
           <Run Text="Feedback"/>
         </TextBlock>
       </Button>
+      
+      <TextBlock Grid.Row="5" Grid.Column="1"  VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Hyperlink NavigateUri="http://myapppolicy.com/app/study-smarter-flashcards">
+          Privacy Policy
+        </Hyperlink>
+      </TextBlock>      
     </Grid>
   </Grid>
 </Page>
