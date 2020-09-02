@@ -81,9 +81,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: RC ${{steps.getVersion.outputs.version}}
+        release_name: Study Smarter Flashcards ${{steps.getVersion.outputs.version}}
         draft: false
-        prerelease: true
+        prerelease: false
 
     - name: Prepare artifact metadata
       id: prepare_artifact_metadata
