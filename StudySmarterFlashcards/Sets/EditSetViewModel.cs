@@ -28,7 +28,9 @@ namespace StudySmarterFlashcards.Sets
     public EditSetViewModel(INavigationService navigationService) : base(navigationService)
     {
       Messenger.Default.Register<CardSetModel>(this, "EditSetView", cardSetModel => InitializeSetPage(cardSetModel));
+      Messenger.Default.Register<Tuple<CardSetModel, CardSetModel>> (this, "EditSetView", cardSetModelPair => InitializeSetPage(cardSetModelPair.Item1, cardSetModelPair.Item2));
       Messenger.Default.Register<List<CardSetModel>>(this, "EditSetView", cardSetModels => InitializeSetPage(cardSetModels));
+
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       CancelCommand = new RelayCommand(CancelAction);
       NextImportedSetWithoutSavingCommand = new RelayCommand(NextImportedSetWithoutSavingAction);
@@ -148,11 +150,11 @@ namespace StudySmarterFlashcards.Sets
       }
     }
 
-    private void InitializeSetPage(CardSetModel cardSetModel)
+    private void InitializeSetPage(CardSetModel cardSetModel, CardSetModel updatedCardSetModel = null)
     {
       if (cardSetModel != null) {
         OriginalFlashCardSet = cardSetModel;
-        TempFlashCardSet = OriginalFlashCardSet.Clone();
+        TempFlashCardSet = updatedCardSetModel != null ? updatedCardSetModel : OriginalFlashCardSet.Clone();
         IsCreatingNewSet = false;
       } else {
         OriginalFlashCardSet = null;

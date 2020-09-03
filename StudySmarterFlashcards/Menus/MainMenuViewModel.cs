@@ -79,7 +79,7 @@ namespace StudySmarterFlashcards.Menus
         try {
           CancellationTokenSource cancelSource = new CancellationTokenSource();
           Task<ContentDialogResult> loadingScreenTask = new LoadingDialog().ShowAsync().AsTask(cancelSource.Token);
-          Task<List<CardSetModel>> importingTask = ImportFlashcardService.ImportFromFile(file, cancelSource.Token);
+          Task<List<CardSetModel>> importingTask = ImportFlashcardService.ImportNewSetsFromFile(file, cancelSource.Token);
 
           Task firstToFinish = await Task.WhenAny(loadingScreenTask, importingTask);
           cancelSource.Cancel();
