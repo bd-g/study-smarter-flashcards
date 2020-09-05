@@ -3,10 +3,18 @@ using DataAccessLibrary.DataModels;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using StudySmarterFlashcards.Dialogs;
+using StudySmarterFlashcards.ImportTools;
 using StudySmarterFlashcards.Utils;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace StudySmarterFlashcards.Sets
 {
@@ -18,6 +26,7 @@ namespace StudySmarterFlashcards.Sets
       Messenger.Default.Register<CardSetModel>(this, "SetView", cardSetModel => InitializeSetPage(cardSetModel));
       NavigateHomeCommand = new RelayCommand(NavigateHomeAction);
       EditCommand = new RelayCommand(EditAction);
+      AddToSetWithImportCommand = new RelayCommand(ImportSetFromFileAction);
       StudyCommand = new RelayCommand<string>(StudyAction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
     }
@@ -26,6 +35,7 @@ namespace StudySmarterFlashcards.Sets
     #region Properties
     public RelayCommand NavigateHomeCommand { get; private set; }
     public RelayCommand EditCommand { get; private set; }
+    public RelayCommand AddToSetWithImportCommand { get; private set; }
     public RelayCommand<string> StudyCommand { get; private set; }
     public CardSetModel FlashCardSet { get; private set; } = new CardSetModel();
     public RelayCommand<SizeChangedEventArgs> ResizeColumnWidthCommand { get; private set; }
@@ -64,6 +74,35 @@ namespace StudySmarterFlashcards.Sets
     {
       prNavigationService.NavigateTo("EditSetPage");
       Messenger.Default.Send(FlashCardSet, "EditSetView");
+    }
+
+    private async void ImportSetFromFileAction()
+    {
+      FileOpenPicker openPicker = new FileOpenPicker();
+      openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+      openPicker.FileTypeFilter.Add(".xlsx");
+      openPicker.FileTypeFilter.Add(".xls");
+      openPicker.FileTypeFilter.Add(".docx");
+      openPicker.FileTypeFilter.Add(".doc");
+
+      StorageFile file = await openPicker.PickSingleFileAsync();
+      if (file != null) {
+        try {
+          CancellationTokenSource cancelSource = new CancellationTokenSource();
+          Task<ContentDialogResult> loadingScreenTask = new LoadingDialog().ShowAsync().AsTask(cancelSource.Token);
+          Task<CardSetModel> importingTask = ImportFlashcardService.ImportAddToExistingSet(file, cancelSource.Token, FlashCardSet.Clone());
+
+          Task firstToFinish = await Task.WhenAny(loadingScreenTask, importingTask);
+          cancelSource.Cancel();
+          if (firstToFinish == importingTask) {
+            CardSetModel updatedCardSetModel = await importingTask;
+            prNavigationService.NavigateTo("EditSetPage");
+            Messenger.Default.Send(new Tuple<CardSetModel, CardSetModel>(FlashCardSet, updatedCardSetModel), "EditSetView");
+          }
+        } catch (Exception ex) {
+          await new MessageDialog(ex.Message).ShowAsync();
+        }
+      }
     }
 
     private async void StudyAction(string studyMode)

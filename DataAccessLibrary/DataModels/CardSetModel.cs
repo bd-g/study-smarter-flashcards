@@ -78,6 +78,12 @@ namespace DataAccessLibrary.DataModels
       if (indexToAddAt >= 0 && indexToAddAt <= FlashcardCollection.Count) {
         FlashcardCollection.Insert(indexToAddAt, new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       } else {
+        for (int i = 0; i < FlashcardCollection.Count; i++) {
+          if (!FlashcardCollection[i].IsStarred) {
+            FlashcardCollection.Insert(i, new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
+            return;
+          }
+        }
         FlashcardCollection.Add(new IndividualCardModel(cardTerm, cardDefinition, isLearned, isStarred));
       }
     }

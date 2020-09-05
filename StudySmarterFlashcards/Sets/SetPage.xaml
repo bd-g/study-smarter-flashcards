@@ -62,13 +62,20 @@
       </Button.Flyout>
     </Button>
 
-    <Button Command="{Binding EditCommand}" Grid.Row="1" Grid.Column="5"
-            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Top"
-            Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Edit">
+    <Button x:Name="EditButton" Grid.Row="1" Grid.Column="5" VerticalAlignment="Top"
+              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+              Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Edit">
       <Viewbox>
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE70F;"/>
       </Viewbox>
+      <Button.Flyout>
+        <MenuFlyout Placement="Bottom">
+          <MenuFlyoutItem Text="Edit" Command="{Binding EditCommand}"/>
+          <MenuFlyoutItem Text="Import Set Addition" Command="{Binding AddToSetWithImportCommand}"/>
+        </MenuFlyout>
+      </Button.Flyout>
     </Button>
+
 
     <Viewbox  Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
       <Button BorderThickness="0">
