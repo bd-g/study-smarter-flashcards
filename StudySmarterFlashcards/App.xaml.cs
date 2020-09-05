@@ -21,8 +21,6 @@ namespace StudySmarterFlashcards
     public App()
     {
       Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9");
-      SQLitePCL.Batteries_V2.Init();
-      DataAccess.InitializeDatabase_UWP().Wait();
       this.InitializeComponent();
       this.Suspending += OnSuspending;
     }

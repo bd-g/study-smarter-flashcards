@@ -26,12 +26,12 @@ namespace StudySmarterFlashcards.Menus
     {
       Messenger.Default.Register<CardSetModel>(this, "AddSet", async addedCardSet => await ReceiveEditSetMessage(addedCardSet));
       Messenger.Default.Register<CardSetModel>(this, "EditSet", async editedCardSet => await ReceiveEditSetMessage(editedCardSet));
-      AddEmptySetCommand = new RelayCommand(AddEmptySetAction);
-      ImportSetFromFileCommand = new RelayCommand(ImportSetFromFileAction);
-      EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction);
-      ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetFunction);
-      DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction);
-      GoToSetCommand = new RelayCommand<ItemClickEventArgs>(GoToSetAction);
+      AddEmptySetCommand = new RelayCommand(AddEmptySetAction, CanExecuteFunctions);
+      ImportSetFromFileCommand = new RelayCommand(ImportSetFromFileAction, CanExecuteFunctions);
+      EditSetCommand = new RelayCommand<CardSetModel>(EditSetAction, CanExecuteFunctions);
+      ArchiveSetCommand = new RelayCommand<CardSetModel>(ArchiveSetFunction, CanExecuteFunctions);
+      DeleteSetCommand = new RelayCommand<CardSetModel>(DeleteSetAction, CanExecuteFunctions);
+      GoToSetCommand = new RelayCommand<ItemClickEventArgs>(GoToSetAction, CanExecuteFunctions);
       NumSetsLoaded = new NotifyTaskCompletion<string>(this.LoadStartingData());
       GoToSettingsCommand = new RelayCommand(GoToSettingsAction);
       ResizeColumnWidthCommand = new RelayCommand<SizeChangedEventArgs>(ResizeColumnWidthFunction);
@@ -56,6 +56,8 @@ namespace StudySmarterFlashcards.Menus
     #region Private Methods
     private async Task<string> LoadStartingData()
     {
+      SQLitePCL.Batteries_V2.Init();
+      await DataAccess.InitializeDatabase_UWP();
       CardSets = await Task.Run(() => DataAccess.ReadAllExistingData_UWP());
       OnPropertyChanged("CardSets");
       return CardSets.Count + " set(s) loaded successfully";
@@ -116,6 +118,14 @@ namespace StudySmarterFlashcards.Menus
     private void GoToSettingsAction()
     {
       prNavigationService.NavigateTo("SettingsPage");
+    }
+    private bool CanExecuteFunctions()
+    {
+      return NumSetsLoaded.IsSuccessfullyCompleted;
+    }
+    private bool CanExecuteFunctions(object sender = null)
+    {
+      return NumSetsLoaded.IsSuccessfullyCompleted;
     }
 
     private void EditSetAction(CardSetModel cardSetModelToEdit)
