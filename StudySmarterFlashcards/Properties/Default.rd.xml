@@ -17,6 +17,7 @@
 
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Application>
+    <Type Name="System.Collections.ArrayList" Dynamic="Required All" />
     <!--
       An Assembly element with Name="*Application*" applies to all assemblies in
       the application package. The asterisks are not wildcards.
