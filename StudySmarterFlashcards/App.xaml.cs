@@ -25,7 +25,6 @@ namespace StudySmarterFlashcards
       DataAccess.InitializeDatabase_UWP().Wait();
       this.InitializeComponent();
       this.Suspending += OnSuspending;
-
     }
 
     /// <summary>

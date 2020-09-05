@@ -6,7 +6,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <AppxShowAllApps>False</AppxShowAllApps>
-    <UapAppxPackageBuildMode>StoreOnly</UapAppxPackageBuildMode>
+    <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxBuildConfigurationSelection>x86|x64|arm</AppxBuildConfigurationSelection>
     <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
   </PropertyGroup>

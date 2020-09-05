@@ -70,8 +70,8 @@
       </Viewbox>
       <Button.Flyout>
         <MenuFlyout Placement="Bottom">
-          <MenuFlyoutItem Text="Edit" Command="{Binding EditCommand}"/>
-          <MenuFlyoutItem Text="Import Set Addition" Command="{Binding AddToSetWithImportCommand}"/>
+          <MenuFlyoutItem Text="Edit" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding EditCommand}"/>
+          <MenuFlyoutItem Text="Import Set Addition" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding AddToSetWithImportCommand}"/>
         </MenuFlyout>
       </Button.Flyout>
     </Button>

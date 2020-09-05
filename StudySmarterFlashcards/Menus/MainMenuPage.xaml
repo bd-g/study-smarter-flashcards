@@ -50,8 +50,8 @@
         </Viewbox>
         <Button.Flyout>
           <MenuFlyout Placement="Bottom">
-            <MenuFlyoutItem Text="Add Empty Set" Command="{Binding AddEmptySetCommand}"/>
-            <MenuFlyoutItem Text="Import Set From File"  Command="{Binding ImportSetFromFileCommand}"/>
+            <MenuFlyoutItem Text="Add Empty Set" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding AddEmptySetCommand}"/>
+            <MenuFlyoutItem Text="Import Set From File"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding ImportSetFromFileCommand}"/>
           </MenuFlyout>
         </Button.Flyout>
       </Button>
