@@ -105,7 +105,10 @@
       <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  HorizontalAlignment="Left" TextWrapping="WrapWholeWords" Text="Feedback and Privacy Policy" FontSize="30"/>
 
       <ScrollViewer  Grid.Row="2" Grid.Column="1" >
-        <TextBlock VerticalAlignment="Top" Text="We appreciate any feedback you can give so we can better meet your needs. Click the button below and fill out the form in the window that appears." TextWrapping="WrapWholeWords"/>
+        <TextBlock VerticalAlignment="Top"  TextWrapping="WrapWholeWords">
+          <Run Text="We appreciate any feedback you can give so we can better meet your needs. If no button appears below, email us feedback at "/>
+          <Hyperlink NavigateUri="mailto:studysmarterflashcards@gmail.com">studysmarterflashcards@gmail.com</Hyperlink>        
+        </TextBlock>
       </ScrollViewer>
 
       <Button x:Name="feedbackButton"  HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -117,7 +120,7 @@
           <Run Text="Feedback"/>
         </TextBlock>
       </Button>
-      
+
       <TextBlock Grid.Row="5" Grid.Column="1"  VerticalAlignment="Top" HorizontalAlignment="Left">
         <Hyperlink NavigateUri="http://myapppolicy.com/app/study-smarter-flashcards">
           Privacy Policy

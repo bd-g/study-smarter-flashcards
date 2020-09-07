@@ -45,7 +45,7 @@ namespace StudySmarterFlashcards.Menus
     {
       get
       {
-        return Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
+        return false; // Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
       }
     }
     public bool ShowStudyInstructions
@@ -126,10 +126,10 @@ namespace StudySmarterFlashcards.Menus
       prNavigationService.NavigateTo("MainMenuPage");
     }
 
-    private async void LaunchFeedbackHubAction()
+    private void LaunchFeedbackHubAction()
     {
-      var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
-      await launcher.LaunchAsync();
+      //var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+      //await launcher.LaunchAsync();
     }
 
     private void ToggleStudyInstructionsFunction(RoutedEventArgs args)

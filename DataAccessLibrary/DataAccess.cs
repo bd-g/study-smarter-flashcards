@@ -17,7 +17,7 @@ namespace DataAccessLibrary
     private static readonly string prDBName = "localCardSets.db";
     #endregion
 
-    #region Public Methods
+    #region Database Initialization
     public async static Task InitializeDatabase_UWP()
     {
       await ApplicationData.Current.LocalFolder.CreateFileAsync(prDBName, CreationCollisionOption.OpenIfExists);
@@ -56,6 +56,9 @@ namespace DataAccessLibrary
         db.Close();
       }
     }
+    #endregion
+
+    #region Select Methods
     public static ObservableCollection<CardSetModel> ReadAllExistingData_UWP()
     {
       ObservableCollection<CardSetModel> allCardSets = new ObservableCollection<CardSetModel>();
@@ -126,6 +129,9 @@ namespace DataAccessLibrary
 
       return allCardSets;
     }
+    #endregion
+
+    #region Insert Methods
     public static void AddNewCardSet_UWP(CardSetModel newCardSet)
     {
       string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
@@ -163,6 +169,34 @@ namespace DataAccessLibrary
       }
 
     }
+    private static void AddNewCard(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
+    {
+      SqliteCommand insertCardCommand = new SqliteCommand();
+      insertCardCommand.Connection = db;
+
+      insertCardCommand.CommandText =
+        "INSERT INTO IndividualFlashcard VALUES " +
+        "(" +
+          "NULL," +
+          "@Term, " +
+          "@Definition, " +
+          "@CardID, " +
+          "@ParentSetID, " +
+          "@IsLearned, " +
+          "@IsStarred" +
+        ");";
+
+      insertCardCommand.Parameters.AddWithValue("@Term", newCard.Term);
+      insertCardCommand.Parameters.AddWithValue("@Definition", newCard.Definition);
+      insertCardCommand.Parameters.AddWithValue("@CardID", newCard.CardID);
+      insertCardCommand.Parameters.AddWithValue("@ParentSetID", parentSetID);
+      insertCardCommand.Parameters.AddWithValue("@IsLearned", newCard.IsLearned);
+      insertCardCommand.Parameters.AddWithValue("@IsStarred", newCard.IsStarred);
+      insertCardCommand.ExecuteReader();
+    }
+    #endregion
+
+    #region Update Methods
     public static void EditCardSet_UWP(CardSetModel editedCardSet)
     {
       string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, prDBName);
@@ -335,34 +369,6 @@ namespace DataAccessLibrary
 
         db.Close();
       }
-    }
-    #endregion
-
-    #region Private Methods
-    private static void AddNewCard(IndividualCardModel newCard, Guid parentSetID, SqliteConnection db)
-    {
-      SqliteCommand insertCardCommand = new SqliteCommand();
-      insertCardCommand.Connection = db;
-
-      insertCardCommand.CommandText =
-        "INSERT INTO IndividualFlashcard VALUES " +
-        "(" +
-          "NULL," +
-          "@Term, " +
-          "@Definition, " +
-          "@CardID, " +
-          "@ParentSetID, " +
-          "@IsLearned, " +
-          "@IsStarred" +
-        ");";
-
-      insertCardCommand.Parameters.AddWithValue("@Term", newCard.Term);
-      insertCardCommand.Parameters.AddWithValue("@Definition", newCard.Definition);
-      insertCardCommand.Parameters.AddWithValue("@CardID", newCard.CardID);
-      insertCardCommand.Parameters.AddWithValue("@ParentSetID", parentSetID);
-      insertCardCommand.Parameters.AddWithValue("@IsLearned", newCard.IsLearned);
-      insertCardCommand.Parameters.AddWithValue("@IsStarred", newCard.IsStarred);
-      insertCardCommand.ExecuteReader();
     }
     private static void EditFlashcard(IndividualCardModel editedCard, SqliteConnection db)
     {
