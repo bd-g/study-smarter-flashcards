@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Views;
 using StudySmarterFlashcards.Dialogs;
 using StudySmarterFlashcards.Utils;
 using System;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -45,7 +46,7 @@ namespace StudySmarterFlashcards.Menus
     {
       get
       {
-        return Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
+        return false; // Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
       }
     }
     public bool ShowStudyInstructions
@@ -128,8 +129,9 @@ namespace StudySmarterFlashcards.Menus
 
     private async void LaunchFeedbackHubAction()
     {
-      var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
-      await launcher.LaunchAsync();
+      await new MessageDialog("Feedback Hub is not currently supported. Please submit feedback to the email listed above.").ShowAsync();
+      //var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+      //await launcher.LaunchAsync();
     }
 
     private void ToggleStudyInstructionsFunction(RoutedEventArgs args)
