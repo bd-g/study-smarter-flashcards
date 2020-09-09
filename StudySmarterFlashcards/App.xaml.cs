@@ -14,13 +14,16 @@ namespace StudySmarterFlashcards
   /// </summary>
   sealed partial class App : Application
   {
+    #region Security Fields
+    private static readonly string prSyncfusionLicence = "MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9";
+    #endregion
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
     public App()
     {
-      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9");
+      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(prSyncfusionLicence);
       this.InitializeComponent();
       this.Suspending += OnSuspending;
     }
