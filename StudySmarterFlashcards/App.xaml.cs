@@ -1,8 +1,11 @@
-﻿using DataAccessLibrary;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using StudySmarterFlashcards.Menus;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -13,14 +16,19 @@ namespace StudySmarterFlashcards
   /// Provides application-specific behavior to supplement the default Application class.
   /// </summary>
   sealed partial class App : Application
-  {
+  {    
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
     public App()
     {
-      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9");
+      ResourceLoader appCenterData = new Windows.ApplicationModel.Resources.ResourceLoader("AppCenterData");
+      string appCenterSecret = appCenterData.GetString("appCenterSecret");
+      string syncfusionLicense = appCenterData.GetString("syncfusionLicense");
+      
+      AppCenter.Start(appCenterSecret, typeof(Analytics), typeof(Crashes));
+      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicense);
       this.InitializeComponent();
       this.Suspending += OnSuspending;
     }

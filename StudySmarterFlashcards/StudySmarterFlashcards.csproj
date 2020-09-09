@@ -237,6 +237,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <PRIResource Include="AppCenterData.resw" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
@@ -299,11 +300,26 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter">
+      <Version>3.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>3.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>3.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Distribute">
+      <Version>3.4.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>3.1.7</Version>
+      <Version>3.1.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Services.Store.Engagement">
+      <Version>10.1901.28001</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.1</Version>
@@ -324,13 +340,13 @@
       <Version>4.7.4</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3">
-      <Version>2.0.4</Version>
+      <Version>2.0.2</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.DocIO.UWP">
-      <Version>18.2.0.56</Version>
+      <Version>18.2.0.57</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.XlsIO.UWP">
-      <Version>18.2.0.56</Version>
+      <Version>18.2.0.57</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
