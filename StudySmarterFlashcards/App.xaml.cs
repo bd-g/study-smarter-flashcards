@@ -5,6 +5,7 @@ using StudySmarterFlashcards.Menus;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -22,9 +23,12 @@ namespace StudySmarterFlashcards
     /// </summary>
     public App()
     {
-      string appCenterSecret = new Windows.ApplicationModel.Resources.ResourceLoader("AppCenterData").GetString("appCenterSecret");
+      ResourceLoader appCenterData = new Windows.ApplicationModel.Resources.ResourceLoader("AppCenterData");
+      string appCenterSecret = appCenterData.GetString("appCenterSecret");
+      string syncfusionLicense = appCenterData.GetString("syncfusionLicense");
+      
       AppCenter.Start(appCenterSecret, typeof(Analytics), typeof(Crashes));
-      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzAzODM1QDMxMzgyZTMyMmUzMGZ0SU1lNjBraDVmSkhJamNBdW5rMkNRdVl4aWNnemZDVHluVkpsWnJEUUk9");
+      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicense);
       this.InitializeComponent();
       this.Suspending += OnSuspending;
     }
