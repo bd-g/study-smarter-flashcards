@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:StudySmarterFlashcards.Converters"
     xmlns:msconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:adsjumbo="using:AdsJumbo"
     DataContext="{Binding BasicStudyInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     Loaded="AttachUniversalKeyHandler"
@@ -47,6 +48,13 @@
         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;"/>
       </Viewbox>
     </Button>
+
+    <adsjumbo:BannerAd Grid.Row="0" Grid.Column="3"
+                ApplicationId='vvcr9wmv0tve'
+                WidthAd='160'
+                HeightAd='600'
+                Position='Center' />
+
     <Button Command="{Binding ShowInstructionsCommand}" Grid.Row="0" Grid.Column="5"
             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,0,5,0" 
             Padding="0" BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="Help">

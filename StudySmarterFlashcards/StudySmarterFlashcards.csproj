@@ -301,6 +301,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AdsJumbo">
+      <Version>5.9.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.AppCenter">
       <Version>3.4.1</Version>
     </PackageReference>

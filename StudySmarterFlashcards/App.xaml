@@ -2,11 +2,12 @@
     x:Class="StudySmarterFlashcards.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:utils="using:StudySmarterFlashcards.Utils">
+    xmlns:utils="using:StudySmarterFlashcards.Utils"
+    xmlns:adsjumbo="using:AdsJumbo">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+      <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
       </ResourceDictionary.MergedDictionaries>
       <utils:ViewModelLocator x:Key="Locator" />
     </ResourceDictionary>
